@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
+    "test:contract": "vitest run --config vitest.contract.config.mts",
     "test:e2e": "playwright test",
     "format": "prettier --write ."
   },

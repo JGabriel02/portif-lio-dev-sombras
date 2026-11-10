@@ -51,6 +51,60 @@ Configure as variáveis de ambiente do projeto:
 
 Veja `.env.example`.
 
+## Dados do GitHub
+
+O site lê repositórios, linguagens e atividade da conta pública `JGabriel02` (login
+derivado de `perfil.links.github`) e revalida a cada hora (ISR). Sem token ou com a API
+fora do ar, o site continua funcionando com o `fallback` estático de cada projeto.
+
+### Criar o token
+
+1. Em github.com, vá em Settings → Developer settings → Personal access tokens →
+   Fine-grained tokens → Generate new token.
+2. Defina nome e expiração.
+3. Em Repository access, escolha **Public repositories**.
+4. Não adicione nenhuma permissão extra (somente leitura de dados públicos).
+5. Gere e copie o token.
+
+### Configurar
+
+- Na Vercel: Project → Settings → Environment Variables, adicione `GITHUB_TOKEN` em
+  **Production** e **Preview** e faça um novo deploy.
+- Local (opcional): coloque `GITHUB_TOKEN=...` em `.env.local`. Nunca use o prefixo
+  `NEXT_PUBLIC_` e nunca faça commit do token.
+
+### Curar projetos
+
+Edite `src/content/projetos.ts`. Cada item de `ProjetoCurado` tem:
+
+- `slug`: rota do site (`/[locale]/projetos/<slug>`).
+- `repo`: nome exato do repositório na conta.
+- `destaque`: `true` em exatamente um projeto (o destacado).
+- `resumo`, `descricao`, `aprendizados`: textos em PT e EN.
+- `stack`, `imagens` e `demoUrl` (opcional; vence o homepage do GitHub).
+- `fallback`: `linguagem`, `estrelas` e `atualizadoEm` (data ISO) usados quando o
+  repositório não vem da API.
+
+### Skills e contagem de repositórios
+
+Em `src/content/skills.ts`, defina `linguagemGithub` com o nome da linguagem como o
+GitHub a exibe (ex.: `'TypeScript'`) para mostrar quantos repositórios públicos usam
+aquela linguagem. Sem `linguagemGithub`, a skill não exibe contagem.
+
+### Limites
+
+Só os 100 repositórios mais recentemente enviados (`per_page=100`, sem paginação) são
+considerados.
+
+### Teste de contrato
+
+`corepack pnpm test:contract` chama a API real do GitHub. Ele não roda em
+`pnpm test` nem na CI e é ignorado (saída 0) quando `GITHUB_TOKEN` não está definido:
+
+```bash
+GITHUB_TOKEN=... corepack pnpm test:contract
+```
+
 ## Como adicionar um tema
 
 O tema atual é `sombra`. Para criar outro (por exemplo `aurora`):
