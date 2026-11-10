@@ -95,11 +95,21 @@ describe('Hero', () => {
 })
 
 describe('Sobre', () => {
-  it('renders the bio for the locale and the three cards', async () => {
+  it('renders every bio paragraph for the locale and the three cards', async () => {
     renderWithIntl(await Sobre({ locale: 'en' }), { locale: 'en' })
-    expect(screen.getByText(perfilReal().bio.en)).toBeInTheDocument()
+    for (const p of perfilReal().bio.en)
+      expect(screen.getByText(p)).toBeInTheDocument()
     expect(screen.getByText(en.sobre.cards.busco.title)).toBeInTheDocument()
-    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(3)
+    // idiomas + educação + 3 cards
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(5)
+  })
+
+  it('lists languages with level and education', async () => {
+    renderWithIntl(await Sobre({ locale: 'pt' }))
+    expect(screen.getByRole('heading', { name: 'Idiomas' })).toBeInTheDocument()
+    expect(screen.getByText('Inglês')).toBeInTheDocument()
+    expect(screen.getByText('Intermediário')).toBeInTheDocument()
+    expect(screen.getByText('SENAC/RS')).toBeInTheDocument()
   })
 })
 
@@ -111,20 +121,33 @@ describe('Sobre activity card', () => {
       ano: 2026,
     })
     renderWithIntl(await Sobre({ locale: 'pt' }), { locale: 'pt' })
-    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(4)
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(6)
     expect(screen.getByText('5 dias seguidos')).toBeInTheDocument()
   })
 })
 
 describe('Skills', () => {
-  it('renders three groups with years, no progressbar, and learning marker', async () => {
-    const { container } = renderWithIntl(await Skills({ locale: 'pt' }))
+  it('renders three groups with years and no progressbar', async () => {
+    renderWithIntl(await Skills({ locale: 'pt' }))
     expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(3)
     expect(screen.getAllByText(/4 anos/).length).toBeGreaterThan(0)
     expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+  })
+
+  it('puts Python in backend', async () => {
+    renderWithIntl(await Skills({ locale: 'pt' }))
+    const backend = screen.getByRole('region', { name: 'Backend' })
+    expect(backend).toHaveTextContent('Python')
+  })
+
+  it('marks learning skills', async () => {
+    vi.mocked(content.getSkills).mockResolvedValue([
+      { nome: 'Go', categoria: 'backend', anos: 0, aprendendo: true },
+    ])
+    const { container } = renderWithIntl(await Skills({ locale: 'pt' }))
     const learning = container.querySelectorAll('[data-aprendendo]')
-    expect(learning.length).toBeGreaterThan(0)
-    expect(learning[0]).toHaveTextContent('aprendendo: Rust')
+    expect(learning).toHaveLength(1)
+    expect(learning[0]).toHaveTextContent('aprendendo: Go')
   })
 
   it('shows the repo count only when repos > 0', async () => {

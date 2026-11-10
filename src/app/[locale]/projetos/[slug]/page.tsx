@@ -54,22 +54,30 @@ export default async function ProjetoPage({
         >
           ← {t('back')}
         </Link>
-        <h1 className="font-heading text-4xl md:text-6xl">{projeto.nome}</h1>
+        <h1 className="font-heading text-4xl [overflow-wrap:anywhere] md:text-6xl">
+          {projeto.nome}
+        </h1>
         <p className="text-muted text-lg">{projeto.descricao[loc]}</p>
         <div className="flex flex-wrap gap-3">
-          <Button href={projeto.repoUrl} target="_blank" rel="noreferrer">
-            {t('repo')}
-          </Button>
           {projeto.demoUrl && (
             <Button
-              variant="secondary"
               href={projeto.demoUrl}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               {t('demo')}
+              <span className="sr-only">{` ${t('newTab')}`}</span>
             </Button>
           )}
+          <Button
+            variant={projeto.demoUrl ? 'secondary' : 'primary'}
+            href={projeto.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('repo')}
+            <span className="sr-only">{` ${t('newTab')}`}</span>
+          </Button>
         </div>
         <section aria-labelledby="stack-title">
           <h2 id="stack-title" className="font-heading text-xl">

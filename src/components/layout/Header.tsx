@@ -40,10 +40,20 @@ export function Header() {
       <div className="relative mx-auto flex h-16 w-full max-w-[1120px] items-center justify-between px-4">
         <a
           href={onHome ? '#' : `/${locale}`}
-          className="font-heading text-xl"
+          className="font-heading inline-flex items-center gap-2 text-xl"
           aria-label="jg."
         >
-          jg<span className="text-eye">.</span>
+          {/* eslint-disable-next-line @next/next/no-img-element -- animated GIF, no optimization needed */}
+          <img
+            src="/icone.gif"
+            alt=""
+            width={36}
+            height={36}
+            className="rounded-lg"
+          />
+          <span aria-hidden="true">
+            jg<span className="text-eye">.</span>
+          </span>
         </a>
         <nav aria-label={t('nav.label')} className="hidden md:block">
           <ul className="flex items-center gap-1">

@@ -10,7 +10,10 @@ export interface Perfil {
   links: { github: string; linkedin: string }
   /** Public paths, e.g. '/cv/joao-gabriel-pt.pdf' */
   cv: Partial<Record<Locale, string>>
-  bio: Localized
+  /** Paragraphs of the "Sobre mim" text. */
+  bio: Localized<string[]>
+  idiomas: { idioma: Localized; nivel: Localized }[]
+  educacao: { curso: Localized; instituicao: string }[]
 }
 
 export type SkillCategoria = 'frontend' | 'backend' | 'tools'

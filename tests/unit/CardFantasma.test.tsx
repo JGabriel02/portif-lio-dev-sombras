@@ -45,6 +45,28 @@ describe('CardFantasma', () => {
     ).not.toBeNull()
   })
 
+  it('shows labeled repo and app buttons that open in a new tab', () => {
+    renderWithIntl(<CardFantasma projeto={projeto} locale="pt" />)
+    const repo = screen.getByRole('link', {
+      name: /Ver repositório.*npc-forge.*(abre em nova aba)/,
+    })
+    const app = screen.getByRole('link', {
+      name: /Ver aplicação.*npc-forge.*(abre em nova aba)/,
+    })
+    expect(repo).toHaveAttribute('target', '_blank')
+    expect(app).toHaveAttribute('href', 'https://demo.example.com')
+    expect(app).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('hides the app button when there is no demo', () => {
+    renderWithIntl(
+      <CardFantasma projeto={{ ...projeto, demoUrl: undefined }} locale="en" />,
+      { locale: 'en' },
+    )
+    expect(screen.getByRole('link', { name: /View repository/ })).toBeVisible()
+    expect(screen.queryByRole('link', { name: /View app/ })).toBeNull()
+  })
+
   it('spans two columns when featured', () => {
     const { container } = renderWithIntl(
       <CardFantasma projeto={projeto} locale="pt" featured />,

@@ -11,7 +11,11 @@
     "toShiny": "Ativar modo shiny",
     "toDark": "Ativar modo sombra"
   },
-  "locale": { "label": "Idioma", "pt": "PT", "en": "EN" },
+  "locale": {
+    "label": "Idioma",
+    "pt": "PT",
+    "en": "EN"
+  },
   "skip": "Pular para o conteúdo",
   "hero": {
     "status": "aberto a vagas",
@@ -23,7 +27,7 @@
     "ctaCv": "CV"
   },
   "sobre": {
-    "title": "Sobre",
+    "title": "Sobre mim",
     "cards": {
       "faco": {
         "title": "O que faço",
@@ -44,7 +48,9 @@
       "total": "{count, plural, =0 {# contribuições} one {# contribuição} other {# contribuições}} em {ano}",
       "link": "Ver perfil no GitHub",
       "novaAba": "(abre em nova aba)"
-    }
+    },
+    "idiomas": "Idiomas",
+    "educacao": "Educação"
   },
   "skills": {
     "title": "Skills",
@@ -60,11 +66,12 @@
     "featured": "Destaque",
     "updated": "atualizado {when}",
     "viewAll": "Ver todos no GitHub",
-    "repo": "Repositório",
-    "demo": "Demo",
+    "repo": "Ver repositório",
+    "demo": "Ver aplicação",
     "learned": "O que aprendi",
     "stack": "Stack",
-    "back": "Voltar aos projetos"
+    "back": "Voltar aos projetos",
+    "newTab": "(abre em nova aba)"
   },
   "contato": {
     "title": "Contato",

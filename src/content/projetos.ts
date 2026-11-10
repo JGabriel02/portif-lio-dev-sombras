@@ -19,6 +19,7 @@ export const projetos: ProjetoCurado[] = [
       en: 'Domain modeling, parameter-driven generation and automated testing.',
     },
     stack: ['C#', '.NET'],
+    demoUrl: 'https://calm-mushroom-02327b90f.5.azurestaticapps.net/',
     imagens: [],
     fallback: { linguagem: 'C#', estrelas: 0, atualizadoEm: '2026-10-30' },
   },

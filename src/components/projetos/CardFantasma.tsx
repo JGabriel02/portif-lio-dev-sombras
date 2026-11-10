@@ -8,8 +8,8 @@ import type { Locale } from '@/i18n/routing'
 import { relativeTime } from '@/lib/relativeTime'
 import { Materializar } from './Materializar'
 
-const iconLink =
-  'text-muted hover:text-text relative z-10 inline-flex size-11 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-focus-ring'
+const actionLink =
+  'relative z-10 inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring'
 
 export function CardFantasma({
   projeto,
@@ -33,7 +33,7 @@ export function CardFantasma({
             {t('featured')}
           </Chip>
         )}
-        <h3 className="font-heading text-xl">
+        <h3 className="font-heading text-xl [overflow-wrap:anywhere]">
           <Link
             href={`/projetos/${projeto.slug}`}
             locale={locale}
@@ -45,7 +45,7 @@ export function CardFantasma({
         <p className="text-muted truncate text-base">
           {projeto.resumo[locale]}
         </p>
-        <div className="text-muted mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+        <div className="text-muted flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
           <span className="inline-flex items-center gap-2">
             <span
               aria-hidden="true"
@@ -60,28 +60,32 @@ export function CardFantasma({
               when: relativeTime(projeto.atualizadoEm, locale),
             })}
           </span>
-          <span className="ml-auto inline-flex">
+        </div>
+        <div className="mt-auto flex flex-wrap gap-2 pt-2">
+          <a
+            href={projeto.repoUrl}
+            className={`${actionLink} border-line text-text hover:bg-surface border`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Code aria-hidden="true" size={16} />
+            {t('repo')}
+            <span className="sr-only">{` ${projeto.nome} ${t('newTab')}`}</span>
+          </a>
+          {projeto.demoUrl && (
             <a
-              href={projeto.repoUrl}
-              aria-label={t('repo')}
-              className={iconLink}
+              href={projeto.demoUrl}
+              className={`${actionLink} bg-accent text-on-accent hover:bg-accent-hover`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              <Code aria-hidden="true" size={20} />
+              <ExternalLink aria-hidden="true" size={16} />
+              {t('demo')}
+              <span className="sr-only">
+                {` ${projeto.nome} ${t('newTab')}`}
+              </span>
             </a>
-            {projeto.demoUrl && (
-              <a
-                href={projeto.demoUrl}
-                aria-label={t('demo')}
-                className={iconLink}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <ExternalLink aria-hidden="true" size={20} />
-              </a>
-            )}
-          </span>
+          )}
         </div>
         <svg
           aria-hidden="true"

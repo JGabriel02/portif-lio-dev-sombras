@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import { routing, type Locale } from '@/i18n/routing'
 import { buildMetadata } from '@/lib/seo'
 import { Footer } from '@/components/layout/Footer'
+import { FundoSombra } from '@/components/layout/FundoSombra'
 import { Header } from '@/components/layout/Header'
 import { SkipLink } from '@/components/layout/SkipLink'
 import { themeScript } from '@/themes/theme-script'
@@ -33,12 +34,16 @@ export async function generateMetadata({
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) return {}
   const t = await getTranslations({ locale, namespace: 'meta' })
-  return buildMetadata({
-    locale: locale as Locale,
-    path: '',
-    title: t('title'),
-    description: t('description'),
-  })
+  return {
+    ...buildMetadata({
+      locale: locale as Locale,
+      path: '',
+      title: t('title'),
+      description: t('description'),
+    }),
+    // GIF desenhado pelo dono (anima no Firefox; outros navegadores mostram o 1º quadro).
+    icons: { icon: [{ url: '/icone.gif', type: 'image/gif' }] },
+  }
 }
 
 export default async function LocaleLayout({
@@ -62,6 +67,7 @@ export default async function LocaleLayout({
       </head>
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>
+          <FundoSombra />
           <SkipLink />
           <Header />
           {children}

@@ -96,6 +96,111 @@
   }
 }
 
+/* FundoSombra: fixed decorative fog + rising souls behind all content.
+   Under reduced motion the global rule above freezes every animation. */
+.fundo-sombra {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  --fundo-nevoa-opacidade: 0.4;
+  --fundo-alma-opacidade: 0.7;
+}
+
+[data-mode='shiny'] .fundo-sombra {
+  --fundo-nevoa-opacidade: 0.28;
+  --fundo-alma-opacidade: 0.5;
+}
+
+.fundo-nevoa {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: var(--fundo-nevoa-opacidade);
+  will-change: transform;
+}
+
+.fundo-nevoa-1 {
+  width: 46vmax;
+  height: 46vmax;
+  left: -12vmax;
+  top: -14vmax;
+  background: var(--accent);
+  animation: fundo-deriva-1 28s ease-in-out infinite;
+}
+
+.fundo-nevoa-2 {
+  width: 40vmax;
+  height: 40vmax;
+  right: -12vmax;
+  bottom: -14vmax;
+  background: var(--mascote-tip);
+  animation: fundo-deriva-2 34s ease-in-out infinite;
+}
+
+.fundo-nevoa-3 {
+  width: 28vmax;
+  height: 28vmax;
+  left: 40%;
+  top: 35%;
+  background: var(--mascote-body);
+  opacity: calc(var(--fundo-nevoa-opacidade) * 0.8);
+  animation: fundo-deriva-2 40s ease-in-out infinite reverse;
+}
+
+.fundo-alma {
+  position: absolute;
+  bottom: -8px;
+  border-radius: 50%;
+  background: var(--chip-text);
+  box-shadow: 0 0 8px var(--accent);
+  opacity: calc(var(--fundo-alma-opacidade) * 0.4);
+  animation: fundo-subir linear infinite;
+}
+
+.fundo-alma-rosa {
+  background: var(--mascote-tip);
+  box-shadow: 0 0 8px var(--eye);
+}
+
+@keyframes fundo-deriva-1 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(8vw, 6vh);
+  }
+}
+
+@keyframes fundo-deriva-2 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-9vw, -5vh);
+  }
+}
+
+@keyframes fundo-subir {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: var(--fundo-alma-opacidade);
+  }
+  85% {
+    opacity: var(--fundo-alma-opacidade);
+  }
+  100% {
+    transform: translateY(-105vh);
+    opacity: 0;
+  }
+}
+
 /* ModeToggle: show the icon/label of the mode the click switches to.
    Dark is the default (also when data-mode is absent). */
 [data-mode='shiny'] .mode-when-dark,

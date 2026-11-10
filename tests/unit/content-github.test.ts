@@ -33,7 +33,11 @@ const dias = CalendarSchema.parse(
   (w) => w.contributionDays,
 )
 
-const curado = projetos.find((p) => p.repo === 'npc-forge')!
+// Use a curated entry without a manual demoUrl so homepage rules are testable.
+const curado = {
+  ...projetos.find((p) => p.repo === 'npc-forge')!,
+  demoUrl: undefined,
+}
 const repoNpc = todos.find((r) => r.name === 'npc-forge') as Repo
 
 let warn: ReturnType<typeof vi.spyOn>

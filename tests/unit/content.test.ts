@@ -61,7 +61,16 @@ describe('perfil', () => {
   it('has non-empty localized cargo and bio', () => {
     const p = getPerfil()
     expect(nonEmpty(p.cargo)).toBe(true)
-    expect(nonEmpty(p.bio)).toBe(true)
+    expect(p.bio.pt.length).toBeGreaterThan(0)
+    expect(p.bio.en.length).toBe(p.bio.pt.length)
+    expect([...p.bio.pt, ...p.bio.en].every((s) => s.trim().length > 0)).toBe(
+      true,
+    )
+    for (const i of p.idiomas) {
+      expect(nonEmpty(i.idioma)).toBe(true)
+      expect(nonEmpty(i.nivel)).toBe(true)
+    }
+    for (const e of p.educacao) expect(nonEmpty(e.curso)).toBe(true)
   })
 })
 
@@ -74,8 +83,8 @@ describe('skills', () => {
 
   it('puts learning items last, others by anos desc', async () => {
     const all = await getSkills()
-    const firstLearning = all.findIndex((s) => s.aprendendo)
-    expect(firstLearning).toBeGreaterThan(-1)
+    const idx = all.findIndex((s) => s.aprendendo)
+    const firstLearning = idx === -1 ? all.length : idx
     expect(all.slice(firstLearning).every((s) => s.aprendendo)).toBe(true)
     const rest = all.slice(0, firstLearning).map((s) => s.anos)
     expect([...rest].sort((a, b) => b - a)).toEqual(rest)

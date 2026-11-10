@@ -15,9 +15,34 @@ export const perfil: Perfil = {
     pt: '/cv/joao-gabriel-pt.pdf',
     en: '/cv/joao-gabriel-en.pdf',
   },
-  // TODO(conteúdo): substituir pela bio real
+  // Texto do portfólio antigo (meu-portfolio), revisado para PT/EN.
   bio: {
-    pt: 'Desenvolvedor full stack que gosta de transformar problemas confusos em software simples de usar. Trabalho do banco de dados à interface, com atenção a desempenho, acessibilidade e código fácil de manter.',
-    en: 'Full stack developer who likes turning messy problems into software that is simple to use. I work from the database to the interface, with attention to performance, accessibility and maintainable code.',
+    pt: [
+      'Olá! Meu nome é João Gabriel, e sou um desenvolvedor apaixonado por tecnologia, aprendizado contínuo e soluções criativas. Transformo ideias em código e ajudo novos talentos a brilharem no mundo tech. Desenvolvo aplicações web e mobile e compartilho dicas e conteúdos sobre frontend nas redes sociais para quem quer se aventurar nesse vasto universo da tecnologia.',
+      'Sou de Alvorada/RS e apaixonado por games e futebol. Também gosto muito de tatuagens, e todas as minhas têm relação com o mundo geek. Meu Pokémon favorito é o Gengar e meu herói favorito é o Homem-Aranha. Adoro explorar lugares novos, principalmente os que têm comida boa, e minha comida favorita é um bom sushi.',
+    ],
+    en: [
+      "Hi! I'm João Gabriel, a developer who loves technology, continuous learning and creative solutions. I turn ideas into code and help new talent shine in tech. I build web and mobile applications and share frontend tips and content on social media for anyone who wants to explore this vast world of technology.",
+      "I'm from Alvorada, in southern Brazil, and I'm into games and football. I also love tattoos, and all of mine are geek-themed. My favorite Pokémon is Gengar and my favorite hero is Spider-Man. I enjoy exploring new places, especially ones with good food, and my favorite dish is a good sushi.",
+    ],
   },
+  idiomas: [
+    {
+      idioma: { pt: 'Português', en: 'Portuguese' },
+      nivel: { pt: 'Nativo', en: 'Native' },
+    },
+    {
+      idioma: { pt: 'Inglês', en: 'English' },
+      nivel: { pt: 'Intermediário', en: 'Intermediate' },
+    },
+  ],
+  educacao: [
+    {
+      curso: {
+        pt: 'Análise e Desenvolvimento de Sistemas (superior)',
+        en: 'Systems Analysis and Development (degree)',
+      },
+      instituicao: 'SENAC/RS',
+    },
+  ],
 }
