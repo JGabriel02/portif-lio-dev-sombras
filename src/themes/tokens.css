@@ -9,14 +9,15 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-on-accent: var(--on-accent);
-  --color-chip: var(--chip-bg);
+  --color-chip-bg: var(--chip-bg);
+  --color-chip-text: var(--chip-text);
   --color-eye: var(--eye);
   --color-mascote-body: var(--mascote-body);
   --color-mascote-tip: var(--mascote-tip);
   --color-focus-ring: var(--focus-ring);
 
-  --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 14px;
 
@@ -28,7 +29,11 @@
   --text-7xl: 56px;
 }
 
-/* text-chip uses --chip-text (the color namespace already holds --color-chip for bg-chip). */
+/* bg-chip / text-chip: explicit utilities, no generated color utility collides with them. */
+@utility bg-chip {
+  background-color: var(--chip-bg);
+}
+
 @utility text-chip {
   color: var(--chip-text);
 }
