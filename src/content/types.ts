@@ -10,8 +10,11 @@ export interface Perfil {
   links: { github: string; linkedin: string }
   /** Public paths, e.g. '/cv/joao-gabriel-pt.pdf' */
   cv: Partial<Record<Locale, string>>
-  /** Paragraphs of the "Sobre mim" text. */
-  bio: Localized<string[]>
+  /** Short professional intro: [before, highlighted, after]. */
+  intro: Localized<[string, string, string]>
+  /** Personal curiosities shown as chips ("Fora do código"). */
+  curiosidades: { emoji: string; texto: Localized }[]
+  cidade: string
   idiomas: { idioma: Localized; nivel: Localized }[]
   educacao: {
     curso: Localized

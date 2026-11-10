@@ -50,11 +50,15 @@
       "novaAba": "(abre em nova aba)"
     },
     "idiomas": "Idiomas",
-    "educacao": "Educação",
     "status": {
       "cursando": "cursando",
       "concluido": "concluído"
-    }
+    },
+    "foraDoCodigo": "Fora do código",
+    "formacao": "Formação",
+    "avatarAlt": "Desenho do João: um fantasma roxo de fone ouvindo música",
+    "estudando": "Ciência da Computação (cursando)",
+    "disponivel": "aberto a vagas"
   },
   "skills": {
     "title": "Skills",

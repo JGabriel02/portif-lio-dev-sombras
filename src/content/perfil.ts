@@ -14,17 +14,42 @@ export const perfil: Perfil = {
     pt: '/cv/joao-gabriel-pt.pdf',
     en: '/cv/joao-gabriel-en.pdf',
   },
-  // Texto do portfólio antigo (meu-portfolio), revisado para PT/EN.
-  bio: {
+  // Intro profissional (revisável). O destaque fica no meio da tupla.
+  intro: {
     pt: [
-      'Olá! Meu nome é João Gabriel, e sou um desenvolvedor apaixonado por tecnologia, aprendizado contínuo e soluções criativas. Transformo ideias em código e ajudo novos talentos a brilharem no mundo tech. Desenvolvo aplicações web e mobile e compartilho dicas e conteúdos sobre frontend nas redes sociais para quem quer se aventurar nesse vasto universo da tecnologia.',
-      'Sou de Alvorada/RS e apaixonado por games e futebol. Também gosto muito de tatuagens, e todas as minhas têm relação com o mundo geek. Meu Pokémon favorito é o Gengar e meu herói favorito é o Homem-Aranha. Adoro explorar lugares novos, principalmente os que têm comida boa, e minha comida favorita é um bom sushi.',
+      'Desenvolvedor Jr focado em ',
+      'Java, C# e APIs REST',
+      '. Transformo ideias em código, gosto de aprender todo dia e de ajudar quem está começando na área.',
     ],
     en: [
-      "Hi! I'm João Gabriel, a developer who loves technology, continuous learning and creative solutions. I turn ideas into code and help new talent shine in tech. I build web and mobile applications and share frontend tips and content on social media for anyone who wants to explore this vast world of technology.",
-      "I'm from Alvorada, in southern Brazil, and I'm into games and football. I also love tattoos, and all of mine are geek-themed. My favorite Pokémon is Gengar and my favorite hero is Spider-Man. I enjoy exploring new places, especially ones with good food, and my favorite dish is a good sushi.",
+      'Junior developer focused on ',
+      'Java, C# and REST APIs',
+      '. I turn ideas into code, love learning every day and enjoy helping people who are just starting out in tech.',
     ],
   },
+  cidade: 'Alvorada/RS',
+  // Do portfólio antigo, em formato de figurinhas.
+  curiosidades: [
+    { emoji: '🎮', texto: { pt: 'Games', en: 'Games' } },
+    { emoji: '⚽', texto: { pt: 'Futebol', en: 'Football' } },
+    { emoji: '🖋️', texto: { pt: 'Tatuagens geek', en: 'Geek tattoos' } },
+    {
+      emoji: '👻',
+      texto: { pt: 'Pokémon favorito: Gengar', en: 'Favorite Pokémon: Gengar' },
+    },
+    {
+      emoji: '🕷️',
+      texto: {
+        pt: 'Herói favorito: Homem-Aranha',
+        en: 'Favorite hero: Spider-Man',
+      },
+    },
+    { emoji: '🍣', texto: { pt: 'Sushi', en: 'Sushi' } },
+    {
+      emoji: '🧭',
+      texto: { pt: 'Explorar lugares novos', en: 'Exploring new places' },
+    },
+  ],
   idiomas: [
     {
       idioma: { pt: 'Português', en: 'Portuguese' },

@@ -95,13 +95,35 @@ describe('Hero', () => {
 })
 
 describe('Sobre', () => {
-  it('renders every bio paragraph for the locale and the three cards', async () => {
+  it('renders the intro with highlight, quick facts, avatar and the three cards', async () => {
     renderWithIntl(await Sobre({ locale: 'en' }), { locale: 'en' })
-    for (const p of perfilReal().bio.en)
-      expect(screen.getByText(p)).toBeInTheDocument()
+    const [, destaque] = perfilReal().intro.en
+    expect(screen.getByText(destaque)).toHaveClass('text-accent')
+    expect(screen.getByText('Alvorada/RS')).toBeInTheDocument()
+    expect(
+      screen.getByText('Computer Science (in progress)'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('img', { name: en.sobre.avatarAlt }),
+    ).toHaveAttribute('src', '/icone.gif')
     expect(screen.getByText(en.sobre.cards.busco.title)).toBeInTheDocument()
-    // idiomas + educação + 3 cards
-    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(5)
+    // fora do código + formação + idiomas + 3 cards
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(6)
+  })
+
+  it('shows every curiosity as a chip', async () => {
+    renderWithIntl(await Sobre({ locale: 'pt' }))
+    for (const c of perfilReal().curiosidades)
+      expect(screen.getByText(c.texto.pt)).toBeInTheDocument()
+  })
+
+  it('hides "open to work" when not available', async () => {
+    vi.mocked(content.getPerfil).mockReturnValue({
+      ...perfilReal(),
+      disponivel: false,
+    })
+    renderWithIntl(await Sobre({ locale: 'pt' }))
+    expect(screen.queryByText('aberto a vagas')).toBeNull()
   })
 
   it('lists languages with level and education', async () => {
@@ -109,7 +131,7 @@ describe('Sobre', () => {
     expect(screen.getByRole('heading', { name: 'Idiomas' })).toBeInTheDocument()
     expect(screen.getByText('Inglês')).toBeInTheDocument()
     expect(screen.getByText('Intermediário')).toBeInTheDocument()
-    expect(screen.getAllByText('SENAC/RS')).toHaveLength(2)
+    expect(screen.getAllByText(/^SENAC\/RS/)).toHaveLength(2)
     expect(
       screen.getByText('Bacharelado em Ciência da Computação'),
     ).toBeInTheDocument()
@@ -126,7 +148,7 @@ describe('Sobre activity card', () => {
       ano: 2026,
     })
     renderWithIntl(await Sobre({ locale: 'pt' }), { locale: 'pt' })
-    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(6)
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(7)
     expect(screen.getByText('5 dias seguidos')).toBeInTheDocument()
   })
 })

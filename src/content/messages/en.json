@@ -50,11 +50,15 @@
       "novaAba": "(opens in a new tab)"
     },
     "idiomas": "Languages",
-    "educacao": "Education",
     "status": {
       "cursando": "in progress",
       "concluido": "completed"
-    }
+    },
+    "foraDoCodigo": "Outside of code",
+    "formacao": "Education",
+    "avatarAlt": "João’s drawing: a purple ghost with headphones listening to music",
+    "estudando": "Computer Science (in progress)",
+    "disponivel": "open to work"
   },
   "skills": {
     "title": "Skills",

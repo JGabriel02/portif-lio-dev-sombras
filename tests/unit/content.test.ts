@@ -58,14 +58,19 @@ describe('projetos', () => {
 })
 
 describe('perfil', () => {
-  it('has non-empty localized cargo and bio', () => {
+  it('has non-empty localized cargo, intro and curiosities', () => {
     const p = getPerfil()
     expect(nonEmpty(p.cargo)).toBe(true)
-    expect(p.bio.pt.length).toBeGreaterThan(0)
-    expect(p.bio.en.length).toBe(p.bio.pt.length)
-    expect([...p.bio.pt, ...p.bio.en].every((s) => s.trim().length > 0)).toBe(
-      true,
-    )
+    for (const parts of [p.intro.pt, p.intro.en]) {
+      expect(parts).toHaveLength(3)
+      expect(parts[1].trim().length).toBeGreaterThan(0)
+    }
+    expect(p.cidade.trim().length).toBeGreaterThan(0)
+    expect(p.curiosidades.length).toBeGreaterThan(0)
+    for (const c of p.curiosidades) {
+      expect(c.emoji.trim().length).toBeGreaterThan(0)
+      expect(nonEmpty(c.texto)).toBe(true)
+    }
     for (const i of p.idiomas) {
       expect(nonEmpty(i.idioma)).toBe(true)
       expect(nonEmpty(i.nivel)).toBe(true)
