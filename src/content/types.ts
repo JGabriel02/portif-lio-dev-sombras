@@ -16,8 +16,8 @@ export interface Perfil {
   educacao: {
     curso: Localized
     instituicao?: string
-    /** Shown as a "cursando / in progress" badge. */
-    emAndamento?: boolean
+    /** Shown as a badge: "cursando" / "concluído". */
+    status?: 'cursando' | 'concluido'
   }[]
 }
 

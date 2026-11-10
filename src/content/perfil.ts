@@ -41,7 +41,8 @@ export const perfil: Perfil = {
         pt: 'Bacharelado em Ciência da Computação',
         en: "Bachelor's in Computer Science",
       },
-      emAndamento: true,
+      instituicao: 'SENAC/RS',
+      status: 'cursando',
     },
     {
       curso: {
@@ -49,6 +50,7 @@ export const perfil: Perfil = {
         en: 'Systems Analysis and Development (degree)',
       },
       instituicao: 'SENAC/RS',
+      status: 'concluido',
     },
   ],
 }

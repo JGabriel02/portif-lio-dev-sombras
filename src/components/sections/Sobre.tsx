@@ -55,9 +55,9 @@ export async function Sobre({ locale }: { locale: Locale }) {
                 <li key={e.curso.pt}>
                   <p className="flex flex-wrap items-center gap-2">
                     {e.curso[locale]}
-                    {e.emAndamento && (
+                    {e.status && (
                       <span className="bg-chip text-chip rounded-full px-3 py-0.5 text-sm">
-                        {t('emAndamento')}
+                        {t(`status.${e.status}`)}
                       </span>
                     )}
                   </p>

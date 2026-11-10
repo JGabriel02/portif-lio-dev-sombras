@@ -51,7 +51,10 @@
     },
     "idiomas": "Idiomas",
     "educacao": "Educação",
-    "emAndamento": "cursando"
+    "status": {
+      "cursando": "cursando",
+      "concluido": "concluído"
+    }
   },
   "skills": {
     "title": "Skills",
