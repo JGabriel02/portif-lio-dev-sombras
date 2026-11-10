@@ -39,9 +39,9 @@ export function getProjeto(slug: string): Projeto | undefined {
 /** Public path of the CV for the locale, only if the file exists in public/. */
 export function cvDisponivel(
   locale: Locale,
-  root: string = path.join(process.cwd(), 'public'),
+  root: string = path.join(/*turbopackIgnore: true*/ process.cwd(), 'public'),
 ): string | null {
   const p = perfil.cv[locale]
   if (!p) return null
-  return fs.existsSync(path.join(root, p)) ? p : null
+  return fs.existsSync(/*turbopackIgnore: true*/ path.join(root, p)) ? p : null
 }
