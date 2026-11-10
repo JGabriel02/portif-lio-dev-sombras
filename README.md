@@ -37,6 +37,20 @@ Em ambientes sem `pnpm` no PATH, use `corepack pnpm <comando>`.
 Na primeira vez, instale o navegador do Playwright:
 `pnpm exec playwright install chromium`.
 
+## Deploy na Vercel
+
+Configure as variáveis de ambiente do projeto:
+
+- `NEXT_PUBLIC_SITE_URL`: origem pública com `https://` (ex.: `https://seu-dominio.dev`).
+  Usada em canonical, hreflang, sitemap, JSON-LD e Open Graph. Se omitida, o site usa
+  `VERCEL_PROJECT_PRODUCTION_URL`, depois `VERCEL_URL` e, por fim, `http://localhost:3000`.
+- `NEXT_PUBLIC_CONTATO_ATIVO`: `true` para exibir o formulário de contato. Enquanto não
+  for `true`, em produção (`VERCEL_ENV=production`) a seção Contato mostra apenas
+  e-mail, LinkedIn e GitHub com um aviso de que o formulário chega em breve.
+  Ative somente quando o envio real existir (hoje a Server Action não envia nada).
+
+Veja `.env.example`.
+
 ## Como adicionar um tema
 
 O tema atual é `sombra`. Para criar outro (por exemplo `aurora`):
