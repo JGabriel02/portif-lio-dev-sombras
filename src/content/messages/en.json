@@ -22,7 +22,7 @@
     "greeting": "Hi, I'm João.",
     "tagline": "I show up where there's a",
     "highlight": "bug to squash.",
-    "subtitle": "Full stack developer · TypeScript, React, Next.js and Node",
+    "subtitle": "Junior Developer | Java | C# | REST APIs | SQL | Git",
     "ctaProjects": "View projects",
     "ctaCv": "Résumé"
   },
@@ -50,7 +50,8 @@
       "novaAba": "(opens in a new tab)"
     },
     "idiomas": "Languages",
-    "educacao": "Education"
+    "educacao": "Education",
+    "emAndamento": "in progress"
   },
   "skills": {
     "title": "Skills",

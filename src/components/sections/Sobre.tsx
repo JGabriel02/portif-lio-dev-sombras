@@ -53,8 +53,17 @@ export async function Sobre({ locale }: { locale: Locale }) {
             <ul className="mt-3 flex flex-col gap-2">
               {educacao.map((e) => (
                 <li key={e.curso.pt}>
-                  <p>{e.curso[locale]}</p>
-                  <p className="text-muted text-sm">{e.instituicao}</p>
+                  <p className="flex flex-wrap items-center gap-2">
+                    {e.curso[locale]}
+                    {e.emAndamento && (
+                      <span className="bg-chip text-chip rounded-full px-3 py-0.5 text-sm">
+                        {t('emAndamento')}
+                      </span>
+                    )}
+                  </p>
+                  {e.instituicao && (
+                    <p className="text-muted text-sm">{e.instituicao}</p>
+                  )}
                 </li>
               ))}
             </ul>

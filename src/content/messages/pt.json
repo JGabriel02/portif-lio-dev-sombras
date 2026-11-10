@@ -22,7 +22,7 @@
     "greeting": "Oi, sou o João.",
     "tagline": "Eu apareço onde tem",
     "highlight": "bug pra resolver.",
-    "subtitle": "Desenvolvedor full stack · TypeScript, React, Next.js e Node",
+    "subtitle": "Desenvolvedor Jr | Java | C# | APIs REST | SQL | Git",
     "ctaProjects": "Ver projetos",
     "ctaCv": "CV"
   },
@@ -50,7 +50,8 @@
       "novaAba": "(abre em nova aba)"
     },
     "idiomas": "Idiomas",
-    "educacao": "Educação"
+    "educacao": "Educação",
+    "emAndamento": "cursando"
   },
   "skills": {
     "title": "Skills",

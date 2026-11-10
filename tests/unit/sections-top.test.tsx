@@ -110,6 +110,10 @@ describe('Sobre', () => {
     expect(screen.getByText('Inglês')).toBeInTheDocument()
     expect(screen.getByText('Intermediário')).toBeInTheDocument()
     expect(screen.getByText('SENAC/RS')).toBeInTheDocument()
+    expect(
+      screen.getByText('Bacharelado em Ciência da Computação'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('cursando')).toBeInTheDocument()
   })
 })
 

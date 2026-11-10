@@ -4,8 +4,7 @@ export const perfil: Perfil = {
   nome: 'João Gabriel',
   cargo: { pt: 'Desenvolvedor full stack', en: 'Full stack developer' },
   disponivel: true,
-  // TODO(conteúdo): substituir pelo e-mail real
-  email: 'contato@exemplo.com',
+  email: 'joaogabrielrocha.dev@gmail.com',
   links: {
     github: 'https://github.com/JGabriel02',
     // TODO(conteúdo): substituir pelo link real
@@ -37,6 +36,13 @@ export const perfil: Perfil = {
     },
   ],
   educacao: [
+    {
+      curso: {
+        pt: 'Bacharelado em Ciência da Computação',
+        en: "Bachelor's in Computer Science",
+      },
+      emAndamento: true,
+    },
     {
       curso: {
         pt: 'Análise e Desenvolvimento de Sistemas (superior)',

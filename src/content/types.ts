@@ -13,7 +13,12 @@ export interface Perfil {
   /** Paragraphs of the "Sobre mim" text. */
   bio: Localized<string[]>
   idiomas: { idioma: Localized; nivel: Localized }[]
-  educacao: { curso: Localized; instituicao: string }[]
+  educacao: {
+    curso: Localized
+    instituicao?: string
+    /** Shown as a "cursando / in progress" badge. */
+    emAndamento?: boolean
+  }[]
 }
 
 export type SkillCategoria = 'frontend' | 'backend' | 'tools'

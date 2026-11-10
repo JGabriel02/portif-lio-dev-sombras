@@ -104,12 +104,12 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  --fundo-nevoa-opacidade: 0.4;
+  --fundo-nevoa-opacidade: 0.22;
   --fundo-alma-opacidade: 0.7;
 }
 
 [data-mode='shiny'] .fundo-sombra {
-  --fundo-nevoa-opacidade: 0.28;
+  --fundo-nevoa-opacidade: 0.1;
   --fundo-alma-opacidade: 0.5;
 }
 
