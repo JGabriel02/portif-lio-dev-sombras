@@ -9,12 +9,12 @@ const GRUPOS: SkillCategoria[] = ['frontend', 'backend', 'tools']
 
 export async function Skills({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'skills' })
-  const porGrupo = await Promise.all(GRUPOS.map((g) => getSkills(g)))
+  const todas = await getSkills()
 
   return (
     <Section id="skills" titleId="skills-title" title={t('title')}>
       <div className="grid gap-4 md:grid-cols-3">
-        {GRUPOS.map((grupo, i) => (
+        {GRUPOS.map((grupo) => (
           <Card
             key={grupo}
             as="section"
@@ -25,28 +25,31 @@ export async function Skills({ locale }: { locale: Locale }) {
               {t(grupo)}
             </h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {porGrupo[i].map((s) => (
-                <li
-                  key={s.nome}
-                  data-aprendendo={s.aprendendo ? '' : undefined}
-                  className={`flex items-center justify-between gap-3 rounded-full px-4 py-2 text-base ${
-                    s.aprendendo
-                      ? 'border-line text-muted border border-dashed'
-                      : 'bg-surface-raised'
-                  }`}
-                >
-                  <span className="font-medium">{s.nome}</span>
-                  {s.aprendendo ? (
-                    <Chip>{t('learning', { name: s.nome })}</Chip>
-                  ) : (
-                    <span className="text-muted text-sm">
-                      {t('years', { count: s.anos })}
-                      {s.repos !== undefined &&
-                        ` · ${t('repos', { count: s.repos })}`}
-                    </span>
-                  )}
-                </li>
-              ))}
+              {todas
+                .filter((s) => s.categoria === grupo)
+                .map((s) => (
+                  <li
+                    key={s.nome}
+                    data-aprendendo={s.aprendendo ? '' : undefined}
+                    className={`flex items-center justify-between gap-3 rounded-full px-4 py-2 text-base ${
+                      s.aprendendo
+                        ? 'border-line text-muted border border-dashed'
+                        : 'bg-surface-raised'
+                    }`}
+                  >
+                    <span className="font-medium">{s.nome}</span>
+                    {s.aprendendo ? (
+                      <Chip>{t('learning', { name: s.nome })}</Chip>
+                    ) : (
+                      <span className="text-muted text-sm">
+                        {t('years', { count: s.anos })}
+                        {s.repos !== undefined &&
+                          s.repos > 0 &&
+                          ` · ${t('repos', { count: s.repos })}`}
+                      </span>
+                    )}
+                  </li>
+                ))}
             </ul>
           </Card>
         ))}

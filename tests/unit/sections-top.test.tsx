@@ -32,14 +32,17 @@ vi.mock('@/content', async (importOriginal) => {
   return {
     ...actual,
     getPerfil: vi.fn(actual.getPerfil),
+    getSkills: vi.fn(actual.getSkills),
     cvDisponivel: vi.fn(),
   }
 })
 
 const perfilReal = vi.mocked(content.getPerfil).getMockImplementation()!
+const skillsReal = vi.mocked(content.getSkills).getMockImplementation()!
 
 beforeEach(() => {
   vi.mocked(content.getPerfil).mockImplementation(perfilReal)
+  vi.mocked(content.getSkills).mockImplementation(skillsReal)
   vi.mocked(content.cvDisponivel).mockReturnValue(null)
 })
 
@@ -108,6 +111,18 @@ describe('Skills', () => {
     const learning = container.querySelectorAll('[data-aprendendo]')
     expect(learning.length).toBeGreaterThan(0)
     expect(learning[0]).toHaveTextContent('aprendendo: Rust')
+  })
+
+  it('shows the repo count only when repos > 0', async () => {
+    const base = { categoria: 'frontend', anos: 3 } as const
+    vi.mocked(content.getSkills).mockResolvedValue([
+      { ...base, nome: 'A', repos: 2 },
+      { ...base, nome: 'B', repos: undefined },
+      { ...base, nome: 'C', repos: 0 },
+    ])
+    renderWithIntl(await Skills({ locale: 'pt' }))
+    expect(screen.getAllByText(/repositório/)).toHaveLength(1)
+    expect(screen.getByText(/2 repositórios/)).toBeInTheDocument()
   })
 
   it('uses English plurals', async () => {

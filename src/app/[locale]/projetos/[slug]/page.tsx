@@ -10,6 +10,8 @@ import { Link } from '@/i18n/navigation'
 import { routing, type Locale } from '@/i18n/routing'
 import { buildMetadata } from '@/lib/seo'
 
+export const revalidate = 3600
+
 export async function generateStaticParams() {
   const projetos = await getProjetos()
   return routing.locales.flatMap((locale) =>
