@@ -14,6 +14,7 @@ export const perfil: Perfil = {
   },
   cv: {
     pt: '/cv/joao-gabriel-pt.pdf',
+    en: '/cv/joao-gabriel-en.pdf',
   },
   // TODO(conteúdo): substituir pela bio real
   bio: {

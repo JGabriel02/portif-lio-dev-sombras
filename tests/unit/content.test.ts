@@ -1,6 +1,7 @@
 import fs from 'node:fs'
+import os from 'node:os'
 import path from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import {
   cvDisponivel,
   getPerfil,
@@ -72,21 +73,21 @@ describe('skills', () => {
 })
 
 describe('cvDisponivel', () => {
-  const file = path.join(process.cwd(), 'public', 'cv', 'joao-gabriel-pt.pdf')
+  let root: string
+  beforeEach(() => {
+    root = fs.mkdtempSync(path.join(os.tmpdir(), 'cv-'))
+    fs.mkdirSync(path.join(root, 'cv'))
+  })
   afterEach(() => {
-    fs.rmSync(file, { force: true })
+    fs.rmSync(root, { recursive: true, force: true })
   })
 
-  it('is null when the file is absent', () => {
-    expect(cvDisponivel('pt')).toBeNull()
-  })
-
-  it('returns the path when the file exists', () => {
-    fs.writeFileSync(file, '%PDF-1.4')
-    expect(cvDisponivel('pt')).toBe('/cv/joao-gabriel-pt.pdf')
-  })
-
-  it('is null for a locale with no cv configured', () => {
-    expect(cvDisponivel('en')).toBeNull()
+  it.each([
+    ['pt', '/cv/joao-gabriel-pt.pdf'],
+    ['en', '/cv/joao-gabriel-en.pdf'],
+  ] as const)('%s: null when absent, path when present', (locale, p) => {
+    expect(cvDisponivel(locale, root)).toBeNull()
+    fs.writeFileSync(path.join(root, p), '%PDF-1.4')
+    expect(cvDisponivel(locale, root)).toBe(p)
   })
 })
