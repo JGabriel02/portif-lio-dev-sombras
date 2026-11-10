@@ -34,3 +34,7 @@
     scroll-behavior: auto !important;
   }
 }
+
+.site-header[data-scrolled='true'] {
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+}

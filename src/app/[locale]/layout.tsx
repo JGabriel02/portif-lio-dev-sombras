@@ -4,6 +4,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
+import { Footer } from '@/components/layout/Footer'
+import { Header } from '@/components/layout/Header'
+import { SkipLink } from '@/components/layout/SkipLink'
 import { themeScript } from '@/themes/theme-script'
 import '../globals.css'
 
@@ -51,7 +54,12 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="flex min-h-full flex-col">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <SkipLink />
+          <Header />
+          {children}
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   )

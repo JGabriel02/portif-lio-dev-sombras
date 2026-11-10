@@ -4,7 +4,8 @@
     "skills": "Skills",
     "projetos": "Projetos",
     "contato": "Contato",
-    "menu": "Menu"
+    "menu": "Menu",
+    "label": "Principal"
   },
   "mode": {
     "toShiny": "Ativar modo shiny",
