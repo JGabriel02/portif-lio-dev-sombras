@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { MobileMenu } from '@/components/layout/MobileMenu'
@@ -10,6 +10,13 @@ const links = [
 ]
 
 describe('MobileMenu', () => {
+  it('wraps the links in a labelled nav landmark', async () => {
+    renderWithIntl(<MobileMenu links={links} label="Menu" />)
+    await userEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    const nav = screen.getByRole('navigation', { name: 'Principal' })
+    expect(within(nav).getByRole('link', { name: 'Sobre' })).toBeInTheDocument()
+  })
+
   it('toggles aria-expanded on click', async () => {
     renderWithIntl(<MobileMenu links={links} label="Menu" />)
     const button = screen.getByRole('button', { name: 'Menu' })

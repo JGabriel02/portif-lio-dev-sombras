@@ -9,8 +9,8 @@ const pairs: [fg: TokenName, bg: TokenName, min: number][] = [
   ['text-muted', 'surface', 4.5],
   ['on-accent', 'accent', 4.5],
   ['chip-text', 'chip-bg', 4.5],
-  ['accent', 'bg', 3],
-  ['accent', 'surface', 3],
+  ['accent', 'bg', 4.5],
+  ['accent', 'surface', 4.5],
   ['focus-ring', 'bg', 3],
   ['eye', 'bg', 3],
 ]

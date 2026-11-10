@@ -19,9 +19,9 @@ describe('buildMetadata', () => {
 
   it('maps openGraph locale', () => {
     expect(m.openGraph?.locale).toBe('en_US')
-    expect(
-      buildMetadata({ locale: 'pt', path: '' }).openGraph?.locale,
-    ).toBe('pt_BR')
+    expect(buildMetadata({ locale: 'pt', path: '' }).openGraph?.locale).toBe(
+      'pt_BR',
+    )
   })
 
   it('uses given title and description', () => {
@@ -105,7 +105,9 @@ describe('buildMetadata home', () => {
     expect(m.alternates?.canonical).toBe(`${SITE_URL}/pt`)
     expect(langs.en).toBe(`${SITE_URL}/en`)
     expect(SITE_URL.endsWith('/')).toBe(false)
-    expect(String(m.alternates?.canonical).replace('://', '')).not.toContain('//')
+    expect(String(m.alternates?.canonical).replace('://', '')).not.toContain(
+      '//',
+    )
   })
 })
 

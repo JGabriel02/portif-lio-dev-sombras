@@ -1,6 +1,7 @@
 'use client'
 
 import { Menu, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 
 type MobileMenuProps = {
@@ -13,6 +14,7 @@ export function MobileMenu({ links, label, children }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const panelId = useId()
+  const t = useTranslations('nav')
 
   useEffect(() => {
     if (!open) return
@@ -46,19 +48,21 @@ export function MobileMenu({ links, label, children }: MobileMenuProps) {
         hidden={!open}
         className="bg-bg border-line absolute inset-x-0 top-full border-b px-4 py-4"
       >
-        <ul className="flex flex-col gap-1">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="hover:bg-surface-raised rounded-card flex min-h-11 items-center px-3"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <nav aria-label={t('label')}>
+          <ul className="flex flex-col gap-1">
+            {links.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="hover:bg-surface-raised rounded-card flex min-h-11 items-center px-3"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
         {children ? (
           <div className="mt-3 flex items-center gap-2">{children}</div>
         ) : null}
