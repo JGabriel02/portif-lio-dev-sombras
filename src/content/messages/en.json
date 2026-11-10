@@ -23,7 +23,6 @@
   },
   "sobre": {
     "title": "About",
-    "body": "Full stack developer who likes turning messy problems into software that is simple to use. I work from the database to the interface, with attention to performance, accessibility and maintainable code.",
     "cards": {
       "faco": {
         "title": "What I do",

@@ -23,7 +23,6 @@
   },
   "sobre": {
     "title": "Sobre",
-    "body": "Desenvolvedor full stack que gosta de transformar problemas confusos em software simples de usar. Trabalho do banco de dados à interface, com atenção a desempenho, acessibilidade e código fácil de manter.",
     "cards": {
       "faco": {
         "title": "O que faço",
