@@ -68,6 +68,14 @@ for (const locale of locales) {
         await page.goto(`/${locale}`)
         await page.waitForLoadState('load')
         await expect(page.locator('html')).toHaveAttribute('data-mode', mode)
+        // The paint observer may not have fired yet at `load` in headless.
+        await expect
+          .poll(() =>
+            page.evaluate(
+              () => (window as unknown as { __paintMode?: string }).__paintMode,
+            ),
+          )
+          .toBe(mode)
         const result = await page.evaluate(() => {
           const w = window as unknown as {
             __modes: string[]

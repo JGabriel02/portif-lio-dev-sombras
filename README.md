@@ -105,6 +105,14 @@ considerados.
 GITHUB_TOKEN=... corepack pnpm test:contract
 ```
 
+No PowerShell:
+
+```powershell
+$env:GITHUB_TOKEN='seu_token'; corepack pnpm test:contract
+```
+
+O Vitest não carrega o `.env.local`; exporte a variável no shell como acima.
+
 ## Como adicionar um tema
 
 O tema atual é `sombra`. Para criar outro (por exemplo `aurora`):

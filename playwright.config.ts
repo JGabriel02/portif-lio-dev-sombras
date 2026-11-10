@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: 'tests/e2e',
+  retries: process.env.CI ? 1 : 0,
   webServer: {
     command: 'corepack pnpm build && corepack pnpm start',
     port: 3000,
