@@ -70,6 +70,7 @@
     "success": "Mensagem recebida",
     "error": "Não foi possível enviar agora.",
     "fallback": "Tente pelo e-mail.",
+    "formIndisponivel": "O formulário chega em breve — me escreva por e-mail ou LinkedIn.",
     "errors": {
       "nameRequired": "Informe seu nome.",
       "emailInvalid": "Informe um e-mail válido.",

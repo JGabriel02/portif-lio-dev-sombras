@@ -12,7 +12,10 @@ const valid = {
   mensagem: 'uma mensagem longa',
 }
 
-afterEach(() => vi.restoreAllMocks())
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.unstubAllEnvs()
+})
 
 describe('enviarContato', () => {
   it('returns ok silently when the honeypot is filled', async () => {
@@ -42,9 +45,24 @@ describe('enviarContato', () => {
     const r = await enviarContato({ status: 'idle' }, fd(valid))
     expect(r).toEqual({ status: 'ok' })
     expect(info).toHaveBeenCalledWith('[contato] dev only, not sent', {
-      nome: 'Ana',
-      email: 'ana@exemplo.com',
       length: valid.mensagem.length,
     })
+    expect(JSON.stringify(info.mock.calls)).not.toContain('Ana')
+    expect(JSON.stringify(info.mock.calls)).not.toContain('ana@exemplo.com')
+  })
+
+  it('does not log in production', async () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    const info = vi.spyOn(console, 'info').mockImplementation(() => {})
+    const r = await enviarContato({ status: 'idle' }, fd(valid))
+    expect(r).toEqual({ status: 'ok' })
+    expect(info).not.toHaveBeenCalled()
+  })
+
+  it('refuses when the form is disabled in production', async () => {
+    vi.stubEnv('VERCEL_ENV', 'production')
+    vi.stubEnv('NEXT_PUBLIC_CONTATO_ATIVO', '')
+    const r = await enviarContato({ status: 'idle' }, fd(valid))
+    expect(r).toEqual({ status: 'error' })
   })
 })

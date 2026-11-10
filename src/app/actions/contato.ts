@@ -5,6 +5,7 @@ import {
   type ContatoField,
   type ContatoState,
 } from '@/lib/schemas/contato'
+import { contatoFormAtivo } from '@/lib/contato-flag'
 
 function text(formData: FormData, key: string): string {
   const v = formData.get(key)
@@ -16,6 +17,7 @@ export async function enviarContato(
   formData: FormData,
 ): Promise<ContatoState> {
   try {
+    if (!contatoFormAtivo()) return { status: 'error' }
     if (text(formData, 'site') !== '') return { status: 'ok' }
 
     const values = {
@@ -38,12 +40,11 @@ export async function enviarContato(
       return { status: 'invalid', fieldErrors, values }
     }
 
-    const { nome, email, mensagem } = parsed.data
-    console.info('[contato] dev only, not sent', {
-      nome,
-      email,
-      length: mensagem.length,
-    })
+    if (process.env.NODE_ENV !== 'production') {
+      console.info('[contato] dev only, not sent', {
+        length: parsed.data.mensagem.length,
+      })
+    }
     return { status: 'ok' }
   } catch {
     return { status: 'error' }

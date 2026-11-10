@@ -69,6 +69,7 @@
     "sending": "Sending...",
     "success": "Message received",
     "error": "Could not send right now.",
+    "formIndisponivel": "The form is coming soon — email me or reach out on LinkedIn.",
     "fallback": "Try email instead.",
     "errors": {
       "nameRequired": "Enter your name.",
