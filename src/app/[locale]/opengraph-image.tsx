@@ -1,8 +1,8 @@
 import { ImageResponse } from 'next/og'
 import { readFile } from 'node:fs/promises'
-import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { getPerfil } from '@/content'
-import type { Locale } from '@/i18n/routing'
+import { routing, type Locale } from '@/i18n/routing'
 import { sombra } from '@/themes/palette'
 
 export const alt = 'João Gabriel'
@@ -12,17 +12,12 @@ export const contentType = 'image/png'
 const BODY =
   'M110 22 L122 52 L150 18 L148 58 L186 40 L166 78 L200 82 L170 104 L196 128 L162 126 L176 170 L146 146 L138 186 L118 156 L104 190 L94 154 L72 182 L70 144 L38 166 L52 126 L18 128 L46 104 L16 82 L52 78 L32 40 L70 58 L68 18 L96 50 Z'
 
-async function font(file: string): Promise<Buffer> {
-  return readFile(
-    path.join(
-      /*turbopackIgnore: true*/ process.cwd(),
-      'src',
-      'app',
-      '[locale]',
-      '_og',
-      file,
-    ),
-  )
+function font(file: string): Promise<Buffer> {
+  return readFile(fileURLToPath(new URL(`./_og/${file}`, import.meta.url)))
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
 }
 
 export default async function Image({

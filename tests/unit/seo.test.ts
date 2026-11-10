@@ -36,6 +36,17 @@ describe('buildMetadata', () => {
   })
 })
 
+describe('buildMetadata home', () => {
+  it('has no double slashes for path empty', () => {
+    const m = buildMetadata({ locale: 'pt', path: '' })
+    const langs = m.alternates?.languages as Record<string, string>
+    expect(m.alternates?.canonical).toBe(`${SITE_URL}/pt`)
+    expect(langs.en).toBe(`${SITE_URL}/en`)
+    expect(SITE_URL.endsWith('/')).toBe(false)
+    expect(String(m.alternates?.canonical).replace('://', '')).not.toContain('//')
+  })
+})
+
 describe('sitemap', () => {
   it('lists both locale URLs for home and every project', () => {
     const urls = sitemap().map((e) => e.url)
