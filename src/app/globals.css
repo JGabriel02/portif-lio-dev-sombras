@@ -58,3 +58,17 @@
     animation: none;
   }
 }
+
+/* Materializar: hidden state only with JS and when motion is allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-materializar] {
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  .js [data-materializar]:not([data-visivel]):not(:hover):not(:focus-within) {
+    opacity: 0.35;
+    transform: translateY(6px);
+  }
+}
