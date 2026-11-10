@@ -53,6 +53,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       data-theme="sombra"
+      data-mode="dark"
       suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
     >

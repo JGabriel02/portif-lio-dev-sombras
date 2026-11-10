@@ -35,61 +35,59 @@ export default async function Image({
   ])
 
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 96px',
-          background: c.bg,
-          color: c.text,
-        }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div
-            style={{
-              fontFamily: 'Space Grotesk',
-              fontSize: 80,
-              lineHeight: 1.05,
-            }}
-          >
-            {perfil.nome}
-          </div>
-          <div
-            style={{
-              fontFamily: 'Inter',
-              fontSize: 40,
-              color: c.accent,
-            }}
-          >
-            {perfil.cargo[loc]}
-          </div>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 96px',
+        background: c.bg,
+        color: c.text,
+      }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div
+          style={{
+            fontFamily: 'Space Grotesk',
+            fontSize: 80,
+            lineHeight: 1.05,
+          }}
+        >
+          {perfil.nome}
         </div>
-        <svg width="360" height="327" viewBox="0 0 220 200">
-          <defs>
-            <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0.45" stopColor={c['mascote-body']} />
-              <stop offset="1" stopColor={c['mascote-tip']} />
-            </linearGradient>
-          </defs>
-          <path d={BODY} fill="url(#g)" />
-          <path d="M70 92 L102 104 L76 118 Z" fill={c.eye} />
-          <path d="M150 92 L118 104 L144 118 Z" fill={c.eye} />
-          <circle cx="86" cy="106" r="4" fill={c.bg} />
-          <circle cx="134" cy="106" r="4" fill={c.bg} />
-          <path
-            d="M92 132 Q114 146 134 128"
-            fill="none"
-            stroke={c.accent}
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-        </svg>
+        <div
+          style={{
+            fontFamily: 'Inter',
+            fontSize: 40,
+            color: c.accent,
+          }}
+        >
+          {perfil.cargo[loc]}
+        </div>
       </div>
-    ),
+      <svg width="360" height="327" viewBox="0 0 220 200">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0.45" stopColor={c['mascote-body']} />
+            <stop offset="1" stopColor={c['mascote-tip']} />
+          </linearGradient>
+        </defs>
+        <path d={BODY} fill="url(#g)" />
+        <path d="M70 92 L102 104 L76 118 Z" fill={c.eye} />
+        <path d="M150 92 L118 104 L144 118 Z" fill={c.eye} />
+        <circle cx="86" cy="106" r="4" fill={c.bg} />
+        <circle cx="134" cy="106" r="4" fill={c.bg} />
+        <path
+          d="M92 132 Q114 146 134 128"
+          fill="none"
+          stroke={c.accent}
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>,
     {
       ...size,
       fonts: [

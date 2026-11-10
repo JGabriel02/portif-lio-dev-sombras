@@ -7,6 +7,9 @@ import { Sobre } from '@/components/sections/Sobre'
 import type { Locale } from '@/i18n/routing'
 import { personJsonLd } from '@/lib/seo'
 
+// Project cards show a relative "updated" time: refresh the static page daily.
+export const revalidate = 86400
+
 export default async function Home({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params
   setRequestLocale(locale)

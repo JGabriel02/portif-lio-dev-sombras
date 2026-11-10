@@ -3,12 +3,28 @@ import { messages } from './helpers'
 
 test.use({ javaScriptEnabled: false })
 
-test('project cards are fully opaque without JS', async ({ page }) => {
+test('page is themed (dark) and not in js mode without JS', async ({
+  page,
+}) => {
   await page.goto('/pt')
-  const cards = page.locator('[data-materializar]')
+  const html = page.locator('html')
+  await expect(html).toHaveAttribute('data-theme', 'sombra')
+  await expect(html).toHaveAttribute('data-mode', 'dark')
+  await expect(html).not.toHaveClass(/(^|\s)js(\s|$)/)
+  // #140F1F, the dark --bg
+  await expect(page.locator('body')).toHaveCSS(
+    'background-color',
+    'rgb(20, 15, 31)',
+  )
+})
+
+test('project cards are visible and unhidden without JS', async ({ page }) => {
+  await page.goto('/pt')
+  const cards = page.locator('[data-materializar] > article')
   expect(await cards.count()).toBeGreaterThan(0)
   for (const card of await cards.all()) {
-    await expect(card).toHaveCSS('opacity', '1')
+    // Real dark --surface (#1F1730), not the transparent "unrevealed" state.
+    await expect(card).toHaveCSS('background-color', 'rgb(31, 23, 48)')
   }
 })
 
