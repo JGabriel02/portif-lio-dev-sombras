@@ -13,7 +13,7 @@ export async function Skills({ locale }: { locale: Locale }) {
 
   return (
     <Section id="skills" titleId="skills-title" title={t('title')}>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {GRUPOS.map((grupo) => (
           <Card
             key={grupo}

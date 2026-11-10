@@ -59,7 +59,7 @@ export async function Sobre({ locale }: { locale: Locale }) {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <Card className="p-6">
           <h3 className="font-heading text-xl">{t('foraDoCodigo')}</h3>
           <ul className="mt-4 flex flex-wrap gap-2">
@@ -130,7 +130,7 @@ export async function Sobre({ locale }: { locale: Locale }) {
       </div>
 
       <ul
-        className={`mt-4 grid gap-4 ${atividade ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'}`}
+        className={`mt-4 grid grid-cols-1 gap-4 ${atividade ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'}`}
       >
         {CARDS.map((key) => (
           <li key={key}>
