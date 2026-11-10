@@ -48,14 +48,29 @@ export function useOlhosSeguem(
       if (!frame) frame = requestAnimationFrame(flush)
     }
 
+    const onOut = (ev: PointerEvent) => {
+      // Pointer left the window: no element receives it.
+      if (ev.relatedTarget === null) reset()
+    }
+    const onTouchEnd = (ev: PointerEvent) => {
+      if (ev.pointerType === 'touch') reset()
+    }
+
+    const root = document.documentElement
     window.addEventListener('pointermove', onMove)
-    document.addEventListener('pointerleave', reset)
+    root.addEventListener('pointerleave', reset)
+    window.addEventListener('pointerout', onOut)
     window.addEventListener('blur', reset)
+    window.addEventListener('pointerup', onTouchEnd)
+    window.addEventListener('pointercancel', onTouchEnd)
     return () => {
       cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', onMove)
-      document.removeEventListener('pointerleave', reset)
+      root.removeEventListener('pointerleave', reset)
+      window.removeEventListener('pointerout', onOut)
       window.removeEventListener('blur', reset)
+      window.removeEventListener('pointerup', onTouchEnd)
+      window.removeEventListener('pointercancel', onTouchEnd)
     }
   }, [svgRef, stableEyes, w, h])
 

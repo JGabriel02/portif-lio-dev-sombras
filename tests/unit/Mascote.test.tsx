@@ -59,15 +59,95 @@ describe('Mascote', () => {
     )
   })
 
-  it('moves pupils toward the pointer and resets on leave', () => {
-    const { container } = renderWithIntl(<Mascote />)
-    expect(firstPupil(container)).toBe('86')
+  function fire(
+    target: EventTarget,
+    type: string,
+    init: { relatedTarget?: EventTarget | null; pointerType?: string } = {},
+  ) {
+    act(() => {
+      const ev = new MouseEvent(type, {
+        bubbles: type !== 'pointerleave',
+        relatedTarget: init.relatedTarget ?? null,
+      })
+      Object.defineProperty(ev, 'pointerType', { value: init.pointerType })
+      target.dispatchEvent(ev)
+    })
+  }
+
+  function moved(container: HTMLElement) {
     move(2000, 106)
     expect(Number(firstPupil(container))).toBeGreaterThan(86)
-    act(() => {
-      document.dispatchEvent(new Event('pointerleave'))
-    })
+  }
+
+  it('moves pupils toward the pointer', () => {
+    const { container } = renderWithIntl(<Mascote />)
     expect(firstPupil(container)).toBe('86')
+    moved(container)
+  })
+
+  it('resets when the pointer leaves the document element', () => {
+    const { container } = renderWithIntl(<Mascote />)
+    moved(container)
+    fire(document.documentElement, 'pointerleave')
+    expect(firstPupil(container)).toBe('86')
+  })
+
+  it('resets on pointerout with no relatedTarget (left the window)', () => {
+    const { container } = renderWithIntl(<Mascote />)
+    moved(container)
+    fire(document.body, 'pointerout', { relatedTarget: document.body })
+    expect(Number(firstPupil(container))).toBeGreaterThan(86)
+    fire(document.body, 'pointerout', { relatedTarget: null })
+    expect(firstPupil(container)).toBe('86')
+  })
+
+  it('resets on window blur', () => {
+    const { container } = renderWithIntl(<Mascote />)
+    moved(container)
+    fire(window, 'blur')
+    expect(firstPupil(container)).toBe('86')
+  })
+
+  it('resets when a touch pointer ends or is cancelled, not a mouse one', () => {
+    const { container } = renderWithIntl(<Mascote />)
+    moved(container)
+    fire(window, 'pointerup', { pointerType: 'mouse' })
+    expect(Number(firstPupil(container))).toBeGreaterThan(86)
+    fire(window, 'pointerup', { pointerType: 'touch' })
+    expect(firstPupil(container)).toBe('86')
+    moved(container)
+    fire(window, 'pointercancel', { pointerType: 'touch' })
+    expect(firstPupil(container)).toBe('86')
+  })
+
+  it('removes every listener and cancels the frame on unmount', () => {
+    const winAdd = vi.spyOn(window, 'addEventListener')
+    const winRemove = vi.spyOn(window, 'removeEventListener')
+    const rootAdd = vi.spyOn(document.documentElement, 'addEventListener')
+    const rootRemove = vi.spyOn(document.documentElement, 'removeEventListener')
+    const cancel = vi.spyOn(globalThis, 'cancelAnimationFrame')
+    const { unmount } = renderWithIntl(<Mascote />)
+    unmount()
+    const pairs = (
+      add: { mock: { calls: unknown[][] } },
+      remove: { mock: { calls: unknown[][] } },
+      types: string[],
+    ) => {
+      for (const type of types) {
+        const added = add.mock.calls.find((c) => c[0] === type)
+        expect(added, `added ${type}`).toBeDefined()
+        expect(remove.mock.calls).toContainEqual([type, added?.[1]])
+      }
+    }
+    pairs(winAdd, winRemove, [
+      'pointermove',
+      'pointerout',
+      'blur',
+      'pointerup',
+      'pointercancel',
+    ])
+    pairs(rootAdd, rootRemove, ['pointerleave'])
+    expect(cancel).toHaveBeenCalled()
   })
 
   it('does not move under reduced motion', () => {
