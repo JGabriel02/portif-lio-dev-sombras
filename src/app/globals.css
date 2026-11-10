@@ -95,3 +95,10 @@
     opacity: 0;
   }
 }
+
+/* ModeToggle: show the icon/label of the mode the click switches to.
+   Dark is the default (also when data-mode is absent). */
+[data-mode='shiny'] .mode-when-dark,
+:root:not([data-mode='shiny']) .mode-when-shiny {
+  display: none;
+}
