@@ -15,7 +15,7 @@ Site público bilíngue (PT/EN) de portfólio de desenvolvedor full stack, com t
 
 ## Requisitos
 
-- Node 20 ou superior
+- Node 22 ou superior (o Vitest 5 não roda no Node 20)
 - pnpm 12 (versão fixada em `packageManager`; use `corepack enable`)
 
 ## Scripts
