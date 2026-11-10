@@ -8,6 +8,7 @@ import { Container } from '@/components/ui/Container'
 import { getProjeto, getProjetos } from '@/content'
 import { Link } from '@/i18n/navigation'
 import { routing, type Locale } from '@/i18n/routing'
+import { buildMetadata } from '@/lib/seo'
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
@@ -21,7 +22,12 @@ export async function generateMetadata({
   const { locale, slug } = await params
   const projeto = getProjeto(slug)
   if (!projeto || !routing.locales.includes(locale as Locale)) return {}
-  return { title: projeto.nome, description: projeto.resumo[locale as Locale] }
+  return buildMetadata({
+    locale: locale as Locale,
+    path: `/projetos/${slug}`,
+    title: projeto.nome,
+    description: projeto.resumo[locale as Locale],
+  })
 }
 
 export default async function ProjetoPage({

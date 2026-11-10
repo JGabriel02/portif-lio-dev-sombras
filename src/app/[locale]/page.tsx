@@ -5,6 +5,7 @@ import { Projetos } from '@/components/sections/Projetos'
 import { Skills } from '@/components/sections/Skills'
 import { Sobre } from '@/components/sections/Sobre'
 import type { Locale } from '@/i18n/routing'
+import { personJsonLd } from '@/lib/seo'
 
 export default async function Home({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params
@@ -13,6 +14,12 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
 
   return (
     <main id="conteudo">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(personJsonLd(loc)).replace(/</g, '\\u003c'),
+        }}
+      />
       <Hero locale={loc} />
       <Sobre locale={loc} />
       <Skills locale={loc} />

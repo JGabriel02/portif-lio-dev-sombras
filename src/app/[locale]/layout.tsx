@@ -3,7 +3,8 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { notFound } from 'next/navigation'
-import { routing } from '@/i18n/routing'
+import { routing, type Locale } from '@/i18n/routing'
+import { buildMetadata } from '@/lib/seo'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { SkipLink } from '@/components/layout/SkipLink'
@@ -32,7 +33,12 @@ export async function generateMetadata({
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) return {}
   const t = await getTranslations({ locale, namespace: 'meta' })
-  return { title: t('title'), description: t('description') }
+  return buildMetadata({
+    locale: locale as Locale,
+    path: '',
+    title: t('title'),
+    description: t('description'),
+  })
 }
 
 export default async function LocaleLayout({
