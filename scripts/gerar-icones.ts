@@ -16,7 +16,7 @@ const svg = readFileSync(path.join(dir, 'icon.svg'), 'utf8').replace(
 const input = Buffer.from(svg)
 
 async function png(size: number): Promise<Buffer> {
-  return sharp(input, { density: (72 * size) / 64 * 4 })
+  return sharp(input, { density: ((72 * size) / 64) * 4 })
     .resize(size, size)
     .png()
     .toBuffer()
