@@ -64,3 +64,17 @@ describe('themeScript', () => {
     expect(document.documentElement.dataset.mode).toBe('dark')
   })
 })
+
+describe('themeScript with a malformed cookie', () => {
+  afterEach(() => {
+    clearCookie()
+    document.documentElement.removeAttribute('data-mode')
+  })
+
+  it('falls back to prefers-color-scheme instead of the catch branch', () => {
+    document.cookie = 'mode=%E0%A4%A; path=/'
+    mockMatchMedia(false)
+    new Function(themeScript)()
+    expect(document.documentElement.dataset.mode).toBe('shiny')
+  })
+})

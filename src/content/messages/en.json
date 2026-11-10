@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "sobre": "About",
+    "skills": "Skills",
+    "projetos": "Projects",
+    "contato": "Contact",
+    "menu": "Menu"
+  },
+  "mode": {
+    "toShiny": "Switch to shiny mode",
+    "toDark": "Switch to shadow mode"
+  },
+  "locale": { "label": "Language", "pt": "PT", "en": "EN" },
+  "skip": "Skip to content",
+  "hero": {
+    "status": "open to work",
+    "greeting": "Hi, I'm João.",
+    "tagline": "I show up where there's a",
+    "highlight": "bug to squash.",
+    "subtitle": "Full stack developer · TypeScript, React, Next.js and Node",
+    "ctaProjects": "View projects",
+    "ctaCv": "Résumé"
+  },
+  "sobre": {
+    "title": "About",
+    "body": "Full stack developer who likes turning messy problems into software that is simple to use. I work from the database to the interface, with attention to performance, accessibility and maintainable code.",
+    "cards": {
+      "faco": {
+        "title": "What I do",
+        "body": "I build complete web applications: fast, accessible interfaces, APIs and integrations."
+      },
+      "trabalho": {
+        "title": "How I work",
+        "body": "Small, frequent deliveries, tests where they matter and clear communication with the team."
+      },
+      "busco": {
+        "title": "What I'm looking for",
+        "body": "A full-time or contract role, remote or international, on a team that values quality and learning."
+      }
+    }
+  },
+  "skills": {
+    "title": "Skills",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "tools": "Tools",
+    "years": "{count, plural, one {# year} other {# years}}",
+    "repos": "{count, plural, one {# repository} other {# repositories}}",
+    "learning": "learning: {name}"
+  },
+  "projetos": {
+    "title": "Projects",
+    "featured": "Featured",
+    "updated": "updated {when}",
+    "viewAll": "View all on GitHub",
+    "repo": "Repository",
+    "demo": "Demo",
+    "learned": "What I learned",
+    "stack": "Stack",
+    "back": "Back to projects"
+  },
+  "contato": {
+    "title": "Contact",
+    "intro": "Have a role or a project in mind? Write to me.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending...",
+    "success": "Message received",
+    "error": "Could not send right now.",
+    "fallback": "Try email instead.",
+    "errors": {
+      "nameRequired": "Enter your name.",
+      "emailInvalid": "Enter a valid email.",
+      "messageMin": "The message must be at least 10 characters.",
+      "messageMax": "The message can be at most 2000 characters."
+    }
+  },
+  "notFound": {
+    "title": "This page vanished into the shadows",
+    "body": "The address you tried does not exist or has moved.",
+    "back": "Back to home"
+  },
+  "footer": {
+    "rights": "© {year} João Gabriel. All rights reserved.",
+    "top": "Back to top"
+  },
+  "meta": {
+    "title": "João Gabriel | Full stack developer",
+    "description": "Portfolio of João Gabriel, full stack developer: projects, skills and contact."
+  }
+}

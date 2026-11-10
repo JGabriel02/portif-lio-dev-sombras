@@ -11,5 +11,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['vitest.setup.ts'],
     include: ['tests/unit/**/*.test.{ts,tsx}'],
+    server: { deps: { inline: ['next-intl'] } },
   },
 })

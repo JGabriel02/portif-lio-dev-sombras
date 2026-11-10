@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "sobre": "Sobre",
+    "skills": "Skills",
+    "projetos": "Projetos",
+    "contato": "Contato",
+    "menu": "Menu"
+  },
+  "mode": {
+    "toShiny": "Ativar modo shiny",
+    "toDark": "Ativar modo sombra"
+  },
+  "locale": { "label": "Idioma", "pt": "PT", "en": "EN" },
+  "skip": "Pular para o conteúdo",
+  "hero": {
+    "status": "aberto a vagas",
+    "greeting": "Oi, sou o João.",
+    "tagline": "Eu apareço onde tem",
+    "highlight": "bug pra resolver.",
+    "subtitle": "Desenvolvedor full stack · TypeScript, React, Next.js e Node",
+    "ctaProjects": "Ver projetos",
+    "ctaCv": "CV"
+  },
+  "sobre": {
+    "title": "Sobre",
+    "body": "Desenvolvedor full stack que gosta de transformar problemas confusos em software simples de usar. Trabalho do banco de dados à interface, com atenção a desempenho, acessibilidade e código fácil de manter.",
+    "cards": {
+      "faco": {
+        "title": "O que faço",
+        "body": "Construo aplicações web completas: interfaces rápidas e acessíveis, APIs e integrações."
+      },
+      "trabalho": {
+        "title": "Como trabalho",
+        "body": "Entregas pequenas e frequentes, testes onde importa e comunicação clara com o time."
+      },
+      "busco": {
+        "title": "O que busco",
+        "body": "Uma vaga CLT ou PJ, remota ou internacional, em um time que valorize qualidade e aprendizado."
+      }
+    }
+  },
+  "skills": {
+    "title": "Skills",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "tools": "Ferramentas",
+    "years": "{count, plural, one {# ano} other {# anos}}",
+    "repos": "{count, plural, one {# repositório} other {# repositórios}}",
+    "learning": "aprendendo: {name}"
+  },
+  "projetos": {
+    "title": "Projetos",
+    "featured": "Destaque",
+    "updated": "atualizado {when}",
+    "viewAll": "Ver todos no GitHub",
+    "repo": "Repositório",
+    "demo": "Demo",
+    "learned": "O que aprendi",
+    "stack": "Stack",
+    "back": "Voltar aos projetos"
+  },
+  "contato": {
+    "title": "Contato",
+    "intro": "Tem uma vaga ou um projeto em mente? Me escreva.",
+    "name": "Nome",
+    "email": "E-mail",
+    "message": "Mensagem",
+    "send": "Enviar mensagem",
+    "sending": "Enviando...",
+    "success": "Mensagem recebida",
+    "error": "Não foi possível enviar agora.",
+    "fallback": "Tente pelo e-mail.",
+    "errors": {
+      "nameRequired": "Informe seu nome.",
+      "emailInvalid": "Informe um e-mail válido.",
+      "messageMin": "A mensagem precisa ter pelo menos 10 caracteres.",
+      "messageMax": "A mensagem pode ter no máximo 2000 caracteres."
+    }
+  },
+  "notFound": {
+    "title": "Essa página sumiu nas sombras",
+    "body": "O endereço que você tentou não existe ou foi movido.",
+    "back": "Voltar para a home"
+  },
+  "footer": {
+    "rights": "© {year} João Gabriel. Todos os direitos reservados.",
+    "top": "Voltar ao topo"
+  },
+  "meta": {
+    "title": "João Gabriel | Desenvolvedor full stack",
+    "description": "Portfólio de João Gabriel, desenvolvedor full stack: projetos, skills e contato."
+  }
+}
