@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server'
+import { Contato } from '@/components/sections/Contato'
 import { Hero } from '@/components/sections/Hero'
 import { Projetos } from '@/components/sections/Projetos'
 import { Skills } from '@/components/sections/Skills'
@@ -16,6 +17,7 @@ export default async function Home({ params }: PageProps<'/[locale]'>) {
       <Sobre locale={loc} />
       <Skills locale={loc} />
       <Projetos locale={loc} />
+      <Contato locale={loc} />
     </main>
   )
 }

@@ -1,0 +1,40 @@
+import { getTranslations } from 'next-intl/server'
+import { Section } from '@/components/ui/Section'
+import { getPerfil } from '@/content'
+import type { Locale } from '@/i18n/routing'
+import { ContatoForm } from './ContatoForm'
+
+export async function Contato({ locale }: { locale: Locale }) {
+  const t = await getTranslations({ locale, namespace: 'contato' })
+  const { email, links } = getPerfil()
+  const linkClass =
+    'text-accent focus-visible:outline-focus-ring underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2'
+
+  return (
+    <Section id="contato" titleId="contato-title" title={t('title')}>
+      <div className="grid gap-10 md:grid-cols-2">
+        <div>
+          <p className="text-muted max-w-md text-xl">{t('intro')}</p>
+          <ul className="mt-6 flex flex-col gap-3 text-base">
+            <li>
+              <a href={`mailto:${email}`} className={linkClass}>
+                {email}
+              </a>
+            </li>
+            <li>
+              <a href={links.linkedin} className={linkClass}>
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <a href={links.github} className={linkClass}>
+                GitHub
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ContatoForm email={email} />
+      </div>
+    </Section>
+  )
+}
