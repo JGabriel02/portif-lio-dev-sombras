@@ -33,6 +33,7 @@ vi.mock('@/content', async (importOriginal) => {
     ...actual,
     getPerfil: vi.fn(actual.getPerfil),
     getSkills: vi.fn(actual.getSkills),
+    getAtividade: vi.fn(async () => null),
     cvDisponivel: vi.fn(),
   }
 })
@@ -99,6 +100,19 @@ describe('Sobre', () => {
     expect(screen.getByText(perfilReal().bio.en)).toBeInTheDocument()
     expect(screen.getByText(en.sobre.cards.busco.title)).toBeInTheDocument()
     expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(3)
+  })
+})
+
+describe('Sobre activity card', () => {
+  it('adds the activity card as a fourth card when available', async () => {
+    vi.mocked(content.getAtividade).mockResolvedValueOnce({
+      sequenciaAtual: 5,
+      totalAno: 100,
+      ano: 2026,
+    })
+    renderWithIntl(await Sobre({ locale: 'pt' }), { locale: 'pt' })
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(4)
+    expect(screen.getByText('5 dias seguidos')).toBeInTheDocument()
   })
 })
 

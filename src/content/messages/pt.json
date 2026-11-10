@@ -37,6 +37,13 @@
         "title": "O que busco",
         "body": "Uma vaga CLT ou PJ, remota ou internacional, em um time que valorize qualidade e aprendizado."
       }
+    },
+    "atividade": {
+      "titulo": "Atividade no GitHub",
+      "sequencia": "{count, plural, one {# dia seguido} other {# dias seguidos}}",
+      "total": "{count, plural, =0 {# contribuições} one {# contribuição} other {# contribuições}} em {ano}",
+      "link": "Ver perfil no GitHub",
+      "novaAba": "(abre em nova aba)"
     }
   },
   "skills": {

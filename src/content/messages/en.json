@@ -37,6 +37,13 @@
         "title": "What I'm looking for",
         "body": "A full-time or contract role, remote or international, on a team that values quality and learning."
       }
+    },
+    "atividade": {
+      "titulo": "GitHub activity",
+      "sequencia": "{count, plural, one {# day in a row} other {# days in a row}}",
+      "total": "{count, plural, one {# contribution} other {# contributions}} in {ano}",
+      "link": "View GitHub profile",
+      "novaAba": "(opens in a new tab)"
     }
   },
   "skills": {

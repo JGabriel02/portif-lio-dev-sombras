@@ -16,13 +16,20 @@ import {
   mesclarProjeto,
 } from '@/content'
 import { projetos } from '@/content/projetos'
-import { CalendarSchema, getCalendario, getRepos, RepoSchema } from '@/lib/github'
+import {
+  CalendarSchema,
+  getCalendario,
+  getRepos,
+  RepoSchema,
+} from '@/lib/github'
 
 const todos = repos.flatMap((r) => {
   const parsed = RepoSchema.safeParse(r)
   return parsed.success ? [parsed.data] : []
 })
-const dias = CalendarSchema.parse(calendar).user.contributionsCollection.contributionCalendar.weeks.flatMap(
+const dias = CalendarSchema.parse(
+  calendar,
+).user.contributionsCollection.contributionCalendar.weeks.flatMap(
   (w) => w.contributionDays,
 )
 

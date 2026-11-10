@@ -114,7 +114,10 @@ describe('buildMetadata home', () => {
 describe('sitemap', () => {
   it('lists both locale URLs for home and every project', async () => {
     const urls = (await sitemap()).map((e) => e.url)
-    const paths = ['', ...(await getProjetos()).map((p) => `/projetos/${p.slug}`)]
+    const paths = [
+      '',
+      ...(await getProjetos()).map((p) => `/projetos/${p.slug}`),
+    ]
     for (const p of paths) {
       expect(urls).toContain(`${SITE_URL}/pt${p}`)
       expect(urls).toContain(`${SITE_URL}/en${p}`)
