@@ -51,6 +51,19 @@ describe('themeScript', () => {
     expect(el.classList.contains('js')).toBe(true)
   })
 
+  it('finds the cookie when it is not the first one', () => {
+    document.cookie = 'NEXT_LOCALE=pt; path=/'
+    document.cookie = 'mode=dark; path=/'
+    mockMatchMedia(false)
+    new Function(themeScript)()
+    expect(document.documentElement.dataset.mode).toBe('dark')
+    document.cookie = 'NEXT_LOCALE=; path=/; max-age=0'
+  })
+
+  it('emits a real \\s in the cookie regex (not a stripped escape)', () => {
+    expect(themeScript).toContain(String.raw`;\s*)mode=`)
+  })
+
   it('uses the cookie when valid', () => {
     document.cookie = 'mode=dark; path=/'
     mockMatchMedia(false)

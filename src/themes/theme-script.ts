@@ -14,4 +14,4 @@ export function resolveMode(
 }
 
 /** Inline IIFE run in <head> before first paint to avoid a theme flash. */
-export const themeScript: string = `(function(){try{var resolveMode=${resolveMode.toString()};var m=document.cookie.match(/(?:^|;\s*)mode=([^;]*)/);var c=m?m[1]:undefined;var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var e=document.documentElement;e.setAttribute('data-theme','sombra');e.setAttribute('data-mode',resolveMode(c,d));e.classList.add('js');}catch(_){document.documentElement.setAttribute('data-theme','sombra');document.documentElement.setAttribute('data-mode','dark');}})();`
+export const themeScript: string = `(function(){try{var resolveMode=${resolveMode.toString()};var m=document.cookie.match(/(?:^|;\\s*)mode=([^;]*)/);var c=m?m[1]:undefined;var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var e=document.documentElement;e.setAttribute('data-theme','sombra');e.setAttribute('data-mode',resolveMode(c,d));e.classList.add('js');}catch(_){document.documentElement.setAttribute('data-theme','sombra');document.documentElement.setAttribute('data-mode','dark');}})();`
