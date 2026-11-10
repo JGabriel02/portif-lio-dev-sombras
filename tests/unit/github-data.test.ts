@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import calendarFixture from '../fixtures/github/calendar.json'
 import reposFixture from '../fixtures/github/repos.json'
 import { calcularAtividade } from '@/lib/github/atividade'
@@ -16,9 +16,16 @@ const dia = (date: string, contributionCount: number): Dia => ({
   contributionCount,
 })
 
+let warn: ReturnType<typeof vi.spyOn>
+
 beforeEach(() => {
   rest.mockReset()
   graphql.mockReset()
+  warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  warn.mockRestore()
 })
 
 describe('getRepos', () => {
@@ -31,11 +38,19 @@ describe('getRepos', () => {
     expect(repos).toHaveLength(reposFixture.length - 1)
     expect(repos?.map((r) => r.name)).toContain('npc-forge')
     expect(repos?.find((r) => r.name === 'cardapio')?.stargazers_count).toBe(3)
+    expect(warn).toHaveBeenCalledTimes(1)
+    expect(warn).toHaveBeenCalledWith('[github] schema mismatch', {
+      path: '/users/JGabriel02/repos?per_page=100&type=owner&sort=pushed',
+      dropped: 1,
+    })
   })
 
   it('returns null for non-array body', async () => {
     rest.mockResolvedValue({ message: 'Not Found' })
     expect(await getRepos('JGabriel02')).toBeNull()
+    expect(warn).toHaveBeenCalledWith('[github] schema mismatch', {
+      path: '/users/JGabriel02/repos?per_page=100&type=owner&sort=pushed',
+    })
     rest.mockResolvedValue(null)
     expect(await getRepos('JGabriel02')).toBeNull()
   })
@@ -54,6 +69,9 @@ describe('getCalendario', () => {
   it('returns null for invalid data', async () => {
     graphql.mockResolvedValue({ user: null })
     expect(await getCalendario('JGabriel02')).toBeNull()
+    expect(warn).toHaveBeenCalledWith('[github] schema mismatch', {
+      path: 'graphql',
+    })
     graphql.mockResolvedValue(null)
     expect(await getCalendario('JGabriel02')).toBeNull()
   })
