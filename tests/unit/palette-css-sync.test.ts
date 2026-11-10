@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { sombra, type Mode, type TokenName } from '@/themes/palette'
 
-const css = readFileSync('src/themes/sombra.css', 'utf8')
+const css = readFileSync('src/themes/sombra.css', 'utf8').replaceAll("'", '"')
 
 function block(mode: Mode): string {
   const open = `[data-theme="sombra"][data-mode="${mode}"]`
@@ -17,6 +17,8 @@ describe('sombra.css matches palette.ts', () => {
     it(`${mode} block exists`, () => expect(body).not.toBe(''))
     for (const token of Object.keys(sombra[mode]) as TokenName[])
       it(`${mode}: --${token}`, () =>
-        expect(body).toContain(`--${token}: ${sombra[mode][token].toLowerCase()}`))
+        expect(body).toContain(
+          `--${token}: ${sombra[mode][token].toLowerCase()}`,
+        ))
   }
 })

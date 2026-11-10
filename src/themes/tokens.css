@@ -16,7 +16,8 @@
   --color-mascote-tip: var(--mascote-tip);
   --color-focus-ring: var(--focus-ring);
 
-  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-heading:
+    var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 14px;

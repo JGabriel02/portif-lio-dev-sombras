@@ -21,5 +21,7 @@ describe('contrast', () => {
   for (const mode of ['dark', 'shiny'] as const)
     for (const [fg, bg, min] of pairs)
       it(`${mode}: ${fg} on ${bg} >= ${min}`, () =>
-        expect(contrastRatio(sombra[mode][fg], sombra[mode][bg])).toBeGreaterThanOrEqual(min))
+        expect(
+          contrastRatio(sombra[mode][fg], sombra[mode][bg]),
+        ).toBeGreaterThanOrEqual(min))
 })
