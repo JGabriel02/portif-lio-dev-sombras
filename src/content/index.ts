@@ -54,7 +54,9 @@ export function mesclarProjeto(
   const { fallback } = curado
   const linguagem = repo?.language ?? fallback.linguagem
   const homepage = repo?.homepage?.trim()
-  const demoUrl = curado.demoUrl ?? (homepage ? homepage : undefined)
+  const demoUrl = curado.ocultarDemo
+    ? undefined
+    : (curado.demoUrl ?? (homepage ? homepage : undefined))
   return {
     slug: curado.slug,
     nome: curado.repo,

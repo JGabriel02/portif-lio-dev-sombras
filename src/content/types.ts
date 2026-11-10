@@ -65,6 +65,8 @@ export interface ProjetoCurado {
   stack: string[]
   /** Wins over the GitHub homepage */
   demoUrl?: string
+  /** Never show an app link, even if the GitHub repo has a homepage. */
+  ocultarDemo?: boolean
   imagens: { src: string; alt: Localized }[]
   fallback: {
     linguagem: string

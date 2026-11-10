@@ -86,6 +86,22 @@ describe('mesclarProjeto', () => {
     const nulo = { ...repoNpc, homepage: null }
     expect(mesclarProjeto(curado, nulo, 'x').demoUrl).toBeUndefined()
   })
+
+  it('ocultarDemo hides the app link even with homepage or manual demoUrl', () => {
+    const comHome = { ...repoNpc, homepage: 'https://home.example.com' }
+    const oculto = {
+      ...curado,
+      demoUrl: 'https://manual.example.com',
+      ocultarDemo: true,
+    }
+    expect(mesclarProjeto(oculto, comHome, 'x').demoUrl).toBeUndefined()
+  })
+
+  it('cardapio is curated without an app link', () => {
+    const cardapio = projetos.find((p) => p.repo === 'cardapio')!
+    const repo = { ...repoNpc, name: 'cardapio', homepage: 'https://x.app' }
+    expect(mesclarProjeto(cardapio, repo, 'x').demoUrl).toBeUndefined()
+  })
 })
 
 describe('getProjetos', () => {

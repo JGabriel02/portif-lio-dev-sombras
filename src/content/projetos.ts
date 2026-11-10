@@ -83,6 +83,8 @@ export const projetos: ProjetoCurado[] = [
       en: 'Componentization, UI state and responsive design.',
     },
     stack: ['TypeScript', 'React'],
+    // O GitHub tem um "Website" para este repo; não exibir no portfólio.
+    ocultarDemo: true,
     imagens: [],
     fallback: {
       linguagem: 'TypeScript',
