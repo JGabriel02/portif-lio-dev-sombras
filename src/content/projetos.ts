@@ -1,74 +1,92 @@
-import type { Projeto } from './types'
+import type { ProjetoCurado } from './types'
 
-// TODO(conteúdo): substituir pelos projetos reais
-export const projetos: Projeto[] = [
+export const projetos: ProjetoCurado[] = [
   {
     slug: 'npc-forge',
-    nome: 'npc-forge',
+    repo: 'npc-forge',
+    destaque: true,
+    // TODO(conteúdo): revisar textos
     resumo: {
       pt: 'Gerador de NPCs para mesas de RPG, com atributos e histórias coerentes.',
       en: 'NPC generator for tabletop RPG, with coherent stats and backstories.',
     },
     descricao: {
-      pt: 'Aplicação web que gera NPCs completos a partir de poucos parâmetros, com atributos, personalidade e ganchos de história, e permite exportar o resultado.',
-      en: 'Web app that generates complete NPCs from a few parameters, with stats, personality and story hooks, and lets you export the result.',
+      pt: 'Aplicação em C# que gera NPCs completos a partir de poucos parâmetros, com atributos, personalidade e ganchos de história.',
+      en: 'C# application that generates complete NPCs from a few parameters, with stats, personality and story hooks.',
     },
     aprendizados: {
-      pt: 'Modelagem de dados tipada, geração determinística com seeds e testes de propriedades.',
-      en: 'Typed data modeling, deterministic seeded generation and property-based testing.',
+      pt: 'Modelagem de domínio, geração controlada por parâmetros e testes automatizados.',
+      en: 'Domain modeling, parameter-driven generation and automated testing.',
     },
-    linguagem: { nome: 'TypeScript', cor: '#3178C6' },
-    stack: ['TypeScript', 'React', 'Next.js'],
-    estrelas: 24,
-    atualizadoEm: '2026-11-07',
-    repoUrl: 'https://github.com/joaogabriel/npc-forge',
+    stack: ['C#', '.NET'],
     imagens: [],
-    destaque: true,
+    fallback: { linguagem: 'C#', estrelas: 0, atualizadoEm: '2026-10-30' },
   },
   {
-    slug: 'geje-api',
-    nome: 'geje-api',
+    slug: 'missions-api',
+    repo: 'Missions_API',
+    destaque: false,
+    // TODO(conteúdo): revisar textos
     resumo: {
-      pt: 'API REST para gestão de eventos, com autenticação e documentação OpenAPI.',
-      en: 'REST API for event management, with authentication and OpenAPI docs.',
+      pt: 'API REST em Java para cadastro e acompanhamento de missões.',
+      en: 'Java REST API for creating and tracking missions.',
     },
     descricao: {
-      pt: 'API em Node.js para cadastro e gestão de eventos, com autenticação por token, validação de entrada e documentação gerada automaticamente.',
-      en: 'Node.js API for creating and managing events, with token authentication, input validation and auto-generated documentation.',
+      pt: 'API em Java que permite criar, atualizar e consultar missões, com validação de entrada e persistência em banco de dados.',
+      en: 'Java API to create, update and query missions, with input validation and database persistence.',
     },
     aprendizados: {
-      pt: 'Desenho de contratos de API, migrações de banco e observabilidade básica.',
-      en: 'API contract design, database migrations and basic observability.',
+      pt: 'Desenho de endpoints REST, camadas de serviço e persistência de dados.',
+      en: 'REST endpoint design, service layers and data persistence.',
     },
-    linguagem: { nome: 'Node.js', cor: '#3C873A' },
-    stack: ['Node.js', 'SQL', 'Docker'],
-    estrelas: 9,
-    atualizadoEm: '2026-10-21',
-    repoUrl: 'https://github.com/joaogabriel/geje-api',
+    stack: ['Java', 'REST', 'SQL'],
     imagens: [],
-    destaque: false,
+    fallback: { linguagem: 'Java', estrelas: 0, atualizadoEm: '2026-09-03' },
   },
   {
-    slug: 'painel-metricas',
-    nome: 'painel-metricas',
+    slug: 'vacation-scheduler',
+    repo: 'VacationSchedulerApplication',
+    destaque: false,
+    // TODO(conteúdo): revisar textos
     resumo: {
-      pt: 'Painel de métricas em tempo real com gráficos acessíveis.',
-      en: 'Real-time metrics dashboard with accessible charts.',
+      pt: 'Aplicação para agendar férias de equipes, com front-end em vacation-scheduler-web.',
+      en: 'Application for scheduling team vacations, with a front end in vacation-scheduler-web.',
     },
     descricao: {
-      pt: 'Dashboard que consome eventos em streaming e exibe gráficos com alternativas textuais e navegação por teclado.',
-      en: 'Dashboard that consumes streaming events and renders charts with text alternatives and keyboard navigation.',
+      pt: 'Back-end em Java que organiza períodos de férias de uma equipe e evita conflitos; o front-end vive no repositório vacation-scheduler-web.',
+      en: 'Java back end that organizes a team’s vacation periods and avoids conflicts; the front end lives in the vacation-scheduler-web repository.',
     },
     aprendizados: {
-      pt: 'Renderização incremental, acessibilidade em visualização de dados e ajuste de desempenho.',
-      en: 'Incremental rendering, data-visualization accessibility and performance tuning.',
+      pt: 'Regras de negócio com datas, integração entre back-end e front-end e testes de cenários.',
+      en: 'Date-based business rules, back-end and front-end integration and scenario testing.',
     },
-    linguagem: { nome: 'TypeScript', cor: '#3178C6' },
-    stack: ['TypeScript', 'React', 'Node.js'],
-    estrelas: 5,
-    atualizadoEm: '2026-09-12',
-    repoUrl: 'https://github.com/joaogabriel/painel-metricas',
+    stack: ['Java', 'vacation-scheduler-web'],
     imagens: [],
+    fallback: { linguagem: 'Java', estrelas: 0, atualizadoEm: '2026-07-02' },
+  },
+  {
+    slug: 'cardapio',
+    repo: 'cardapio',
     destaque: false,
+    // TODO(conteúdo): revisar textos
+    resumo: {
+      pt: 'Cardápio digital responsivo para restaurantes.',
+      en: 'Responsive digital menu for restaurants.',
+    },
+    descricao: {
+      pt: 'Cardápio online em TypeScript com categorias, busca e layout pensado para celular.',
+      en: 'Online menu in TypeScript with categories, search and a mobile-first layout.',
+    },
+    aprendizados: {
+      pt: 'Componentização, estado de interface e design responsivo.',
+      en: 'Componentization, UI state and responsive design.',
+    },
+    stack: ['TypeScript', 'React'],
+    imagens: [],
+    fallback: {
+      linguagem: 'TypeScript',
+      estrelas: 3,
+      atualizadoEm: '2025-09-25',
+    },
   },
 ]

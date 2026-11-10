@@ -18,6 +18,7 @@ const projeto: Projeto = {
   demoUrl: 'https://demo.example.com',
   imagens: [],
   destaque: true,
+  fonte: 'github',
 }
 
 describe('CardFantasma', () => {

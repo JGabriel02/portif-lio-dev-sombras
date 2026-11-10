@@ -10,9 +10,10 @@ import { Link } from '@/i18n/navigation'
 import { routing, type Locale } from '@/i18n/routing'
 import { buildMetadata } from '@/lib/seo'
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const projetos = await getProjetos()
   return routing.locales.flatMap((locale) =>
-    getProjetos().map((p) => ({ locale, slug: p.slug })),
+    projetos.map((p) => ({ locale, slug: p.slug })),
   )
 }
 
@@ -20,7 +21,7 @@ export async function generateMetadata({
   params,
 }: PageProps<'/[locale]/projetos/[slug]'>): Promise<Metadata> {
   const { locale, slug } = await params
-  const projeto = getProjeto(slug)
+  const projeto = await getProjeto(slug)
   if (!projeto || !routing.locales.includes(locale as Locale)) return {}
   return buildMetadata({
     locale: locale as Locale,
@@ -36,7 +37,7 @@ export default async function ProjetoPage({
   const { locale, slug } = await params
   setRequestLocale(locale)
   const loc = locale as Locale
-  const projeto = getProjeto(slug)
+  const projeto = await getProjeto(slug)
   if (!projeto) notFound()
   const t = await getTranslations({ locale: loc, namespace: 'projetos' })
 

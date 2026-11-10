@@ -7,7 +7,7 @@ import type { Locale } from '@/i18n/routing'
 
 export async function Projetos({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'projetos' })
-  const projetos = getProjetos()
+  const projetos = await getProjetos()
   const destaque = projetos.find((p) => p.destaque)
 
   return (

@@ -9,11 +9,12 @@ const GRUPOS: SkillCategoria[] = ['frontend', 'backend', 'tools']
 
 export async function Skills({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'skills' })
+  const porGrupo = await Promise.all(GRUPOS.map((g) => getSkills(g)))
 
   return (
     <Section id="skills" titleId="skills-title" title={t('title')}>
       <div className="grid gap-4 md:grid-cols-3">
-        {GRUPOS.map((grupo) => (
+        {GRUPOS.map((grupo, i) => (
           <Card
             key={grupo}
             as="section"
@@ -24,7 +25,7 @@ export async function Skills({ locale }: { locale: Locale }) {
               {t(grupo)}
             </h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {getSkills(grupo).map((s) => (
+              {porGrupo[i].map((s) => (
                 <li
                   key={s.nome}
                   data-aprendendo={s.aprendendo ? '' : undefined}

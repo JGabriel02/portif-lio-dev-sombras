@@ -7,8 +7,7 @@ export const perfil: Perfil = {
   // TODO(conteúdo): substituir pelo e-mail real
   email: 'contato@exemplo.com',
   links: {
-    // TODO(conteúdo): substituir pelo link real
-    github: 'https://github.com/joaogabriel',
+    github: 'https://github.com/JGabriel02',
     // TODO(conteúdo): substituir pelo link real
     linkedin: 'https://www.linkedin.com/in/joaogabriel',
   },

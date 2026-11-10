@@ -3,8 +3,8 @@ import { getProjetos } from '@/content'
 import { routing } from '@/i18n/routing'
 import { SITE_URL } from '@/lib/seo'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const paths = ['', ...getProjetos().map((p) => `/projetos/${p.slug}`)]
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const paths = ['', ...(await getProjetos()).map((p) => `/projetos/${p.slug}`)]
   return paths.flatMap((path) =>
     routing.locales.map((locale) => ({
       url: `${SITE_URL}/${locale}${path}`,
