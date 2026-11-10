@@ -38,3 +38,23 @@
 .site-header[data-scrolled='true'] {
   background: color-mix(in srgb, var(--bg) 85%, transparent);
 }
+
+@keyframes flutuar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-flutuar {
+  animation: flutuar 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-flutuar {
+    animation: none;
+  }
+}
