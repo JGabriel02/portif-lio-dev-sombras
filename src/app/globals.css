@@ -59,16 +59,39 @@
   }
 }
 
-/* Materializar: hidden state only with JS and when motion is allowed. */
+/* Materializar: hidden state only with JS and when motion is allowed.
+   Only the card surface fades; text keeps full opacity so contrast holds
+   (WCAG AA, Lighthouse) even before the card enters the viewport. */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-materializar] {
+    transition: transform 0.4s ease;
+  }
+
+  .js [data-materializar] > article {
     transition:
-      opacity 0.4s ease,
-      transform 0.4s ease;
+      background-color 0.4s ease,
+      border-color 0.4s ease;
+  }
+
+  .js [data-materializar] > article > svg {
+    transition: opacity 0.4s ease;
   }
 
   .js [data-materializar]:not([data-visivel]):not(:hover):not(:focus-within) {
-    opacity: 0.35;
     transform: translateY(6px);
+  }
+
+  .js
+    [data-materializar]:not([data-visivel]):not(:hover):not(:focus-within)
+    > article {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  .js
+    [data-materializar]:not([data-visivel]):not(:hover):not(:focus-within)
+    > article
+    > svg {
+    opacity: 0;
   }
 }
