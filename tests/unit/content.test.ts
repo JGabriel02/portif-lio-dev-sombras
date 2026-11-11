@@ -9,7 +9,14 @@ import {
   getProjetos,
   getSkills,
 } from '@/content'
+import { projetos } from '@/content/projetos'
 import { getRepos } from '@/lib/github'
+
+vi.mock('next/cache', () => ({ unstable_cache: <T>(f: T) => f }))
+vi.mock('@/lib/db/conteudo', () => ({
+  lerProjetos: vi.fn().mockResolvedValue(null),
+  lerSkills: vi.fn().mockResolvedValue(null),
+}))
 
 vi.mock('@/lib/github', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/github')>()
@@ -31,9 +38,10 @@ describe('projetos', () => {
     expect(lista[0].destaque).toBe(true)
   })
 
-  it('orders non-featured by atualizadoEm desc', async () => {
-    const rest = (await getProjetos()).slice(1).map((p) => p.atualizadoEm)
-    expect([...rest].sort().reverse()).toEqual(rest)
+  it('orders non-featured by position in projetos.ts', async () => {
+    const rest = (await getProjetos()).slice(1).map((p) => p.slug)
+    const esperado = projetos.filter((p) => !p.destaque).map((p) => p.slug)
+    expect(rest).toEqual(esperado)
   })
 
   it('has unique, url-safe slugs and getProjeto resolves them', async () => {

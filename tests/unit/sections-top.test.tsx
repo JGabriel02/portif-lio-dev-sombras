@@ -12,6 +12,12 @@ import { renderWithIntl } from './test-utils'
 
 // Server components are awaited directly; only the server-side translator is
 // swapped for next-intl's real createTranslator over the real messages.
+vi.mock('next/cache', () => ({ unstable_cache: (f: unknown) => f }))
+vi.mock('@/lib/db/conteudo', () => ({
+  lerProjetos: vi.fn().mockResolvedValue(null),
+  lerSkills: vi.fn().mockResolvedValue(null),
+}))
+
 vi.mock('next-intl/server', () => ({
   getTranslations: async ({
     locale,

@@ -1,6 +1,7 @@
 import 'server-only'
 import fs from 'node:fs'
 import path from 'node:path'
+import { unstable_cache } from 'next/cache'
 import type { Locale } from '@/i18n/routing'
 import { perfil } from './perfil'
 import { projetos } from './projetos'
@@ -14,6 +15,7 @@ import {
   githubLogin,
 } from '@/lib/github'
 import type { Atividade, Repo } from '@/lib/github'
+import { lerProjetos, lerSkills } from '@/lib/db/conteudo'
 import type {
   Perfil,
   Projeto,
@@ -31,6 +33,25 @@ export type {
   SkillCategoria,
 } from './types'
 export type { Atividade } from '@/lib/github'
+
+export const TAG_CONTEUDO = 'conteudo'
+
+const lerProjetosCache = unstable_cache(lerProjetos, ['conteudo-projetos'], {
+  tags: [TAG_CONTEUDO],
+  revalidate: 3600,
+})
+const lerSkillsCache = unstable_cache(lerSkills, ['conteudo-skills'], {
+  tags: [TAG_CONTEUDO],
+  revalidate: 3600,
+})
+
+async function curados(): Promise<ProjetoCurado[]> {
+  return (await lerProjetosCache()) ?? projetos
+}
+
+async function skillsBase(): Promise<Skill[]> {
+  return (await lerSkillsCache()) ?? skills
+}
 
 export function getPerfil(): Perfil {
   return perfil
@@ -75,38 +96,51 @@ export function mesclarProjeto(
   }
 }
 
-/** Non-learning skills by anos desc, then learning skills. */
+/** Non-learning skills by anos desc, then learning; source order breaks ties. */
 export async function getSkills(categoria?: SkillCategoria): Promise<Skill[]> {
   const repos = await carregarRepos()
   const contagem = repos ? contarPorLinguagem(repos) : null
-  const list = (
-    categoria ? skills.filter((s) => s.categoria === categoria) : [...skills]
-  ).map((s): Skill => {
-    if (!contagem || !s.linguagemGithub) return { ...s, repos: undefined }
-    return { ...s, repos: contagem.get(s.linguagemGithub) ?? 0 }
-  })
-  return list.sort((a, b) => {
-    if (!!a.aprendendo !== !!b.aprendendo) return a.aprendendo ? 1 : -1
-    return b.anos - a.anos
-  })
+  const base = await skillsBase()
+  const list = base
+    .map((s, i) => ({ s, i }))
+    .filter(({ s }) => !categoria || s.categoria === categoria)
+    .map(({ s, i }) => {
+      const skill: Skill =
+        !contagem || !s.linguagemGithub
+          ? { ...s, repos: undefined }
+          : { ...s, repos: contagem.get(s.linguagemGithub) ?? 0 }
+      return { skill, i }
+    })
+  return list
+    .sort((a, b) => {
+      if (!!a.skill.aprendendo !== !!b.skill.aprendendo) {
+        return a.skill.aprendendo ? 1 : -1
+      }
+      return b.skill.anos - a.skill.anos || a.i - b.i
+    })
+    .map(({ skill }) => skill)
 }
 
-/** Featured first, then atualizadoEm desc. */
+/** Featured first, then position in the source list (DB `ordem` or file). */
 export async function getProjetos(): Promise<Projeto[]> {
   const login = loginDoDono() ?? ''
   const repos = await carregarRepos()
   const porNome = new Map((repos ?? []).map((r) => [r.name, r]))
-  const lista = projetos.map((curado) => {
+  const lista = (await curados()).map((curado, i) => {
     const repo = porNome.get(curado.repo)
     if (repos && !repo) {
       console.warn('[github] repo curado não encontrado', { repo: curado.repo })
     }
-    return mesclarProjeto(curado, repo, login)
+    return { projeto: mesclarProjeto(curado, repo, login), i }
   })
-  return lista.sort((a, b) => {
-    if (a.destaque !== b.destaque) return a.destaque ? -1 : 1
-    return b.atualizadoEm.localeCompare(a.atualizadoEm)
-  })
+  return lista
+    .sort((a, b) => {
+      if (a.projeto.destaque !== b.projeto.destaque) {
+        return a.projeto.destaque ? -1 : 1
+      }
+      return a.i - b.i
+    })
+    .map(({ projeto }) => projeto)
 }
 
 export async function getProjeto(slug: string): Promise<Projeto | undefined> {

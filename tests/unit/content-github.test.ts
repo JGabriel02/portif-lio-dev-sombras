@@ -3,6 +3,12 @@ import type { Repo } from '@/lib/github'
 import repos from '../fixtures/github/repos.json'
 import calendar from '../fixtures/github/calendar.json'
 
+vi.mock('next/cache', () => ({ unstable_cache: <T>(f: T) => f }))
+vi.mock('@/lib/db/conteudo', () => ({
+  lerProjetos: vi.fn().mockResolvedValue(null),
+  lerSkills: vi.fn().mockResolvedValue(null),
+}))
+
 vi.mock('@/lib/github', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/github')>()
   return { ...actual, getRepos: vi.fn(), getCalendario: vi.fn() }

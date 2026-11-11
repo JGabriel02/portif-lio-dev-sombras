@@ -3,6 +3,12 @@ import { getPerfil, getProjetos } from '@/content'
 import { buildMetadata, personJsonLd, SITE_URL } from '@/lib/seo'
 import sitemap from '@/app/sitemap'
 
+vi.mock('next/cache', () => ({ unstable_cache: <T>(f: T) => f }))
+vi.mock('@/lib/db/conteudo', () => ({
+  lerProjetos: vi.fn().mockResolvedValue(null),
+  lerSkills: vi.fn().mockResolvedValue(null),
+}))
+
 describe('buildMetadata', () => {
   const m = buildMetadata({ locale: 'en', path: '/projetos/npc-forge' })
 
