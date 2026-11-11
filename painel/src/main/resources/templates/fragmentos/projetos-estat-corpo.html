@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="corpo" id="corpo">
+	<h1>Projetos</h1>
+
+	<div class="periodos" role="group" aria-label="Período">
+		<a th:each="p : ${periodos}" th:href="@{/projetos(periodo=${p.valor()})}" th:text="${p.rotulo()}"
+			th:attr="aria-current=${p == periodo} ? 'page'"
+			th:hx-get="@{/projetos(periodo=${p.valor()})}" hx-target="#corpo" hx-swap="outerHTML" hx-push-url="true">30 dias</a>
+	</div>
+
+	<table>
+		<caption>Interesse por projeto no período, do mais visto ao menos visto</caption>
+		<thead>
+			<tr>
+				<th scope="col">Projeto</th>
+				<th scope="col">Visualizações</th>
+				<th scope="col">Cliques no repositório</th>
+				<th scope="col">Cliques na demo</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="r : ${ranking}">
+				<th scope="row" th:text="${r.slug()}">npc-forge</th>
+				<td th:text="${r.visualizacoes()}">0</td>
+				<td th:text="${r.cliquesRepo()}">0</td>
+				<td th:text="${r.cliquesDemo()}">0</td>
+			</tr>
+			<tr th:if="${#lists.isEmpty(ranking)}"><td colspan="4">Nenhum projeto cadastrado.</td></tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

@@ -92,6 +92,26 @@ public class EstatisticasRepositorio {
 				+ "where criado_em >= :inicio group by 1 order by total desc, chave limit :limite", periodo, 10);
 	}
 
+	public List<RankingProjeto> ranking(Periodo periodo) {
+		return jdbc.sql("""
+				select * from (
+				select p.slug,
+					(select count(*) from visita v where v.criado_em >= :inicio
+						and v.caminho in ('/pt/projetos/' || p.slug, '/en/projetos/' || p.slug)) as visualizacoes,
+					(select count(*) from evento e where e.criado_em >= :inicio
+						and e.alvo = p.slug and e.tipo = 'repo') as cliques_repo,
+					(select count(*) from evento e where e.criado_em >= :inicio
+						and e.alvo = p.slug and e.tipo = 'demo') as cliques_demo
+				from projeto p
+				) r
+				order by visualizacoes desc, cliques_repo + cliques_demo desc, slug
+				""")
+				.param("inicio", Timestamp.from(periodo.inicio(clock)))
+				.query((rs, n) -> new RankingProjeto(rs.getString("slug"), rs.getLong("visualizacoes"),
+						rs.getLong("cliques_repo"), rs.getLong("cliques_demo")))
+				.list();
+	}
+
 	private List<Contagem> contagens(String sql, Periodo periodo, int limite) {
 		return jdbc.sql(sql)
 				.param("inicio", Timestamp.from(periodo.inicio(clock)))

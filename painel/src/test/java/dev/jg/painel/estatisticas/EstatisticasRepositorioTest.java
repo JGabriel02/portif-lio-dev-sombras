@@ -164,4 +164,41 @@ class EstatisticasRepositorioTest {
 				.isEqualTo(Instant.parse("2026-11-05T03:00:00Z"));
 	}
 
+	private void projeto(String slug) {
+		jdbc.update("insert into projeto(slug, repo, ordem) values (?, 'r', 99)", slug);
+	}
+
+	private void visitaEm(String caminho, Instant quando) {
+		jdbc.update("""
+				insert into visita(criado_em, caminho, idioma, origem, aparelho, pais, visitante_hash)
+				values (?, ?, 'pt', 'direto', 'desktop', 'BR', ?)
+				""", Timestamp.from(quando), caminho, "a".repeat(64));
+	}
+
+	private void clique(String tipo, String alvo) {
+		jdbc.update("insert into evento(criado_em, tipo, alvo, visitante_hash) values (?, ?, ?, ?)",
+				Timestamp.from(AGORA), tipo, alvo, "e".repeat(64));
+	}
+
+	@Test
+	void rankingContaPtEEnSemConfundirSlugsParecidos() {
+		jdbc.execute("delete from projeto where slug like 'zz-%'");
+		projeto("zz-forge");
+		projeto("zz-forge-extra");
+		projeto("zz-vazio");
+		visitaEm("/pt/projetos/zz-forge", AGORA);
+		visitaEm("/en/projetos/zz-forge", AGORA);
+		visitaEm("/pt/projetos/zz-forge-extra", AGORA);
+		visitaEm("/pt/projetos/zz-forge", AGORA.minusSeconds(100L * 86400));
+		clique("repo", "zz-forge");
+		clique("demo", "zz-forge");
+		clique("demo", "zz-forge");
+
+		List<RankingProjeto> r = repo.ranking(Periodo.D30).stream().filter(x -> x.slug().startsWith("zz-")).toList();
+
+		assertThat(r).containsExactly(new RankingProjeto("zz-forge", 2, 1, 2),
+				new RankingProjeto("zz-forge-extra", 1, 0, 0), new RankingProjeto("zz-vazio", 0, 0, 0));
+		jdbc.execute("delete from projeto where slug like 'zz-%'");
+	}
+
 }
