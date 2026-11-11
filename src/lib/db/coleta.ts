@@ -15,3 +15,18 @@ export async function inserirEvento(e: {
   )
   return r !== null
 }
+
+export async function inserirVisita(v: {
+  caminho: string
+  idioma: string
+  origem: string
+  aparelho: 'mobile' | 'desktop'
+  pais: string | null
+  visitanteHash: string
+}): Promise<boolean> {
+  const r = await consultar(
+    'insert into visita(caminho,idioma,origem,aparelho,pais,visitante_hash) values ($1,$2,$3,$4,$5,$6)',
+    [v.caminho, v.idioma, v.origem, v.aparelho, v.pais, v.visitanteHash],
+  )
+  return r !== null
+}

@@ -9,6 +9,11 @@ vi.mock('@/lib/db/coleta', () => ({
   inserirEvento: (...a: unknown[]) => inserirEvento(...a),
 }))
 
+vi.mock('next/headers', () => ({
+  headers: async () =>
+    new Headers({ 'x-forwarded-for': '1.2.3.4', 'user-agent': 'UA' }),
+}))
+
 import { enviarContato } from '@/app/actions/contato'
 
 function fd(data: Record<string, string>) {
@@ -24,6 +29,7 @@ const valid = {
 
 beforeEach(() => {
   vi.stubEnv('DATABASE_URL', 'postgres://x')
+  vi.stubEnv('COLETA_SEGREDO', 'segredo')
   inserirMensagem.mockResolvedValue(true)
   inserirEvento.mockResolvedValue(true)
 })
@@ -68,8 +74,19 @@ describe('enviarContato', () => {
       texto: valid.mensagem,
     })
     expect(inserirEvento).toHaveBeenCalledWith(
-      expect.objectContaining({ tipo: 'contato' }),
+      expect.objectContaining({
+        tipo: 'contato',
+        visitanteHash: expect.stringMatching(/^[0-9a-f]{64}$/),
+      }),
     )
+  })
+
+  it('saves the message but skips the event without COLETA_SEGREDO', async () => {
+    vi.stubEnv('COLETA_SEGREDO', '')
+    const r = await enviarContato({ status: 'idle' }, fd(valid))
+    expect(r).toEqual({ status: 'ok' })
+    expect(inserirMensagem).toHaveBeenCalled()
+    expect(inserirEvento).not.toHaveBeenCalled()
   })
 
   it('returns error when the message could not be stored', async () => {
