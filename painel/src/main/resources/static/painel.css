@@ -98,7 +98,7 @@ h2 { font-size: 1.15rem; margin-top: 2rem; }
 .grafico { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; height: 20rem; position: relative; }
 .grafico canvas { width: 100% !important; height: 100% !important; }
 
-.ajuda { color: var(--text-muted); font-size: .85rem; margin: .25rem 0 0; }
+.ajuda, .cartoes dd.ajuda { font-weight: 400; color: var(--text-muted); font-size: .85rem; margin: .25rem 0 0; }
 
 details { margin-top: .75rem; }
 summary { cursor: pointer; color: var(--accent); }
