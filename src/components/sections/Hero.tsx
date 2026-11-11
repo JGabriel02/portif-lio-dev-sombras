@@ -31,7 +31,12 @@ export async function Hero({ locale }: { locale: Locale }) {
           <div className="flex flex-wrap gap-3">
             <Button href="#projetos">{t('ctaProjects')}</Button>
             {cv && (
-              <Button href={cv} variant="secondary" download>
+              <Button
+                href={cv}
+                variant="secondary"
+                download
+                data-evento={`cv:${locale}`}
+              >
                 {t('ctaCv')}
               </Button>
             )}

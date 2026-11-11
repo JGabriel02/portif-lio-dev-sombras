@@ -58,6 +58,18 @@ describe('CardFantasma', () => {
     expect(app).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
+  it('marks repo and demo links for click analytics', () => {
+    const { container } = renderWithIntl(
+      <CardFantasma projeto={projeto} locale="pt" />,
+    )
+    expect(
+      container.querySelector('a[href="https://github.com/x/npc-forge"]'),
+    ).toHaveAttribute('data-evento', 'repo:npc-forge')
+    expect(
+      container.querySelector('a[href="https://demo.example.com"]'),
+    ).toHaveAttribute('data-evento', 'demo:npc-forge')
+  })
+
   it('hides the app button when there is no demo', () => {
     renderWithIntl(
       <CardFantasma projeto={{ ...projeto, demoUrl: undefined }} locale="en" />,

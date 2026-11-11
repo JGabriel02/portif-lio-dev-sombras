@@ -62,6 +62,7 @@ export default async function ProjetoPage({
           {projeto.demoUrl && (
             <Button
               href={projeto.demoUrl}
+              data-evento={`demo:${projeto.slug}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -72,6 +73,7 @@ export default async function ProjetoPage({
           <Button
             variant={projeto.demoUrl ? 'secondary' : 'primary'}
             href={projeto.repoUrl}
+            data-evento={`repo:${projeto.slug}`}
             target="_blank"
             rel="noopener noreferrer"
           >

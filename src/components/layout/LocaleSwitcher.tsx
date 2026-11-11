@@ -17,6 +17,7 @@ export function LocaleSwitcher() {
           href={pathname}
           locale={locale}
           lang={locale}
+          data-evento={`idioma:${locale}`}
           aria-current={locale === current ? 'true' : undefined}
           className="inline-flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium"
         >

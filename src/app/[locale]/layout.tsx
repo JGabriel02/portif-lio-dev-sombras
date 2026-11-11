@@ -5,6 +5,7 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { routing, type Locale } from '@/i18n/routing'
 import { buildMetadata } from '@/lib/seo'
+import { Coleta } from '@/components/analytics/Coleta'
 import { Footer } from '@/components/layout/Footer'
 import { FundoSombra } from '@/components/layout/FundoSombra'
 import { Header } from '@/components/layout/Header'
@@ -72,6 +73,8 @@ export default async function LocaleLayout({
           <Header />
           {children}
           <Footer />
+          {(process.env.VERCEL_ENV === 'production' ||
+            process.env.COLETA_FORCAR === '1') && <Coleta />}
         </NextIntlClientProvider>
       </body>
     </html>

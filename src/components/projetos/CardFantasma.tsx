@@ -64,6 +64,7 @@ export function CardFantasma({
         <div className="mt-auto flex flex-wrap gap-2 pt-2">
           <a
             href={projeto.repoUrl}
+            data-evento={`repo:${projeto.slug}`}
             className={`${actionLink} border-line text-text hover:bg-surface border`}
             target="_blank"
             rel="noopener noreferrer"
@@ -75,6 +76,7 @@ export function CardFantasma({
           {projeto.demoUrl && (
             <a
               href={projeto.demoUrl}
+              data-evento={`demo:${projeto.slug}`}
               className={`${actionLink} bg-accent text-on-accent hover:bg-accent-hover`}
               target="_blank"
               rel="noopener noreferrer"
