@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="corpo" id="corpo">
+	<h1>Visão geral</h1>
+
+	<div class="periodos" role="group" aria-label="Período">
+		<a th:each="p : ${periodos}" th:href="@{/(periodo=${p.valor()})}" th:text="${p.rotulo()}"
+			th:attr="aria-current=${p == periodo} ? 'page'"
+			th:hx-get="@{/(periodo=${p.valor()})}" hx-target="#corpo" hx-swap="outerHTML" hx-push-url="true">30 dias</a>
+	</div>
+
+	<section aria-labelledby="h-resumo">
+		<h2 id="h-resumo" class="so-leitor">Resumo do período</h2>
+		<dl class="cartoes">
+			<div><dt>Visitas</dt><dd th:text="${resumo.visitas()}">0</dd></div>
+			<div><dt>Visitantes únicos</dt><dd th:text="${resumo.unicos()}">0</dd></div>
+			<div><dt>Cliques em repositórios</dt><dd th:text="${resumo.cliquesRepo()}">0</dd></div>
+			<div><dt>Cliques em demos</dt><dd th:text="${resumo.cliquesDemo()}">0</dd></div>
+			<div><dt>Downloads do CV</dt><dd th:text="${resumo.downloadsCv()}">0</dd></div>
+			<div><dt>Mensagens não lidas</dt><dd th:text="${resumo.naoLidas()}">0</dd></div>
+		</dl>
+	</section>
+
+	<section aria-labelledby="h-serie">
+		<h2 id="h-serie">Visitas ao longo do tempo</h2>
+		<div class="grafico">
+			<canvas id="grafico-visitas" role="img" aria-label="Gráfico de linha das visitas por período; os mesmos dados estão na tabela abaixo"
+				th:attr="data-serie=${serieJson}"></canvas>
+		</div>
+		<details>
+			<summary>Ver dados do gráfico em tabela</summary>
+			<table>
+				<caption th:text="${periodo.porMes()} ? 'Visitas por mês' : 'Visitas por dia'">Visitas por dia</caption>
+				<thead><tr><th scope="col" th:text="${periodo.porMes()} ? 'Mês' : 'Dia'">Dia</th><th scope="col">Visitas</th></tr></thead>
+				<tbody>
+					<tr th:each="p : ${serie}">
+						<th scope="row" th:text="${p.dia()}">2026-11-11</th>
+						<td th:text="${p.visitas()}">0</td>
+					</tr>
+				</tbody>
+			</table>
+		</details>
+	</section>
+
+	<div class="tabelas">
+		<table th:replace="~{:: lista(${topPaginas}, 'Páginas mais vistas', 'Página')}"></table>
+		<table th:replace="~{:: lista(${topOrigens}, 'Origens principais', 'Origem')}"></table>
+		<table th:replace="~{:: lista(${topPaises}, 'Países', 'País')}"></table>
+		<table th:replace="~{:: lista(${aparelhos}, 'Aparelhos', 'Aparelho')}"></table>
+		<table th:replace="~{:: lista(${idiomas}, 'Idiomas', 'Idioma')}"></table>
+	</div>
+</div>
+
+<table th:fragment="lista(itens, titulo, coluna)">
+	<caption th:text="${titulo}">Título</caption>
+	<thead><tr><th scope="col" th:text="${coluna}">Chave</th><th scope="col">Visitas</th></tr></thead>
+	<tbody>
+		<tr th:each="i : ${itens}">
+			<th scope="row" th:text="${i.chave()}">/</th>
+			<td th:text="${i.total()}">0</td>
+		</tr>
+		<tr th:if="${#lists.isEmpty(itens)}"><td colspan="2">Sem dados no período.</td></tr>
+	</tbody>
+</table>
+</body>
+</html>

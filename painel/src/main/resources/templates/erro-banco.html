@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: cabeca('Sem conexão')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: menu}"></nav>
+<main id="conteudo">
+	<h1>Sem conexão com o banco</h1>
+	<p>Não foi possível falar com o banco de dados. Confira a internet e as variáveis do arquivo <code>.env</code>.</p>
+	<p><a class="botao" href="javascript:location.reload()">Tentar de novo</a></p>
+</main>
+</body>
+</html>

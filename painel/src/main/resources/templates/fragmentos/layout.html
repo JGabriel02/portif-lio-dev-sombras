@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="cabeca(titulo)">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="${titulo} + ' · Painel'">Painel</title>
+	<link rel="stylesheet" href="/painel.css">
+	<script src="/webjars/htmx.org/dist/htmx.min.js" defer></script>
+	<script src="/webjars/chart.js/dist/chart.umd.js" defer></script>
+	<script src="/painel.js" defer></script>
+</head>
+<body>
+<nav th:fragment="menu" class="menu" aria-label="Principal">
+	<a class="marca" href="/">Painel</a>
+	<ul>
+		<li><a href="/" th:attr="aria-current=${ativo == 'visao-geral'} ? 'page'">Visão geral</a></li>
+		<li><a href="/projetos" th:attr="aria-current=${ativo == 'projetos'} ? 'page'">Projetos</a></li>
+		<li>
+			<a href="/mensagens" th:attr="aria-current=${ativo == 'mensagens'} ? 'page'">Mensagens</a>
+			<span class="contador" th:if="${naoLidas != null and naoLidas > 0}"
+				th:text="${naoLidas}" th:attr="aria-label=${naoLidas} + ' não lidas'">0</span>
+		</li>
+		<li><a href="/conteudo/projetos" th:attr="aria-current=${ativo == 'conteudo-projetos'} ? 'page'">Conteúdo › Projetos</a></li>
+		<li><a href="/conteudo/skills" th:attr="aria-current=${ativo == 'conteudo-skills'} ? 'page'">Conteúdo › Skills</a></li>
+	</ul>
+</nav>
+</body>
+</html>
