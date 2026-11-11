@@ -44,10 +44,11 @@ Configure as variáveis de ambiente do projeto:
 - `NEXT_PUBLIC_SITE_URL`: origem pública com `https://` (ex.: `https://seu-dominio.dev`).
   Usada em canonical, hreflang, sitemap, JSON-LD e Open Graph. Se omitida, o site usa
   `VERCEL_PROJECT_PRODUCTION_URL`, depois `VERCEL_URL` e, por fim, `http://localhost:3000`.
-- `NEXT_PUBLIC_CONTATO_ATIVO`: `true` para exibir o formulário de contato. Enquanto não
-  for `true`, em produção (`VERCEL_ENV=production`) a seção Contato mostra apenas
+- `DATABASE_URL`: Postgres (Neon) com a role `site`. Com ela, o formulário de contato
+  fica ativo e grava as mensagens no banco; sem ela, a seção Contato mostra apenas
   e-mail, LinkedIn e GitHub com um aviso de que o formulário chega em breve.
-  Ative somente quando o envio real existir (hoje a Server Action não envia nada).
+- `COLETA_SEGREDO`: segredo (mínimo de 32 caracteres) usado no sal diário da coleta.
+- `REVALIDATE_SECRET`: segredo da rota `POST /api/revalidar`.
 
 Veja `.env.example`.
 

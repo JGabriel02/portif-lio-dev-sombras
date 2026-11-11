@@ -28,13 +28,12 @@ test('project cards are visible and unhidden without JS', async ({ page }) => {
   }
 })
 
-test('contact form submits and shows success without JS', async ({ page }) => {
+test('contact section shows the unavailable notice without JS', async ({
+  page,
+}) => {
+  // Sem DATABASE_URL (caso do e2e) o formulário não é renderizado.
   await page.goto('/pt')
-  await page.getByLabel(messages.pt.contato.name).fill('Ana Teste')
-  await page.getByLabel(messages.pt.contato.email).fill('ana@example.com')
-  await page
-    .getByLabel(messages.pt.contato.message)
-    .fill('Olá, gostaria de conversar sobre uma vaga.')
-  await page.getByRole('button', { name: messages.pt.contato.send }).click()
-  await expect(page.getByText(messages.pt.contato.success)).toBeVisible()
+  await expect(
+    page.getByText(messages.pt.contato.formIndisponivel),
+  ).toBeVisible()
 })

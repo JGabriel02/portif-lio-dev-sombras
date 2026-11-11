@@ -6,6 +6,8 @@ import {
   type ContatoState,
 } from '@/lib/schemas/contato'
 import { contatoFormAtivo } from '@/lib/contato-flag'
+import { inserirMensagem } from '@/lib/db/mensagens'
+import { inserirEvento } from '@/lib/db/coleta'
 
 function text(formData: FormData, key: string): string {
   const v = formData.get(key)
@@ -40,11 +42,23 @@ export async function enviarContato(
       return { status: 'invalid', fieldErrors, values }
     }
 
-    if (process.env.NODE_ENV !== 'production') {
-      console.info('[contato] dev only, not sent', {
-        length: parsed.data.mensagem.length,
+    const gravada = await inserirMensagem({
+      nome: parsed.data.nome,
+      email: parsed.data.email,
+      texto: parsed.data.mensagem,
+    })
+    if (!gravada) return { status: 'error' }
+
+    // O evento é só métrica: falha aqui não derruba o envio.
+    try {
+      await inserirEvento({
+        tipo: 'contato',
+        alvo: null,
+        idioma: null,
+        // TODO(Tarefa 9): trocar por visitanteHash(headers()).
+        visitanteHash: '0'.repeat(64),
       })
-    }
+    } catch {}
     return { status: 'ok' }
   } catch {
     return { status: 'error' }

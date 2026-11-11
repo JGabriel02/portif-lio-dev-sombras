@@ -1,4 +1,14 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+const inserirMensagem = vi.fn()
+const inserirEvento = vi.fn()
+vi.mock('@/lib/db/mensagens', () => ({
+  inserirMensagem: (...a: unknown[]) => inserirMensagem(...a),
+}))
+vi.mock('@/lib/db/coleta', () => ({
+  inserirEvento: (...a: unknown[]) => inserirEvento(...a),
+}))
+
 import { enviarContato } from '@/app/actions/contato'
 
 function fd(data: Record<string, string>) {
@@ -12,20 +22,28 @@ const valid = {
   mensagem: 'uma mensagem longa',
 }
 
+beforeEach(() => {
+  vi.stubEnv('DATABASE_URL', 'postgres://x')
+  inserirMensagem.mockResolvedValue(true)
+  inserirEvento.mockResolvedValue(true)
+})
+
 afterEach(() => {
   vi.restoreAllMocks()
   vi.unstubAllEnvs()
+  inserirMensagem.mockReset()
+  inserirEvento.mockReset()
 })
 
 describe('enviarContato', () => {
-  it('returns ok silently when the honeypot is filled', async () => {
-    const info = vi.spyOn(console, 'info').mockImplementation(() => {})
+  it('returns ok silently and stores nothing when the honeypot is filled', async () => {
     const r = await enviarContato(
       { status: 'idle' },
       fd({ nome: '', email: 'x', mensagem: '', site: 'bot' }),
     )
     expect(r).toEqual({ status: 'ok' })
-    expect(info).not.toHaveBeenCalled()
+    expect(inserirMensagem).not.toHaveBeenCalled()
+    expect(inserirEvento).not.toHaveBeenCalled()
   })
 
   it('returns field errors and preserves values', async () => {
@@ -38,31 +56,52 @@ describe('enviarContato', () => {
       fieldErrors: { email: 'errors.emailInvalid' },
       values: { nome: 'Ana', email: 'nope', mensagem: valid.mensagem },
     })
+    expect(inserirMensagem).not.toHaveBeenCalled()
   })
 
-  it('returns ok and logs a dev notice for a valid payload', async () => {
-    const info = vi.spyOn(console, 'info').mockImplementation(() => {})
+  it('stores the message and a contato event for a valid payload', async () => {
     const r = await enviarContato({ status: 'idle' }, fd(valid))
     expect(r).toEqual({ status: 'ok' })
-    expect(info).toHaveBeenCalledWith('[contato] dev only, not sent', {
-      length: valid.mensagem.length,
+    expect(inserirMensagem).toHaveBeenCalledWith({
+      nome: 'Ana',
+      email: 'ana@exemplo.com',
+      texto: valid.mensagem,
     })
-    expect(JSON.stringify(info.mock.calls)).not.toContain('Ana')
-    expect(JSON.stringify(info.mock.calls)).not.toContain('ana@exemplo.com')
+    expect(inserirEvento).toHaveBeenCalledWith(
+      expect.objectContaining({ tipo: 'contato' }),
+    )
   })
 
-  it('does not log in production', async () => {
-    vi.stubEnv('NODE_ENV', 'production')
-    const info = vi.spyOn(console, 'info').mockImplementation(() => {})
-    const r = await enviarContato({ status: 'idle' }, fd(valid))
-    expect(r).toEqual({ status: 'ok' })
-    expect(info).not.toHaveBeenCalled()
-  })
-
-  it('refuses when the form is disabled in production', async () => {
-    vi.stubEnv('VERCEL_ENV', 'production')
-    vi.stubEnv('NEXT_PUBLIC_CONTATO_ATIVO', '')
+  it('returns error when the message could not be stored', async () => {
+    inserirMensagem.mockResolvedValue(false)
     const r = await enviarContato({ status: 'idle' }, fd(valid))
     expect(r).toEqual({ status: 'error' })
+    expect(inserirEvento).not.toHaveBeenCalled()
+  })
+
+  it('still returns ok when only the event fails to be stored', async () => {
+    inserirEvento.mockRejectedValue(new Error('x'))
+    const r = await enviarContato({ status: 'idle' }, fd(valid))
+    expect(r).toEqual({ status: 'ok' })
+  })
+
+  it('refuses when there is no DATABASE_URL', async () => {
+    vi.stubEnv('DATABASE_URL', '')
+    const r = await enviarContato({ status: 'idle' }, fd(valid))
+    expect(r).toEqual({ status: 'error' })
+    expect(inserirMensagem).not.toHaveBeenCalled()
+  })
+
+  it('never logs the name, email or text', async () => {
+    const spies = (['log', 'info', 'warn', 'error', 'debug'] as const).map(
+      (m) => vi.spyOn(console, m).mockImplementation(() => {}),
+    )
+    inserirMensagem.mockRejectedValue(new Error('boom'))
+    await enviarContato({ status: 'idle' }, fd(valid))
+    await enviarContato({ status: 'idle' }, fd({ ...valid, nome: 'Ana' }))
+    const logged = JSON.stringify(spies.flatMap((s) => s.mock.calls))
+    expect(logged).not.toContain('ana@exemplo.com')
+    expect(logged).not.toContain('Ana')
+    expect(logged).not.toContain(valid.mensagem)
   })
 })

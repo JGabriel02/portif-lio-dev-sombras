@@ -1,10 +1,14 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ContatoForm } from '@/components/sections/ContatoForm'
 import pt from '@/content/messages/pt.json'
 import { renderWithIntl } from './test-utils'
 
 describe('ContatoForm', () => {
+  // A action real recusa envio sem banco; a validação roda antes de qualquer gravação.
+  beforeEach(() => vi.stubEnv('DATABASE_URL', 'postgres://teste'))
+  afterEach(() => vi.unstubAllEnvs())
+
   it('shows translated field errors, aria wiring and an alert on empty submit', async () => {
     renderWithIntl(<ContatoForm email="a@b.com" />)
     fireEvent.submit(

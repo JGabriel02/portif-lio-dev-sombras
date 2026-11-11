@@ -1,9 +1,7 @@
 /**
- * The contact form has no real delivery yet. On Vercel production it stays off
- * unless NEXT_PUBLIC_CONTATO_ATIVO is explicitly "true"; elsewhere (dev, CI,
- * previews, local builds) it is on.
+ * O formulário de contato fica ativo quando há banco configurado: as mensagens
+ * são gravadas no Neon. Sem DATABASE_URL a seção mostra só os links.
  */
 export function contatoFormAtivo(): boolean {
-  if (process.env.VERCEL_ENV !== 'production') return true
-  return process.env.NEXT_PUBLIC_CONTATO_ATIVO === 'true'
+  return Boolean(process.env.DATABASE_URL)
 }
