@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: cabeca('Conteúdo › Projetos')}"></head>
+<body>
+<a class="pular" href="#conteudo">Ir para o conteúdo</a>
+<nav th:replace="~{fragmentos/layout :: menu}"></nav>
+<main id="conteudo">
+	<h1>Projetos</h1>
+	<p class="aviso" role="status" th:if="${aviso != null}" th:text="${aviso}"></p>
+	<p><a class="botao" href="/conteudo/projetos/novo">Novo projeto</a></p>
+	<p th:if="${projetos.isEmpty()}">Nenhum projeto cadastrado.</p>
+	<table class="projetos" th:unless="${projetos.isEmpty()}">
+		<caption>Projetos exibidos no site, na ordem de exibição</caption>
+		<thead>
+			<tr>
+				<th scope="col">Ordem</th>
+				<th scope="col">Projeto</th>
+				<th scope="col">Estado</th>
+				<th scope="col">Mover</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="p : ${projetos}">
+				<td th:text="${p.ordem()}">1</td>
+				<th scope="row"><a th:href="@{/conteudo/projetos/{slug}(slug=${p.slug()})}" th:text="${p.slug()}">slug</a>
+					<span class="ajuda" th:text="${p.repo()}">repo</span></th>
+				<td>
+					<span th:text="${p.publicado()} ? 'Publicado' : 'Rascunho'">Publicado</span>
+					<span th:if="${p.destaque()}"> · Destaque</span>
+				</td>
+				<td class="mover">
+					<form method="post" th:action="@{/conteudo/projetos/{slug}/mover(slug=${p.slug()}, delta=-1)}">
+						<button type="submit" class="botao" th:attr="aria-label='Subir ' + ${p.slug()}">&uarr;</button>
+					</form>
+					<form method="post" th:action="@{/conteudo/projetos/{slug}/mover(slug=${p.slug()}, delta=1)}">
+						<button type="submit" class="botao" th:attr="aria-label='Descer ' + ${p.slug()}">&darr;</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</main>
+</body>
+</html>

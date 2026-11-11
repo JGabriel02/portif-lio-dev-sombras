@@ -59,6 +59,57 @@
 		});
 	}
 
+
+	// Abas pt/en do formulario de projeto. Sem JS todos os paineis ficam visiveis.
+	function montaAbas() {
+		document.querySelectorAll('[data-abas]').forEach(function (raiz) {
+			var lista = raiz.querySelector('[role="tablist"]');
+			var abas = Array.prototype.slice.call(raiz.querySelectorAll('[role="tab"]'));
+			if (!lista || abas.length === 0) {
+				return;
+			}
+			function painel(aba) {
+				return document.getElementById(aba.getAttribute('aria-controls'));
+			}
+			function ativa(aba, foco) {
+				abas.forEach(function (a) {
+					var sel = a === aba;
+					a.setAttribute('aria-selected', sel ? 'true' : 'false');
+					a.tabIndex = sel ? 0 : -1;
+					painel(a).hidden = !sel;
+				});
+				if (foco) {
+					aba.focus();
+				}
+			}
+			lista.hidden = false;
+			raiz.classList.add('com-js');
+			abas.forEach(function (aba, i) {
+				aba.addEventListener('click', function () { ativa(aba, false); });
+				aba.addEventListener('keydown', function (e) {
+					var destino = null;
+					if (e.key === 'ArrowRight') { destino = abas[(i + 1) % abas.length]; }
+					else if (e.key === 'ArrowLeft') { destino = abas[(i - 1 + abas.length) % abas.length]; }
+					else if (e.key === 'Home') { destino = abas[0]; }
+					else if (e.key === 'End') { destino = abas[abas.length - 1]; }
+					if (destino) {
+						e.preventDefault();
+						ativa(destino, true);
+					}
+				});
+			});
+			// abre a aba que tem campo com erro; senao, a primeira
+			var inicial = abas[0];
+			abas.forEach(function (aba) {
+				if (painel(aba).querySelector('[aria-invalid="true"]')) {
+					inicial = aba;
+				}
+			});
+			ativa(inicial, false);
+		});
+	}
+	document.addEventListener('DOMContentLoaded', montaAbas);
+
 	document.addEventListener('DOMContentLoaded', montaGrafico);
 	document.addEventListener('htmx:afterSwap', montaGrafico);
 })();

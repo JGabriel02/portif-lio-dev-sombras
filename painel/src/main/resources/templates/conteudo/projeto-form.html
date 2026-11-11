@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: cabeca(${novo} ? 'Novo projeto' : 'Editar projeto')}"></head>
+<body>
+<a class="pular" href="#conteudo">Ir para o conteúdo</a>
+<nav th:replace="~{fragmentos/layout :: menu}"></nav>
+<main id="conteudo">
+	<p><a href="/conteudo/projetos">&larr; Voltar aos projetos</a></p>
+	<h1 th:text="${novo} ? 'Novo projeto' : 'Editar projeto'">Editar projeto</h1>
+	<p class="aviso" role="alert" th:if="${#fields.hasErrors('${projeto.*}')}">Corrija os campos indicados e salve de novo.</p>
+
+	<form method="post" class="formulario" th:object="${projeto}"
+		th:action="${novo} ? @{/conteudo/projetos} : @{/conteudo/projetos/{slug}(slug=${projeto.slug})}">
+
+		<div class="campo">
+			<label for="slug">Slug</label>
+			<input id="slug" name="slug" type="text" th:field="*{slug}" th:readonly="${!novo}"
+				maxlength="60" autocomplete="off" aria-describedby="slug-ajuda slug-erro"
+				th:attr="aria-invalid=${#fields.hasErrors('slug')} ? 'true'">
+			<p id="slug-ajuda" class="ajuda" th:text="${novo} ? 'Letras minúsculas, números e hífen. Não pode ser alterado depois.' : 'O slug não pode ser alterado.'"></p>
+			<p id="slug-erro" class="erro" th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}"></p>
+		</div>
+
+		<div class="campo">
+			<label for="repo">Repositório (dono/nome)</label>
+			<input id="repo" type="text" th:field="*{repo}" aria-describedby="repo-erro"
+				th:attr="aria-invalid=${#fields.hasErrors('repo')} ? 'true'">
+			<p id="repo-erro" class="erro" th:if="${#fields.hasErrors('repo')}" th:errors="*{repo}"></p>
+		</div>
+
+		<div class="campo">
+			<label for="stack">Stack</label>
+			<input id="stack" type="text" th:field="*{stack}" aria-describedby="stack-ajuda">
+			<p id="stack-ajuda" class="ajuda">Tecnologias separadas por vírgula, por exemplo: Java, Spring.</p>
+		</div>
+
+		<div class="campo">
+			<label for="demoUrl">URL da demo</label>
+			<input id="demoUrl" type="text" inputmode="url" th:field="*{demoUrl}"
+				aria-describedby="demoUrl-ajuda demoUrl-erro"
+				th:attr="aria-invalid=${#fields.hasErrors('demoUrl')} ? 'true'">
+			<p id="demoUrl-ajuda" class="ajuda">Deixe vazio se não houver demo.</p>
+			<p id="demoUrl-erro" class="erro" th:if="${#fields.hasErrors('demoUrl')}" th:errors="*{demoUrl}"></p>
+		</div>
+
+		<fieldset class="opcoes">
+			<legend>Exibição</legend>
+			<label><input type="checkbox" th:field="*{publicado}"> Publicado</label>
+			<label><input type="checkbox" th:field="*{destaque}"> Destaque (desmarca o destaque atual)</label>
+			<label><input type="checkbox" th:field="*{ocultarDemo}"> Ocultar o link da demo</label>
+		</fieldset>
+
+		<fieldset class="opcoes">
+			<legend>Dados de reserva (usados quando o GitHub não responde)</legend>
+			<div class="campo">
+				<label for="fallbackLinguagem">Linguagem</label>
+				<input id="fallbackLinguagem" type="text" th:field="*{fallbackLinguagem}">
+			</div>
+			<div class="campo">
+				<label for="fallbackEstrelas">Estrelas</label>
+				<input id="fallbackEstrelas" type="number" min="0" th:field="*{fallbackEstrelas}"
+					aria-describedby="fallbackEstrelas-erro"
+					th:attr="aria-invalid=${#fields.hasErrors('fallbackEstrelas')} ? 'true'">
+				<p id="fallbackEstrelas-erro" class="erro" th:if="${#fields.hasErrors('fallbackEstrelas')}">Informe um número inteiro.</p>
+			</div>
+			<div class="campo">
+				<label for="fallbackAtualizadoEm">Atualizado em</label>
+				<input id="fallbackAtualizadoEm" type="date" th:field="*{fallbackAtualizadoEm}"
+					aria-describedby="fallbackAtualizadoEm-erro"
+					th:attr="aria-invalid=${#fields.hasErrors('fallbackAtualizadoEm')} ? 'true'">
+				<p id="fallbackAtualizadoEm-erro" class="erro" th:if="${#fields.hasErrors('fallbackAtualizadoEm')}">Informe uma data válida.</p>
+			</div>
+		</fieldset>
+
+		<!--
+			Abas pt/en: sem JavaScript os dois painéis aparecem um embaixo do outro e todos os campos
+			são enviados; com JavaScript (painel.js) a lista de abas é exibida e um painel fica oculto
+			por vez (oculto só visualmente, os campos continuam no envio).
+		-->
+		<div class="abas" data-abas>
+			<div role="tablist" aria-label="Idioma do texto" hidden>
+				<button type="button" role="tab" id="aba-pt" aria-controls="painel-pt" aria-selected="true" tabindex="0">Português</button>
+				<button type="button" role="tab" id="aba-en" aria-controls="painel-en" aria-selected="false" tabindex="-1">English</button>
+			</div>
+
+			<section role="tabpanel" id="painel-pt" aria-labelledby="titulo-pt" class="painel-aba" data-aba="aba-pt">
+				<h2 id="titulo-pt">Português</h2>
+				<div class="campo">
+					<label for="resumoPt">Resumo</label>
+					<input id="resumoPt" type="text" th:field="*{resumoPt}">
+				</div>
+				<div class="campo">
+					<label for="descricaoPt">Descrição</label>
+					<textarea id="descricaoPt" rows="6" th:field="*{descricaoPt}"></textarea>
+				</div>
+				<div class="campo">
+					<label for="aprendizadosPt">Aprendizados</label>
+					<textarea id="aprendizadosPt" rows="6" th:field="*{aprendizadosPt}"></textarea>
+				</div>
+			</section>
+
+			<section role="tabpanel" id="painel-en" aria-labelledby="titulo-en" class="painel-aba" data-aba="aba-en" lang="en">
+				<h2 id="titulo-en">English</h2>
+				<div class="campo">
+					<label for="resumoEn">Summary</label>
+					<input id="resumoEn" type="text" th:field="*{resumoEn}">
+				</div>
+				<div class="campo">
+					<label for="descricaoEn">Description</label>
+					<textarea id="descricaoEn" rows="6" th:field="*{descricaoEn}"></textarea>
+				</div>
+				<div class="campo">
+					<label for="aprendizadosEn">What I learned</label>
+					<textarea id="aprendizadosEn" rows="6" th:field="*{aprendizadosEn}"></textarea>
+				</div>
+			</section>
+		</div>
+
+		<div class="acoes">
+			<button type="submit" class="botao">Salvar</button>
+			<a href="/conteudo/projetos">Cancelar</a>
+		</div>
+	</form>
+
+	<form method="post" class="zona-perigo" th:unless="${novo}"
+		th:action="@{/conteudo/projetos/{slug}/apagar(slug=${projeto.slug})}"
+		hx-confirm="Apagar este projeto? Não dá para desfazer."
+		onsubmit="return confirm('Apagar este projeto? Não dá para desfazer.')">
+		<button type="submit" class="botao perigo">Apagar projeto</button>
+	</form>
+</main>
+</body>
+</html>
