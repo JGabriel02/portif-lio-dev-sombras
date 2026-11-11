@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: cabeca('Mensagem')}"></head>
+<body>
+<a class="pular" href="#conteudo">Ir para o conteúdo</a>
+<nav th:replace="~{fragmentos/layout :: menu}"></nav>
+<main id="conteudo">
+	<p><a href="/mensagens">&larr; Voltar às mensagens</a></p>
+	<h1>Mensagem de <span th:text="${mensagem.nome()}">Nome</span></h1>
+	<dl class="detalhes">
+		<div><dt>Data</dt><dd th:text="${mensagem.criadoEmFormatado()}">11/11/2026 12:00</dd></div>
+		<div><dt>E-mail</dt><dd><a th:href="'mailto:' + ${mensagem.email()}" th:text="${mensagem.email()}">e@mail</a></dd></div>
+	</dl>
+	<p class="texto-mensagem" th:text="${mensagem.texto()}">Texto</p>
+	<div class="acoes">
+		<form method="post" th:action="@{/mensagens/{id}/nao-lida(id=${mensagem.id()})}">
+			<button type="submit" class="botao">Marcar como não lida</button>
+		</form>
+		<form method="post" th:action="@{/mensagens/{id}/apagar(id=${mensagem.id()})}"
+			hx-confirm="Apagar esta mensagem? Não dá para desfazer."
+			onsubmit="return confirm('Apagar esta mensagem? Não dá para desfazer.')">
+			<button type="submit" class="botao perigo">Apagar</button>
+		</form>
+	</div>
+</main>
+</body>
+</html>

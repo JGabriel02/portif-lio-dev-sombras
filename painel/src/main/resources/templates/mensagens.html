@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: cabeca('Mensagens')}"></head>
+<body>
+<a class="pular" href="#conteudo">Ir para o conteúdo</a>
+<nav th:replace="~{fragmentos/layout :: menu}"></nav>
+<main id="conteudo">
+	<h1>Mensagens</h1>
+	<p class="aviso" role="status" th:if="${aviso != null}" th:text="${aviso}"></p>
+	<div class="periodos">
+		<a href="/mensagens" th:attr="aria-current=${!soNaoLidas} ? 'page'">Todas</a>
+		<a href="/mensagens?naoLidas=true" th:attr="aria-current=${soNaoLidas} ? 'page'">Não lidas</a>
+	</div>
+	<p th:if="${pagina.itens().isEmpty()}">Nenhuma mensagem por aqui.</p>
+	<table class="mensagens" th:unless="${pagina.itens().isEmpty()}">
+		<caption>Mensagens recebidas pelo formulário de contato</caption>
+		<thead>
+			<tr>
+				<th scope="col">Data</th>
+				<th scope="col">Nome</th>
+				<th scope="col">Trecho</th>
+				<th scope="col">Estado</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="m : ${pagina.itens()}" th:classappend="${!m.lida()} ? 'nao-lida'">
+				<th scope="row" th:text="${m.criadoEmFormatado()}">11/11/2026 12:00</th>
+				<td th:text="${m.nome()}">Nome</td>
+				<td><a th:href="@{/mensagens/{id}(id=${m.id()})}"
+					th:text="${#strings.abbreviate(m.texto(), 80)}">Texto</a></td>
+				<td th:text="${m.lida()} ? 'Lida' : 'Não lida'">Não lida</td>
+			</tr>
+		</tbody>
+	</table>
+	<nav class="paginacao" aria-label="Paginação" th:if="${pagina.pagina() > 0 or pagina.temProxima()}">
+		<a th:if="${pagina.pagina() > 0}" rel="prev"
+			th:href="@{/mensagens(naoLidas=${soNaoLidas}, pagina=${pagina.pagina() - 1})}">Anterior</a>
+		<a th:if="${pagina.temProxima()}" rel="next"
+			th:href="@{/mensagens(naoLidas=${soNaoLidas}, pagina=${pagina.pagina() + 1})}">Próxima</a>
+	</nav>
+</main>
+</body>
+</html>
