@@ -22,4 +22,6 @@ export const skills: Skill[] = [
   { nome: 'Next.js', categoria: 'frontend', anos: 2 },
   { nome: 'Git', categoria: 'tools', anos: 4 },
   { nome: 'Docker', categoria: 'tools', anos: 2 },
+  // TODO(conteúdo): confirmar anos de SQL
+  { nome: 'SQL', categoria: 'tools', anos: 2 },
 ]

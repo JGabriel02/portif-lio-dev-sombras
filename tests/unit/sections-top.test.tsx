@@ -167,6 +167,12 @@ describe('Skills', () => {
     expect(backend).toHaveTextContent('Python')
   })
 
+  it('lists SQL under tools', async () => {
+    renderWithIntl(await Skills({ locale: 'pt' }))
+    const tools = screen.getByRole('region', { name: 'Ferramentas' })
+    expect(tools).toHaveTextContent('SQL')
+  })
+
   it('marks learning skills', async () => {
     vi.mocked(content.getSkills).mockResolvedValue([
       { nome: 'Go', categoria: 'backend', anos: 0, aprendendo: true },
