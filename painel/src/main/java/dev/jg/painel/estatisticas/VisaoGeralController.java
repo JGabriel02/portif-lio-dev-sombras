@@ -46,7 +46,7 @@ public class VisaoGeralController {
 		model.addAttribute("aparelhos", repositorio.porAparelho(periodo));
 		model.addAttribute("idiomas", repositorio.porIdioma(periodo));
 		model.addAttribute("ativo", "visao-geral");
-		return htmx != null ? "fragmentos/visao-geral-corpo" : "visao-geral";
+		return htmx != null ? "fragmentos/visao-geral-corpo :: corpo" : "visao-geral";
 	}
 
 }

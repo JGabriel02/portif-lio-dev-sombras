@@ -4,9 +4,11 @@
 <body>
 <nav th:replace="~{fragmentos/layout :: menu}"></nav>
 <main id="conteudo">
-	<h1>Sem conexão com o banco</h1>
-	<p>Não foi possível falar com o banco de dados. Confira a internet e as variáveis do arquivo <code>.env</code>.</p>
-	<p><a class="botao" href="javascript:location.reload()">Tentar de novo</a></p>
+	<div th:fragment="aviso" role="alert">
+		<h1>Sem conexão com o banco</h1>
+		<p>Não foi possível falar com o banco de dados. Confira a internet e as variáveis do arquivo <code>.env</code>.</p>
+		<p><a class="botao" href="javascript:location.reload()">Tentar de novo</a></p>
+	</div>
 </main>
 </body>
 </html>

@@ -3,6 +3,17 @@
 
 	var grafico = null;
 
+	// Deixa o htmx trocar o conteudo tambem quando o servidor responde 503 (banco fora).
+	if (typeof htmx !== 'undefined') {
+		htmx.config.responseHandling = [
+			{ code: '204', swap: false },
+			{ code: '503', swap: true, error: false },
+			{ code: '[23]..', swap: true },
+			{ code: '[45]..', swap: false, error: true },
+			{ code: '...', swap: true }
+		];
+	}
+
 	function montaGrafico() {
 		var canvas = document.getElementById('grafico-visitas');
 		if (grafico) {

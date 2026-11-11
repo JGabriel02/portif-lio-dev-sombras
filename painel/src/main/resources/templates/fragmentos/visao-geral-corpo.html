@@ -14,7 +14,8 @@
 		<h2 id="h-resumo" class="so-leitor">Resumo do período</h2>
 		<dl class="cartoes">
 			<div><dt>Visitas</dt><dd th:text="${resumo.visitas()}">0</dd></div>
-			<div><dt>Visitantes únicos</dt><dd th:text="${resumo.unicos()}">0</dd></div>
+			<div><dt>Visitantes únicos</dt><dd th:text="${resumo.unicos()}" aria-describedby="ajuda-unicos">0</dd>
+				<dd class="ajuda" id="ajuda-unicos">Soma dos visitantes únicos de cada dia: o identificador muda todo dia, então quem volta em outro dia conta de novo.</dd></div>
 			<div><dt>Cliques em repositórios</dt><dd th:text="${resumo.cliquesRepo()}">0</dd></div>
 			<div><dt>Cliques em demos</dt><dd th:text="${resumo.cliquesDemo()}">0</dd></div>
 			<div><dt>Downloads do CV</dt><dd th:text="${resumo.downloadsCv()}">0</dd></div>

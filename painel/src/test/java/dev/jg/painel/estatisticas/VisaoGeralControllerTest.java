@@ -58,7 +58,42 @@ class VisaoGeralControllerTest {
 	}
 
 	@Test
-	void falhaDeBancoDa503() throws Exception {
+	void fragmentoHtmxNaoTemEnvolturaNemTabelaSolta() throws Exception {
+		String corpo = mvc.perform(get("/").param("periodo", "d7").header("HX-Request", "true"))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+
+		org.assertj.core.api.Assertions.assertThat(corpo)
+				.contains("id=\"corpo\"")
+				.doesNotContain("<html")
+				.doesNotContain("<!DOCTYPE");
+		// 1 caption da serie + 5 listas
+		org.assertj.core.api.Assertions.assertThat(corpo.split("<caption", -1)).hasSize(7);
+	}
+
+	@Test
+	void mostraAjudaDosVisitantesUnicos() throws Exception {
+		mvc.perform(get("/"))
+				.andExpect(content().string(containsString("id=\"ajuda-unicos\"")))
+				.andExpect(content().string(containsString("o identificador muda todo dia")));
+	}
+
+	@Test
+	void falhaDeBancoEmHtmxTornaOErroVisivel() throws Exception {
+		when(repo.resumo(any())).thenThrow(new DataAccessResourceFailureException("fora"));
+
+		mvc.perform(get("/").header("HX-Request", "true"))
+				.andExpect(status().isServiceUnavailable())
+				.andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+						.string("HX-Retarget", "main"))
+				.andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+						.string("HX-Reswap", "innerHTML"))
+				.andExpect(content().string(containsString("Sem conexão com o banco")))
+				.andExpect(content().string(not(containsString("<nav"))));
+	}
+
+	@Test
+	void falhaDeBanco() throws Exception {
 		when(repo.resumo(any())).thenThrow(new DataAccessResourceFailureException("fora"));
 
 		mvc.perform(get("/"))
