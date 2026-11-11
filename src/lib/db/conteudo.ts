@@ -1,7 +1,7 @@
 import 'server-only'
 import { z } from 'zod'
 import type { ProjetoCurado, Skill } from '@/content/types'
-import { consultar } from './cliente'
+import { consultarOuFalhar } from './cliente'
 
 const texto = z.string().nullable()
 
@@ -50,12 +50,17 @@ function avisar(motivo: string): void {
   console.warn(`[db] ${motivo}`)
 }
 
+/**
+ * Returns null when there is no DATABASE_URL or the table is empty (the site
+ * then uses the files). THROWS on query failure/timeout or invalid rows, so
+ * the caller's cache never stores a failure.
+ */
 async function ler<L, R>(
   consulta: string,
   schema: z.ZodType<L>,
   converter: (l: L) => R,
 ): Promise<R[] | null> {
-  const linhas = await consultar<unknown>(consulta, [])
+  const linhas = await consultarOuFalhar<unknown>(consulta, [])
   if (!linhas) return null
   if (linhas.length === 0) {
     avisar('conteúdo vazio')
@@ -66,7 +71,7 @@ async function ler<L, R>(
     const r = schema.safeParse(linha)
     if (!r.success) {
       avisar('linha inválida')
-      return null
+      throw new Error('linha inválida')
     }
     out.push(converter(r.data))
   }

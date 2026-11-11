@@ -86,7 +86,7 @@ describe('db conteudo', () => {
     expect(await lerSkills()).toBeNull()
   })
 
-  it('skills válidas são mapeadas; categoria inválida dá null', async () => {
+  it('skills válidas são mapeadas; categoria inválida lança', async () => {
     query.mockResolvedValue([
       {
         nome: 'React',
@@ -108,20 +108,20 @@ describe('db conteudo', () => {
         linguagem_github: null,
       },
     ])
-    expect(await lerSkills()).toBeNull()
+    await expect(lerSkills()).rejects.toThrow()
   })
 
-  it('query rejeitada dá null sem vazar o erro no log', async () => {
+  it('query rejeitada lança sem vazar o erro no log', async () => {
     query.mockRejectedValue(new Error('segredo-na-mensagem'))
-    expect(await lerProjetos()).toBeNull()
+    await expect(lerProjetos()).rejects.toThrow()
     expect(JSON.stringify(warn.mock.calls)).not.toContain('segredo')
   })
 
-  it('query que nunca resolve dá null após 3000 ms', async () => {
+  it('query que nunca resolve lança após 3000 ms', async () => {
     vi.useFakeTimers()
     query.mockReturnValue(new Promise(() => {}))
-    const p = lerProjetos()
+    const p = expect(lerProjetos()).rejects.toThrow('timeout')
     await vi.advanceTimersByTimeAsync(3000)
-    expect(await p).toBeNull()
+    await p
   })
 })

@@ -24,14 +24,22 @@ function comTimeout<T>(promessa: Promise<T>, ms: number): Promise<T> {
   return Promise.race([promessa, limite]).finally(() => clearTimeout(timer))
 }
 
-export async function consultar<T>(
+/** Null only when there is no DATABASE_URL; query failure/timeout throws. */
+export async function consultarOuFalhar<T>(
   texto: string,
   params: unknown[],
 ): Promise<T[] | null> {
   const cliente = sql()
   if (!cliente) return null
+  return (await comTimeout(cliente.query(texto, params), TIMEOUT_MS)) as T[]
+}
+
+export async function consultar<T>(
+  texto: string,
+  params: unknown[],
+): Promise<T[] | null> {
   try {
-    return (await comTimeout(cliente.query(texto, params), TIMEOUT_MS)) as T[]
+    return await consultarOuFalhar<T>(texto, params)
   } catch (e) {
     console.warn('[db] falha', {
       tipo: e instanceof Error ? e.name : 'desconhecido',

@@ -45,12 +45,29 @@ const lerSkillsCache = unstable_cache(lerSkills, ['conteudo-skills'], {
   revalidate: 3600,
 })
 
+// The cached readers throw on DB failure (so unstable_cache never stores it);
+// the catch lives outside the cache and falls back to the files. A null/empty
+// result (no DATABASE_URL, empty tables) also means "use the files".
 async function curados(): Promise<ProjetoCurado[]> {
-  return (await lerProjetosCache()) ?? projetos
+  try {
+    return (await lerProjetosCache()) ?? projetos
+  } catch (e) {
+    console.warn('[db] falha', {
+      tipo: e instanceof Error ? e.name : 'desconhecido',
+    })
+    return projetos
+  }
 }
 
 async function skillsBase(): Promise<Skill[]> {
-  return (await lerSkillsCache()) ?? skills
+  try {
+    return (await lerSkillsCache()) ?? skills
+  } catch (e) {
+    console.warn('[db] falha', {
+      tipo: e instanceof Error ? e.name : 'desconhecido',
+    })
+    return skills
+  }
 }
 
 export function getPerfil(): Perfil {
