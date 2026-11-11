@@ -48,12 +48,13 @@ class ProjetosConteudoControllerTest {
 	@BeforeEach
 	void prepara() {
 		when(mensagens.naoLidas()).thenReturn(0L);
-		when(repo.listar()).thenReturn(List.of(new ProjetoResumo("alfa", "jg/alfa", 1, true, true)));
+		when(repo.listar()).thenReturn(List.of(new ProjetoResumo("alfa", "alfa", 1, true, true)));
 		ProjetoForm f = new ProjetoForm();
 		f.setSlug("alfa");
-		f.setRepo("jg/alfa");
+		f.setRepo("alfa");
 		when(repo.buscar("alfa")).thenReturn(Optional.of(f));
 		when(repo.buscar("nada")).thenReturn(Optional.empty());
+		when(repo.atualizar(eq("alfa"), any())).thenReturn(1);
 	}
 
 	@Test
@@ -82,7 +83,7 @@ class ProjetosConteudoControllerTest {
 	@Test
 	void postValidoGravaERevalida() throws Exception {
 		when(revalidacao.revalidar()).thenReturn(true);
-		mvc.perform(post("/conteudo/projetos").param("slug", "novo-um").param("repo", "jg/novo-um"))
+		mvc.perform(post("/conteudo/projetos").param("slug", "novo-um").param("repo", "novo-um"))
 				.andExpect(redirectedUrl("/conteudo/projetos"))
 				.andExpect(flash().attribute("aviso", "Site atualizado."));
 		verify(repo).criar(any(ProjetoForm.class));
@@ -92,7 +93,7 @@ class ProjetosConteudoControllerTest {
 	@Test
 	void revalidacaoFalhaMostraAviso() throws Exception {
 		when(revalidacao.revalidar()).thenReturn(false);
-		mvc.perform(post("/conteudo/projetos/alfa").param("repo", "jg/alfa"))
+		mvc.perform(post("/conteudo/projetos/alfa").param("repo", "alfa"))
 				.andExpect(redirectedUrl("/conteudo/projetos"))
 				.andExpect(flash().attribute("aviso",
 						"Salvo, mas o site não respondeu; a mudança aparece em até 1 hora."));
@@ -100,8 +101,22 @@ class ProjetosConteudoControllerTest {
 	}
 
 	@Test
+	void atualizarSlugInexistenteDa404SemRevalidar() throws Exception {
+		mvc.perform(post("/conteudo/projetos/nada").param("repo", "nada")).andExpect(status().isNotFound());
+		verify(revalidacao, never()).revalidar();
+	}
+
+	@Test
+	void repoComDonoERecusado() throws Exception {
+		mvc.perform(post("/conteudo/projetos").param("slug", "ok").param("repo", "dono/nome"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(containsString("sem o dono")));
+		verify(repo, never()).criar(any());
+	}
+
+	@Test
 	void slugInvalidoVoltaAoFormularioSemGravar() throws Exception {
-		mvc.perform(post("/conteudo/projetos").param("slug", "Com Espaço").param("repo", "jg/x"))
+		mvc.perform(post("/conteudo/projetos").param("slug", "Com Espaço").param("repo", "x"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("aria-invalid=\"true\"")))
 				.andExpect(content().string(containsString("letras minúsculas")));
@@ -112,7 +127,7 @@ class ProjetosConteudoControllerTest {
 	@Test
 	void slugDuplicadoVoltaComErro() throws Exception {
 		doThrow(new DuplicateKeyException("x")).when(repo).criar(any());
-		mvc.perform(post("/conteudo/projetos").param("slug", "alfa").param("repo", "jg/alfa"))
+		mvc.perform(post("/conteudo/projetos").param("slug", "alfa").param("repo", "alfa"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("Já existe um projeto")));
 		verify(revalidacao, never()).revalidar();
@@ -120,10 +135,10 @@ class ProjetosConteudoControllerTest {
 
 	@Test
 	void demoUrlInvalidaRecusadaEVaziaAceita() throws Exception {
-		mvc.perform(post("/conteudo/projetos").param("slug", "ok").param("repo", "jg/ok").param("demoUrl", "nao e url"))
+		mvc.perform(post("/conteudo/projetos").param("slug", "ok").param("repo", "ok").param("demoUrl", "nao e url"))
 				.andExpect(status().isOk());
 		when(revalidacao.revalidar()).thenReturn(true);
-		mvc.perform(post("/conteudo/projetos").param("slug", "ok").param("repo", "jg/ok").param("demoUrl", ""))
+		mvc.perform(post("/conteudo/projetos").param("slug", "ok").param("repo", "ok").param("demoUrl", ""))
 				.andExpect(redirectedUrl("/conteudo/projetos"));
 	}
 

@@ -45,6 +45,13 @@ class SkillRepositorioTest {
 	}
 
 	@Test
+	void atualizarIdInexistenteDevolveZero() {
+		assertThat(repo.atualizar(123456, form("Java"))).isZero();
+		repo.criar(form("Java"));
+		assertThat(repo.atualizar(repo.listar().get(0).id(), form("Java"))).isEqualTo(1);
+	}
+
+	@Test
 	void criaEListaEmOrdemSequencial() {
 		repo.criar(form("Java"));
 		repo.criar(form("Spring"));

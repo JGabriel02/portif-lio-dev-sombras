@@ -89,9 +89,9 @@ public class ProjetoRepositorio {
 	}
 
 	@Transactional
-	public void atualizar(String slug, ProjetoForm f) {
+	public int atualizar(String slug, ProjetoForm f) {
 		desmarcarDestaque(f, slug);
-		jdbc.update(UPDATE, ps -> {
+		return jdbc.update(UPDATE, ps -> {
 			ps.setString(1, f.getRepo());
 			ps.setBoolean(2, f.isDestaque());
 			ps.setBoolean(3, f.isPublicado());

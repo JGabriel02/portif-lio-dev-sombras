@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="campo">
-			<label for="repo">Repositório (dono/nome)</label>
+			<label for="repo">Repositório (nome no GitHub)</label>
 			<input id="repo" type="text" th:field="*{repo}" aria-describedby="repo-erro"
 				th:attr="aria-invalid=${#fields.hasErrors('repo')} ? 'true'">
 			<p id="repo-erro" class="erro" th:if="${#fields.hasErrors('repo')}" th:errors="*{repo}"></p>

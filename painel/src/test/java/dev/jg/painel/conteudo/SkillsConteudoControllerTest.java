@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,6 +48,7 @@ class SkillsConteudoControllerTest {
 	@BeforeEach
 	void prepara() {
 		when(mensagens.naoLidas()).thenReturn(0L);
+		when(repo.atualizar(eq(7), any())).thenReturn(1);
 		when(repo.listar()).thenReturn(List.of(new Skill(7, "Java", "backend", 5, false, "Java", 1),
 				new Skill(8, "React", "frontend", 2, true, null, 2)));
 	}
@@ -81,6 +83,13 @@ class SkillsConteudoControllerTest {
 				.andExpect(flash().attribute("aviso",
 						"Salvo, mas o site não respondeu; a mudança aparece em até 1 hora."));
 		verify(repo).atualizar(eq(7), any(SkillForm.class));
+	}
+
+	@Test
+	void atualizarIdInexistenteDa404SemRevalidar() throws Exception {
+		mvc.perform(post("/conteudo/skills/999").param("nome", "Go").param("categoria", "backend").param("anos", "1"))
+				.andExpect(status().isNotFound());
+		verify(revalidacao, never()).revalidar();
 	}
 
 	@Test
@@ -133,5 +142,6 @@ class SkillsConteudoControllerTest {
 		verify(repo).mover(7, 1);
 		mvc.perform(post("/conteudo/skills/7/apagar")).andExpect(redirectedUrl("/conteudo/skills"));
 		verify(repo).apagar(7);
+		verify(revalidacao, times(2)).revalidar();
 	}
 }

@@ -90,3 +90,5 @@ Faca isto uma unica vez. Nunca coloque senhas, URLs reais ou segredos em arquivo
 - `JAVA_HOME` precisa apontar para um JDK 21. O Docker so e necessario para os testes.
 - Depois de editar os arquivos `.ts` de conteudo do site (`src/content/`), regenere o
   `seed.json` do painel na raiz do repositorio com `corepack pnpm db:seed-export`.
+- Se voce apagar ou despublicar TODOS os projetos (ou todas as skills), o site volta a usar os arquivos
+  de conteudo, e o painel recria as tabelas vazias a partir do `seed.json` na proxima vez que subir.

@@ -34,7 +34,7 @@ class ProjetoRepositorioTest {
 	private ProjetoForm form(String slug, boolean destaque) {
 		ProjetoForm f = new ProjetoForm();
 		f.setSlug(slug);
-		f.setRepo("jg/" + slug);
+		f.setRepo(slug);
 		f.setDestaque(destaque);
 		f.setStack("Java, Spring");
 		f.setResumoPt("Resumo " + slug);
@@ -51,6 +51,13 @@ class ProjetoRepositorioTest {
 		repo.criar(form("b", true));
 		assertThat(repo.listar()).extracting(ProjetoResumo::slug, ProjetoResumo::destaque)
 				.containsExactly(tuple("a", false), tuple("b", true));
+	}
+
+	@Test
+	void atualizarSlugInexistenteDevolveZero() {
+		assertThat(repo.atualizar("nada", form("nada", false))).isZero();
+		repo.criar(form("a", false));
+		assertThat(repo.atualizar("a", form("a", false))).isEqualTo(1);
 	}
 
 	@Test

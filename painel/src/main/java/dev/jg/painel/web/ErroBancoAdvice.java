@@ -20,7 +20,7 @@ public class ErroBancoAdvice {
 	@ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
 	public String semBanco(DataAccessException e, HttpServletRequest pedido,
 			HttpServletResponse resposta) {
-		log.warn("Falha de acesso ao banco: {}: {}", e.getClass().getSimpleName(), e.getMessage());
+		log.warn("Falha de acesso ao banco: {}", e.getClass().getSimpleName());
 		if (pedido.getHeader("HX-Request") != null) {
 			resposta.setHeader("HX-Retarget", "main");
 			resposta.setHeader("HX-Reswap", "innerHTML");

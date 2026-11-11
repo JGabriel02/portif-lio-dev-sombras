@@ -78,7 +78,9 @@ public class ProjetosConteudoController {
 			model.addAttribute("novo", false);
 			return tela(model, "conteudo/projeto-form");
 		}
-		repositorio.atualizar(slug, form);
+		if (repositorio.atualizar(slug, form) == 0) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
 		return gravado(flash);
 	}
 

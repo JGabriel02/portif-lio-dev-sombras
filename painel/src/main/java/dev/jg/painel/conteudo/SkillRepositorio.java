@@ -40,8 +40,8 @@ public class SkillRepositorio {
 	}
 
 	@Transactional
-	public void atualizar(int id, SkillForm f) {
-		jdbc.update("""
+	public int atualizar(int id, SkillForm f) {
+		return jdbc.update("""
 				update skill set nome = ?, categoria = ?, anos = ?, aprendendo = ?, linguagem_github = ?
 				where id = ?
 				""", f.getNome().trim(), f.getCategoria(), f.getAnos(), f.isAprendendo(),

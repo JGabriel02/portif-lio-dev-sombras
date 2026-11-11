@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.jg.painel.mensagens.MensagemRepositorio;
@@ -60,7 +62,9 @@ public class SkillsConteudoController {
 			BindingResult erros, Model model, RedirectAttributes flash) {
 		if (!erros.hasErrors()) {
 			try {
-				repositorio.atualizar(id, form);
+				if (repositorio.atualizar(id, form) == 0) {
+					throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+				}
 				return gravado(flash);
 			} catch (DuplicateKeyException e) {
 				erros.rejectValue("nome", "duplicado", DUPLICADA);

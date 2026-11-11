@@ -17,6 +17,7 @@ public class ProjetoForm {
 	@NotBlank(message = "Informe o slug.")
 	private String slug;
 	@NotBlank(message = "Informe o repositório.")
+	@Pattern(regexp = "[A-Za-z0-9._-]{1,100}", message = "Use só o nome do repositório no GitHub, sem o dono (ex.: meu-projeto).")
 	private String repo;
 	private String resumoPt;
 	private String resumoEn;
@@ -25,7 +26,8 @@ public class ProjetoForm {
 	private String aprendizadosPt;
 	private String aprendizadosEn;
 	private String stack;
-	@URL(message = "Informe uma URL válida, como https://exemplo.com.")
+	@URL(message = "Informe uma URL http ou https válida, como https://exemplo.com.")
+	@Pattern(regexp = "(https?://.*)?", message = "Informe uma URL http ou https válida, como https://exemplo.com.")
 	private String demoUrl;
 	private boolean ocultarDemo;
 	private boolean destaque;
