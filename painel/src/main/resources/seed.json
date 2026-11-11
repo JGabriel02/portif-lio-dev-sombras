@@ -1,0 +1,219 @@
+{
+  "projetos": [
+    {
+      "slug": "npc-forge",
+      "repo": "npc-forge",
+      "ordem": 0,
+      "destaque": true,
+      "publicado": true,
+      "demoUrl": "https://calm-mushroom-02327b90f.5.azurestaticapps.net/",
+      "ocultarDemo": false,
+      "stack": [
+        "C#",
+        ".NET"
+      ],
+      "imagens": [],
+      "resumo": {
+        "pt": "Gerador de NPCs para mesas de RPG, com atributos e histórias coerentes.",
+        "en": "NPC generator for tabletop RPG, with coherent stats and backstories."
+      },
+      "descricao": {
+        "pt": "Aplicação em C# que gera NPCs completos a partir de poucos parâmetros, com atributos, personalidade e ganchos de história.",
+        "en": "C# application that generates complete NPCs from a few parameters, with stats, personality and story hooks."
+      },
+      "aprendizados": {
+        "pt": "Modelagem de domínio, geração controlada por parâmetros e testes automatizados.",
+        "en": "Domain modeling, parameter-driven generation and automated testing."
+      },
+      "fallback": {
+        "linguagem": "C#",
+        "estrelas": 0,
+        "atualizadoEm": "2026-10-30"
+      }
+    },
+    {
+      "slug": "missions-api",
+      "repo": "Missions_API",
+      "ordem": 1,
+      "destaque": false,
+      "publicado": true,
+      "demoUrl": null,
+      "ocultarDemo": false,
+      "stack": [
+        "Java",
+        "REST",
+        "SQL"
+      ],
+      "imagens": [],
+      "resumo": {
+        "pt": "API REST em Java para cadastro e acompanhamento de missões.",
+        "en": "Java REST API for creating and tracking missions."
+      },
+      "descricao": {
+        "pt": "API em Java que permite criar, atualizar e consultar missões, com validação de entrada e persistência em banco de dados.",
+        "en": "Java API to create, update and query missions, with input validation and database persistence."
+      },
+      "aprendizados": {
+        "pt": "Desenho de endpoints REST, camadas de serviço e persistência de dados.",
+        "en": "REST endpoint design, service layers and data persistence."
+      },
+      "fallback": {
+        "linguagem": "Java",
+        "estrelas": 0,
+        "atualizadoEm": "2026-09-03"
+      }
+    },
+    {
+      "slug": "vacation-scheduler",
+      "repo": "VacationSchedulerApplication",
+      "ordem": 2,
+      "destaque": false,
+      "publicado": true,
+      "demoUrl": null,
+      "ocultarDemo": false,
+      "stack": [
+        "Java",
+        "vacation-scheduler-web"
+      ],
+      "imagens": [],
+      "resumo": {
+        "pt": "Aplicação para agendar férias de equipes, com front-end em vacation-scheduler-web.",
+        "en": "Application for scheduling team vacations, with a front end in vacation-scheduler-web."
+      },
+      "descricao": {
+        "pt": "Back-end em Java que organiza períodos de férias de uma equipe e evita conflitos; o front-end vive no repositório vacation-scheduler-web.",
+        "en": "Java back end that organizes a team’s vacation periods and avoids conflicts; the front end lives in the vacation-scheduler-web repository."
+      },
+      "aprendizados": {
+        "pt": "Regras de negócio com datas, integração entre back-end e front-end e testes de cenários.",
+        "en": "Date-based business rules, back-end and front-end integration and scenario testing."
+      },
+      "fallback": {
+        "linguagem": "Java",
+        "estrelas": 0,
+        "atualizadoEm": "2026-07-02"
+      }
+    },
+    {
+      "slug": "cardapio",
+      "repo": "cardapio",
+      "ordem": 3,
+      "destaque": false,
+      "publicado": true,
+      "demoUrl": null,
+      "ocultarDemo": true,
+      "stack": [
+        "TypeScript",
+        "React"
+      ],
+      "imagens": [],
+      "resumo": {
+        "pt": "Cardápio digital responsivo para restaurantes.",
+        "en": "Responsive digital menu for restaurants."
+      },
+      "descricao": {
+        "pt": "Cardápio online em TypeScript com categorias, busca e layout pensado para celular.",
+        "en": "Online menu in TypeScript with categories, search and a mobile-first layout."
+      },
+      "aprendizados": {
+        "pt": "Componentização, estado de interface e design responsivo.",
+        "en": "Componentization, UI state and responsive design."
+      },
+      "fallback": {
+        "linguagem": "TypeScript",
+        "estrelas": 3,
+        "atualizadoEm": "2025-09-25"
+      }
+    }
+  ],
+  "skills": [
+    {
+      "nome": "C#",
+      "categoria": "backend",
+      "anos": 3,
+      "aprendendo": false,
+      "linguagemGithub": "C#",
+      "ordem": 0
+    },
+    {
+      "nome": "Java",
+      "categoria": "backend",
+      "anos": 3,
+      "aprendendo": false,
+      "linguagemGithub": "Java",
+      "ordem": 1
+    },
+    {
+      "nome": "Node.js",
+      "categoria": "backend",
+      "anos": 3,
+      "aprendendo": false,
+      "linguagemGithub": null,
+      "ordem": 2
+    },
+    {
+      "nome": "Python",
+      "categoria": "backend",
+      "anos": 2,
+      "aprendendo": false,
+      "linguagemGithub": "Python",
+      "ordem": 3
+    },
+    {
+      "nome": "TypeScript",
+      "categoria": "frontend",
+      "anos": 4,
+      "aprendendo": false,
+      "linguagemGithub": "TypeScript",
+      "ordem": 4
+    },
+    {
+      "nome": "JavaScript",
+      "categoria": "frontend",
+      "anos": 4,
+      "aprendendo": false,
+      "linguagemGithub": "JavaScript",
+      "ordem": 5
+    },
+    {
+      "nome": "React",
+      "categoria": "frontend",
+      "anos": 3,
+      "aprendendo": false,
+      "linguagemGithub": null,
+      "ordem": 6
+    },
+    {
+      "nome": "Next.js",
+      "categoria": "frontend",
+      "anos": 2,
+      "aprendendo": false,
+      "linguagemGithub": null,
+      "ordem": 7
+    },
+    {
+      "nome": "Git",
+      "categoria": "tools",
+      "anos": 4,
+      "aprendendo": false,
+      "linguagemGithub": null,
+      "ordem": 8
+    },
+    {
+      "nome": "Docker",
+      "categoria": "tools",
+      "anos": 2,
+      "aprendendo": false,
+      "linguagemGithub": null,
+      "ordem": 9
+    },
+    {
+      "nome": "SQL",
+      "categoria": "tools",
+      "anos": 2,
+      "aprendendo": false,
+      "linguagemGithub": null,
+      "ordem": 10
+    }
+  ]
+}

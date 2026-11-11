@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:contract": "vitest run --config vitest.contract.config.mts",
     "test:e2e": "playwright test",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:seed-export": "tsx scripts/exportar-seed.ts"
   },
   "dependencies": {
     "lucide-react": "^1.70.0",
