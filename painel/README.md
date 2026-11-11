@@ -41,8 +41,11 @@ Faca isto uma unica vez. Nunca coloque senhas, URLs reais ou segredos em arquivo
    Sem `openssl` (PowerShell):
 
    ```powershell
-   -join ((1..32) | ForEach-Object { '{0:x2}' -f (Get-Random -Maximum 256) })
+   $b = New-Object byte[] 32; [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b); -join ($b | ForEach-Object { '{0:x2}' -f $_ })
    ```
+
+   Rode o gerador uma vez para cada valor: `REVALIDATE_SECRET` (Vercel e `painel/.env`),
+   `COLETA_SEGREDO` (Vercel) e a senha da role `site` (`ALTER ROLE` e `DATABASE_URL`).
 
 3. **Preencher `painel/.env`** (copie de `painel/.env.example`):
 
@@ -86,4 +89,4 @@ Faca isto uma unica vez. Nunca coloque senhas, URLs reais ou segredos em arquivo
 - O painel escuta somente em `127.0.0.1` e nao tem autenticacao: nao o exponha na rede.
 - `JAVA_HOME` precisa apontar para um JDK 21. O Docker so e necessario para os testes.
 - Depois de editar os arquivos `.ts` de conteudo do site (`src/content/`), regenere o
-  `seed.json` do painel na raiz do repositorio com `pnpm db:seed-export`.
+  `seed.json` do painel na raiz do repositorio com `corepack pnpm db:seed-export`.
