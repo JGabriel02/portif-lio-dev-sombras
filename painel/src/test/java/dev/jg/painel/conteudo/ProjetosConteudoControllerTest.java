@@ -21,6 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +30,7 @@ import dev.jg.painel.conteudo.ProjetoRepositorio.ProjetoResumo;
 import dev.jg.painel.mensagens.MensagemRepositorio;
 
 @WebMvcTest(ProjetosConteudoController.class)
+@Import(dev.jg.painel.MockMvcHostConfig.class)
 class ProjetosConteudoControllerTest {
 
 	@Autowired
