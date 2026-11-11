@@ -192,3 +192,9 @@ td.mover button { border: 0; font: inherit; font-weight: 700; cursor: pointer; p
 .formulario .acoes button { border: 0; font: inherit; font-weight: 600; cursor: pointer; }
 .zona-perigo { margin-top: 2rem; }
 .zona-perigo button { border: 0; font: inherit; font-weight: 600; cursor: pointer; }
+
+.so-leitor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+td.acoes { display: flex; flex-wrap: wrap; gap: .5rem; }
+td.acoes form { margin: 0; }
+table.skills input[type="text"], table.skills input[type="number"], table.skills select { width: 100%; }
+table.skills input[aria-invalid="true"] { border-color: #ffb4ab; border-width: 2px; }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: cabeca('Conteúdo › Skills')}"></head>
+<body>
+<a class="pular" href="#conteudo">Ir para o conteúdo</a>
+<nav th:replace="~{fragmentos/layout :: menu}"></nav>
+<main id="conteudo">
+	<h1>Skills</h1>
+	<p class="aviso" role="status" th:if="${aviso != null}" th:text="${aviso}"></p>
+	<p class="aviso" role="alert" th:if="${!errosNovo.isEmpty() or !errosEdicao.isEmpty()}">Corrija os campos indicados e salve de novo.</p>
+	<p class="ajuda" id="skills-ajuda">Cada linha tem o seu próprio botão Salvar. A linguagem do GitHub é opcional.</p>
+	<table class="skills" aria-describedby="skills-ajuda">
+		<caption>Skills exibidas no site, na ordem de exibição</caption>
+		<thead>
+			<tr>
+				<th scope="col">Nome</th>
+				<th scope="col">Categoria</th>
+				<th scope="col">Anos</th>
+				<th scope="col">Aprendendo</th>
+				<th scope="col">Linguagem no GitHub</th>
+				<th scope="col">Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="s : ${skills}"
+				th:with="nome=${editandoId != null and editandoId == s.id() ? edicao.nome : s.nome()},
+					categoria=${editandoId != null and editandoId == s.id() ? edicao.categoria : s.categoria()},
+					anos=${editandoId != null and editandoId == s.id() ? edicao.anos : s.anos()},
+					aprendendo=${editandoId != null and editandoId == s.id() ? edicao.aprendendo : s.aprendendo()},
+					linguagem=${editandoId != null and editandoId == s.id() ? edicao.linguagemGithub : s.linguagemGithub()},
+					e=${editandoId != null and editandoId == s.id() ? errosEdicao : {:}}">
+				<td>
+					<label class="so-leitor" th:for="|nome-${s.id()}|" th:text="|Nome de ${s.nome()}|">Nome</label>
+					<input type="text" th:id="|nome-${s.id()}|" name="nome" th:form="|f-${s.id()}|" th:value="${nome}"
+						th:attr="aria-invalid=${e['nome'] != null} ? 'true', aria-describedby=${e['nome'] != null} ? |nome-${s.id()}-erro|">
+					<p class="erro" th:if="${e['nome'] != null}" th:id="|nome-${s.id()}-erro|" th:text="${e['nome']}"></p>
+				</td>
+				<td>
+					<label class="so-leitor" th:for="|cat-${s.id()}|" th:text="|Categoria de ${s.nome()}|">Categoria</label>
+					<select th:id="|cat-${s.id()}|" name="categoria" th:form="|f-${s.id()}|"
+						th:attr="aria-invalid=${e['categoria'] != null} ? 'true', aria-describedby=${e['categoria'] != null} ? |cat-${s.id()}-erro|">
+						<option th:each="c : ${#strings.arraySplit('frontend,backend,tools', ',')}" th:value="${c}" th:text="${c}" th:selected="${c == categoria}"></option>
+					</select>
+					<p class="erro" th:if="${e['categoria'] != null}" th:id="|cat-${s.id()}-erro|" th:text="${e['categoria']}"></p>
+				</td>
+				<td>
+					<label class="so-leitor" th:for="|anos-${s.id()}|" th:text="|Anos de ${s.nome()}|">Anos</label>
+					<input type="number" min="0" max="50" th:id="|anos-${s.id()}|" name="anos" th:form="|f-${s.id()}|" th:value="${anos}"
+						th:attr="aria-invalid=${e['anos'] != null} ? 'true', aria-describedby=${e['anos'] != null} ? |anos-${s.id()}-erro|">
+					<p class="erro" th:if="${e['anos'] != null}" th:id="|anos-${s.id()}-erro|" th:text="${e['anos']}"></p>
+				</td>
+				<td>
+					<input type="checkbox" th:id="|apr-${s.id()}|" name="aprendendo" value="true" th:form="|f-${s.id()}|" th:checked="${aprendendo}">
+					<input type="hidden" name="_aprendendo" value="on" th:form="|f-${s.id()}|">
+					<label th:for="|apr-${s.id()}|" th:text="|Aprendendo ${s.nome()}|">Aprendendo</label>
+				</td>
+				<td>
+					<label class="so-leitor" th:for="|lg-${s.id()}|" th:text="|Linguagem no GitHub de ${s.nome()}|">Linguagem</label>
+					<input type="text" th:id="|lg-${s.id()}|" name="linguagemGithub" th:form="|f-${s.id()}|" th:value="${linguagem}">
+				</td>
+				<td class="acoes">
+					<form method="post" th:id="|f-${s.id()}|" th:action="@{/conteudo/skills/{id}(id=${s.id()})}">
+						<button type="submit" class="botao" th:attr="aria-label='Salvar ' + ${s.nome()}">Salvar</button>
+					</form>
+					<form method="post" th:action="@{/conteudo/skills/{id}/mover(id=${s.id()}, delta=-1)}">
+						<button type="submit" class="botao" th:attr="aria-label='Subir ' + ${s.nome()}">&uarr;</button>
+					</form>
+					<form method="post" th:action="@{/conteudo/skills/{id}/mover(id=${s.id()}, delta=1)}">
+						<button type="submit" class="botao" th:attr="aria-label='Descer ' + ${s.nome()}">&darr;</button>
+					</form>
+					<form method="post" th:action="@{/conteudo/skills/{id}/apagar(id=${s.id()})}"
+						th:data-nome="${s.nome()}"
+						onsubmit="return confirm('Apagar a skill ' + this.dataset.nome + '?')">
+						<button type="submit" class="botao perigo" th:attr="aria-label='Apagar ' + ${s.nome()}">Apagar</button>
+					</form>
+				</td>
+			</tr>
+			<tr class="nova">
+				<td>
+					<label class="so-leitor" for="nome-novo">Nome da nova skill</label>
+					<input type="text" id="nome-novo" name="nome" form="f-novo" th:value="${novo.nome}"
+						th:attr="aria-invalid=${errosNovo['nome'] != null} ? 'true', aria-describedby=${errosNovo['nome'] != null} ? 'nome-novo-erro'">
+					<p class="erro" id="nome-novo-erro" th:if="${errosNovo['nome'] != null}" th:text="${errosNovo['nome']}"></p>
+				</td>
+				<td>
+					<label class="so-leitor" for="cat-novo">Categoria da nova skill</label>
+					<select id="cat-novo" name="categoria" form="f-novo"
+						th:attr="aria-invalid=${errosNovo['categoria'] != null} ? 'true', aria-describedby=${errosNovo['categoria'] != null} ? 'cat-novo-erro'">
+						<option th:each="c : ${#strings.arraySplit('frontend,backend,tools', ',')}" th:value="${c}" th:text="${c}" th:selected="${c == novo.categoria}"></option>
+					</select>
+					<p class="erro" id="cat-novo-erro" th:if="${errosNovo['categoria'] != null}" th:text="${errosNovo['categoria']}"></p>
+				</td>
+				<td>
+					<label class="so-leitor" for="anos-novo">Anos da nova skill</label>
+					<input type="number" min="0" max="50" id="anos-novo" name="anos" form="f-novo" th:value="${novo.anos}"
+						th:attr="aria-invalid=${errosNovo['anos'] != null} ? 'true', aria-describedby=${errosNovo['anos'] != null} ? 'anos-novo-erro'">
+					<p class="erro" id="anos-novo-erro" th:if="${errosNovo['anos'] != null}" th:text="${errosNovo['anos']}"></p>
+				</td>
+				<td>
+					<input type="checkbox" id="apr-novo" name="aprendendo" value="true" form="f-novo" th:checked="${novo.aprendendo}">
+					<input type="hidden" name="_aprendendo" value="on" form="f-novo">
+					<label for="apr-novo">Aprendendo a nova skill</label>
+				</td>
+				<td>
+					<label class="so-leitor" for="lg-novo">Linguagem no GitHub da nova skill</label>
+					<input type="text" id="lg-novo" name="linguagemGithub" form="f-novo" th:value="${novo.linguagemGithub}">
+				</td>
+				<td class="acoes">
+					<form method="post" id="f-novo" th:action="@{/conteudo/skills}">
+						<button type="submit" class="botao">Adicionar</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</main>
+</body>
+</html>
