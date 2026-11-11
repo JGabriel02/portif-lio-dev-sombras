@@ -85,6 +85,58 @@ describe('POST /api/coleta', () => {
     expect(inserirEvento).not.toHaveBeenCalled()
   })
 
+  it('cuts alvo to 100 chars', async () => {
+    await POST(
+      req(
+        JSON.stringify({
+          t: 'e',
+          tipo: 'repo',
+          alvo: 'a'.repeat(150),
+          idioma: 'pt',
+        }),
+      ),
+    )
+    expect(inserirEvento).toHaveBeenCalledWith(
+      expect.objectContaining({ alvo: 'a'.repeat(100) }),
+    )
+  })
+
+  it('does not split an emoji at the alvo boundary', async () => {
+    const alvo = 'a'.repeat(99) + '😀' + 'b'
+    await POST(
+      req(JSON.stringify({ t: 'e', tipo: 'repo', alvo, idioma: 'pt' })),
+    )
+    expect(inserirEvento).toHaveBeenCalledWith(
+      expect.objectContaining({ alvo: 'a'.repeat(99) + '😀' }),
+    )
+  })
+
+  it('stores a same-host referrer as interno', async () => {
+    await POST(
+      req(
+        JSON.stringify({
+          t: 'v',
+          caminho: '/pt',
+          idioma: 'pt',
+          ref: 'https://site.vercel.app/pt',
+        }),
+      ),
+    )
+    expect(inserirVisita).toHaveBeenCalledWith(
+      expect.objectContaining({ origem: 'interno' }),
+    )
+  })
+
+  it('drops a contato event posted by the client', async () => {
+    const r = await POST(
+      req(
+        JSON.stringify({ t: 'e', tipo: 'contato', alvo: 'form', idioma: 'pt' }),
+      ),
+    )
+    expect(r.status).toBe(204)
+    expect(inserirEvento).not.toHaveBeenCalled()
+  })
+
   it('drops without COLETA_SEGREDO', async () => {
     vi.stubEnv('COLETA_SEGREDO', '')
     const r = await POST(req(visita))

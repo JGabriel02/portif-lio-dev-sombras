@@ -3,6 +3,7 @@ import { visitanteHash } from '@/lib/coleta/hash'
 import {
   aparelhoDe,
   CorpoColeta,
+  cortar,
   ehBot,
   limparCaminho,
   origemDe,
@@ -49,7 +50,7 @@ async function coletar(req: Request): Promise<void> {
   } else {
     await inserirEvento({
       tipo: c.tipo,
-      alvo: c.alvo.slice(0, 100),
+      alvo: cortar(c.alvo, 100),
       idioma: c.idioma,
       visitanteHash: hash,
     })

@@ -16,6 +16,15 @@ describe('limparCaminho', () => {
   })
 })
 
+describe('truncamento por code point', () => {
+  it('limparCaminho does not split an emoji at the limit', () => {
+    const r = limparCaminho('a'.repeat(199) + '😀' + 'b')
+    expect(r).toBe('a'.repeat(199) + '😀')
+    expect(Array.from(r)).toHaveLength(200)
+    expect(r.isWellFormed()).toBe(true)
+  })
+})
+
 describe('origemDe', () => {
   it('returns the hostname without www', () => {
     expect(origemDe('https://www.linkedin.com/feed', 'site.vercel.app')).toBe(
