@@ -50,3 +50,6 @@ next-env.d.ts
 
 # lighthouse
 /.lighthouseci/
+
+# painel (Spring Boot)
+painel/target/

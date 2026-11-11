@@ -89,7 +89,7 @@ projeto  (slug text PK, repo text not null, ordem int not null,
           imagens jsonb not null default '[]',
           resumo_pt text, resumo_en text,
           descricao_pt text, descricao_en text,
-          aprendizados_pt jsonb, aprendizados_en jsonb,
+          aprendizados_pt text, aprendizados_en text,   -- text (não jsonb): ProjetoCurado.aprendizados é Localized<string>
           fallback_linguagem text, fallback_estrelas int, fallback_atualizado_em date,
           atualizado_em timestamptz default now())
 
@@ -122,7 +122,7 @@ Ao iniciar, e depois uma vez por dia (`@Scheduled`), o painel apaga linhas de `v
 ### 5.2 Conteúdo
 
 - `getProjetos()`/`getProjeto()`/`getSkills()` em `src/content/index.ts` tentam primeiro o banco. Se o resultado for `null` ou uma lista vazia, usam `projetos.ts`/`skills.ts`. A mescla com o GitHub (`mesclarProjeto`) não muda.
-- Só aparecem projetos com `publicado = true`, na ordem do campo `ordem`.
+- Só aparecem projetos com `publicado = true`. A ordem é: destaque primeiro, depois o campo `ordem` (no fallback, a ordem do array em `projetos.ts`). Isso substitui o "atualizadoEm desc" atual.
 - `generateStaticParams` das páginas de detalhe usa a mesma fonte. Um slug novo que não estava no build é renderizado sob demanda (`dynamicParams = true`).
 - Os arquivos `.ts` continuam no repositório como fallback e como fonte do seed.
 
@@ -145,7 +145,7 @@ Ao iniciar, e depois uma vez por dia (`@Scheduled`), o painel apaga linhas de `v
 - **Rota.**
   1. Corpo de até 2 KB, validado com Zod (união discriminada `v`/`e`). Valores fora do esperado são descartados.
   2. Ignora user-agents de bots (lista de regex: `bot|crawler|spider|preview|headless|lighthouse`…) e requisições com `purpose: prefetch`/`Sec-Purpose: prefetch`.
-  3. `caminho` perde a query string. `origem` é o hostname do `ref`, sem `www.`, e vira `direto` quando está vazio ou é o próprio site. `aparelho` vem da regex `Mobi|Android` no UA. `pais` vem de `x-vercel-ip-country`.
+  3. `caminho` perde a query string. `origem` é o hostname do `ref`, sem `www.`, e vira `direto` quando está vazio. Navegação interna: a 1ª visualização da sessão de página manda `document.referrer`, e as trocas de rota seguintes mandam a própria origem do site, que o site grava como `interno`. O painel exclui `interno` do top de origens, então `direto` fica só para visitas sem referrer. `aparelho` vem da regex `Mobi|Android` no UA. `pais` vem de `x-vercel-ip-country`.
   4. Calcula o hash (§4.3) e insere os dados.
   5. Responde **sempre** `204`, mesmo quando dá erro.
 - O matcher do `proxy.ts` já ignora `/api`, então as rotas novas ficam fora do roteamento de idioma.
@@ -255,7 +255,7 @@ O visual segue o tema Sombra escuro, com as cores primitivas copiadas de `sombra
 - MockMvc: as telas renderizam, os formulários validam e salvar chama o cliente de revalidação (mockado).
 - Teste de permissões: conectado como a role `site`, `SELECT` em `mensagem` falha e `INSERT` em `visita` funciona.
 
-**CI**: um job `painel` no `ci.yml`, com `paths: painel/**`, roda `./mvnw -B verify` com Java 21 (Temurin). O Docker está disponível no runner Ubuntu para os Testcontainers.
+**CI**: um workflow separado, `.github/workflows/painel.yml`, com filtro `paths` (`painel/**` e o próprio workflow), porque filtro de paths não existe por job. Roda `./mvnw -B verify` com Java 21 (Temurin). O Docker está disponível no runner Ubuntu para os Testcontainers.
 
 ## 9. Ordem de entrega
 

@@ -4,3 +4,5 @@
 *.woff binary
 *.woff2 binary
 *.pdf binary
+painel/mvnw.cmd text eol=crlf
+painel.cmd text eol=crlf

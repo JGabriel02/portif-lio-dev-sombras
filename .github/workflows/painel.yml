@@ -1,0 +1,25 @@
+name: painel
+
+on:
+  push:
+    branches: [main]
+    paths: ['painel/**', '.github/workflows/painel.yml']
+  pull_request:
+    paths: ['painel/**', '.github/workflows/painel.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+          cache-dependency-path: painel/pom.xml
+      - run: ./mvnw -B verify
+        working-directory: painel

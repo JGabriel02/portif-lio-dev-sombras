@@ -1,0 +1,17 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${PAINEL_DATABASE_URL:}
+    username: ${PAINEL_DATABASE_USER:}
+    password: ${PAINEL_DATABASE_PASSWORD:}
+  flyway:
+    enabled: true
+
+server:
+  address: 127.0.0.1
+  port: 8080
+
+painel:
+  site-url: ${SITE_URL:}
+  revalidate-secret: ${REVALIDATE_SECRET:}
