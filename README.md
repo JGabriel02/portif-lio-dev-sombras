@@ -52,6 +52,13 @@ Configure as variáveis de ambiente do projeto:
 
 Veja `.env.example`.
 
+## Painel
+
+O repositório inclui um painel administrativo local em Java (`painel/`) que edita
+projetos e skills, lê as mensagens de contato e mostra o interesse por projeto, usando
+o mesmo banco Neon do site. Configuração (Neon, Vercel, segredos) e uso:
+[`painel/README.md`](painel/README.md).
+
 ## Dados do GitHub
 
 O site lê repositórios, linguagens e atividade da conta pública `JGabriel02` (login
