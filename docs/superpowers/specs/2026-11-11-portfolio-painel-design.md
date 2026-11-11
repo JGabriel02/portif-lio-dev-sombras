@@ -115,7 +115,7 @@ Ao iniciar, e depois uma vez por dia (`@Scheduled`), o painel apaga linhas de `v
 
 - `cliente.ts`: cria o cliente `neon(DATABASE_URL)` de forma preguiçosa. Sem a variável, devolve `null`.
 - Toda consulta tem timeout de 3s. Uma falha vira `null` ou `false`, sem lançar exceção para a página. Os logs registram só o tipo do erro, nunca dados.
-- `conteudo.ts`: `lerProjetos()` e `lerSkills()` validam as linhas com Zod e as convertem para `ProjetoCurado[]` e `Skill[]`. São cacheadas com `unstable_cache`/`'use cache'` (conforme o padrão já usado no projeto), com a tag `conteudo` e `revalidate: 3600`.
+- `conteudo.ts`: `lerProjetos()` e `lerSkills()` validam as linhas com Zod e as convertem para `ProjetoCurado[]` e `Skill[]`. São cacheadas com `unstable_cache` (o projeto não usa `cacheComponents`), com a tag `conteudo` e `revalidate: 3600`.
 - `coleta.ts`: `inserirVisita()` e `inserirEvento()`.
 - `mensagens.ts`: `inserirMensagem()`.
 
