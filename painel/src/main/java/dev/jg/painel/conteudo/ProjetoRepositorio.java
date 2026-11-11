@@ -122,9 +122,16 @@ public class ProjetoRepositorio {
 		if (i < 0 || delta == 0 || j < 0 || j >= lista.size()) {
 			return;
 		}
-		// renumera as duas posições (evita empates de ordem)
-		jdbc.update("update projeto set ordem = ? where slug = ?", j + 1, lista.get(i).slug());
-		jdbc.update("update projeto set ordem = ? where slug = ?", i + 1, lista.get(j).slug());
+		// troca na memória e renumera tudo de 1..n (fecha lacunas e desfaz empates)
+		ProjetoResumo movido = lista.get(i);
+		lista = new java.util.ArrayList<>(lista);
+		lista.set(i, lista.get(j));
+		lista.set(j, movido);
+		for (int k = 0; k < lista.size(); k++) {
+			if (lista.get(k).ordem() != k + 1) {
+				jdbc.update("update projeto set ordem = ? where slug = ?", k + 1, lista.get(k).slug());
+			}
+		}
 	}
 
 	private void desmarcarDestaque(ProjetoForm f, String slug) {
@@ -135,12 +142,12 @@ public class ProjetoRepositorio {
 
 	/** Parâmetros resumo_pt .. fallback_atualizado_em (9), a partir de {@code inicio}. */
 	private static void comuns(PreparedStatement ps, int inicio, ProjetoForm f) throws SQLException {
-		ps.setString(inicio, f.getResumoPt());
-		ps.setString(inicio + 1, f.getResumoEn());
-		ps.setString(inicio + 2, f.getDescricaoPt());
-		ps.setString(inicio + 3, f.getDescricaoEn());
-		ps.setString(inicio + 4, f.getAprendizadosPt());
-		ps.setString(inicio + 5, f.getAprendizadosEn());
+		texto(ps, inicio, ProjetoForm.nuloSeVazio(f.getResumoPt()));
+		texto(ps, inicio + 1, ProjetoForm.nuloSeVazio(f.getResumoEn()));
+		texto(ps, inicio + 2, ProjetoForm.nuloSeVazio(f.getDescricaoPt()));
+		texto(ps, inicio + 3, ProjetoForm.nuloSeVazio(f.getDescricaoEn()));
+		texto(ps, inicio + 4, ProjetoForm.nuloSeVazio(f.getAprendizadosPt()));
+		texto(ps, inicio + 5, ProjetoForm.nuloSeVazio(f.getAprendizadosEn()));
 		texto(ps, inicio + 6, ProjetoForm.nuloSeVazio(f.getFallbackLinguagem()));
 		if (f.getFallbackEstrelas() == null) {
 			ps.setNull(inicio + 7, Types.INTEGER);

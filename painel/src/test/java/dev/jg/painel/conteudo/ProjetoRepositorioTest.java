@@ -98,6 +98,33 @@ class ProjetoRepositorioTest {
 	}
 
 	@Test
+	void moverComLacunasNaOrdem() {
+		for (String s : List.of("a", "b", "c", "d", "e")) {
+			repo.criar(form(s, false));
+		}
+		repo.apagar("a");
+		repo.apagar("b");
+		repo.mover("d", 1);
+		assertThat(slugs()).containsExactly("c", "e", "d");
+		repo.mover("d", -1);
+		assertThat(slugs()).containsExactly("c", "d", "e");
+	}
+
+	@Test
+	void textoEmBrancoViraNulo() {
+		ProjetoForm f = form("a", false);
+		f.setResumoEn("   ");
+		f.setDescricaoPt("");
+		repo.criar(f);
+		assertThat(jdbc.queryForObject("select resumo_en from projeto where slug = 'a'", String.class)).isNull();
+		assertThat(jdbc.queryForObject("select descricao_pt from projeto where slug = 'a'", String.class)).isNull();
+		ProjetoForm lido = repo.buscar("a").orElseThrow();
+		lido.setResumoEn("");
+		repo.atualizar("a", lido);
+		assertThat(jdbc.queryForObject("select resumo_en from projeto where slug = 'a'", String.class)).isNull();
+	}
+
+	@Test
 	void buscarInexistenteVazio() {
 		assertThat(repo.buscar("nada")).isEmpty();
 	}
