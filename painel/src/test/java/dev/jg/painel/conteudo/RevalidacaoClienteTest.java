@@ -72,4 +72,20 @@ class RevalidacaoClienteTest {
 		}
 		assertThat(new RevalidacaoCliente("http://127.0.0.1:" + porta, "s3").revalidar()).isFalse();
 	}
+
+	@Test
+	void soAceitaHttpsOuLoopback() {
+		org.assertj.core.api.Assertions.assertThat(RevalidacaoCliente.destinoSeguro("https://meu-site.vercel.app")).isTrue();
+		org.assertj.core.api.Assertions.assertThat(RevalidacaoCliente.destinoSeguro("http://127.0.0.1:3000")).isTrue();
+		org.assertj.core.api.Assertions.assertThat(RevalidacaoCliente.destinoSeguro("http://localhost:3000")).isTrue();
+		org.assertj.core.api.Assertions.assertThat(RevalidacaoCliente.destinoSeguro("http://meu-site.vercel.app")).isFalse();
+		org.assertj.core.api.Assertions.assertThat(RevalidacaoCliente.destinoSeguro("ftp://x")).isFalse();
+		org.assertj.core.api.Assertions.assertThat(RevalidacaoCliente.destinoSeguro("nao e url")).isFalse();
+	}
+
+	@Test
+	void httpExternoNaoEnviaOSegredo() {
+		org.assertj.core.api.Assertions.assertThat(
+				new RevalidacaoCliente("http://meu-site.vercel.app", "s3").revalidar()).isFalse();
+	}
 }

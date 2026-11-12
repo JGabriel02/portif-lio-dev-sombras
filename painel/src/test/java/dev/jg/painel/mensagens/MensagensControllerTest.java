@@ -2,6 +2,9 @@ package dev.jg.painel.mensagens;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -60,6 +63,20 @@ class MensagensControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("&lt;script&gt;")))
 				.andExpect(content().string(not(containsString("<script>alert"))));
+		verify(repo).marcarLida(1, true);
+	}
+
+	@Test
+	void aberturaCrossSiteNaoMarcaComoLida() throws Exception {
+		mvc.perform(get("/mensagens/1").header("Sec-Fetch-Site", "cross-site"))
+				.andExpect(status().isOk());
+		verify(repo, never()).marcarLida(anyLong(), anyBoolean());
+	}
+
+	@Test
+	void aberturaPeloPainelMarcaComoLida() throws Exception {
+		mvc.perform(get("/mensagens/1").header("Sec-Fetch-Site", "same-origin"))
+				.andExpect(status().isOk());
 		verify(repo).marcarLida(1, true);
 	}
 

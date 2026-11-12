@@ -17,28 +17,43 @@ describe('inserirMensagem', () => {
   it('inserts with parameters and returns true', async () => {
     vi.stubEnv('DATABASE_URL', 'postgres://x')
     query.mockResolvedValue([])
-    const ok = await inserirMensagem({ nome: 'A', email: 'a@b.c', texto: 't' })
+    const ok = await inserirMensagem({
+      nome: 'A',
+      email: 'a@b.c',
+      texto: 't',
+      visitanteHash: 'h'.repeat(64),
+    })
     expect(ok).toBe(true)
     expect(query).toHaveBeenCalledWith(
-      'insert into mensagem(nome,email,texto) values ($1,$2,$3)',
-      ['A', 'a@b.c', 't'],
+      'insert into mensagem(nome,email,texto,visitante_hash) values ($1,$2,$3,$4)',
+      ['A', 'a@b.c', 't', 'h'.repeat(64)],
     )
   })
 
   it('returns false without DATABASE_URL', async () => {
     vi.stubEnv('DATABASE_URL', '')
-    expect(await inserirMensagem({ nome: 'A', email: 'a', texto: 't' })).toBe(
-      false,
-    )
+    expect(
+      await inserirMensagem({
+        nome: 'A',
+        email: 'a',
+        texto: 't',
+        visitanteHash: null,
+      }),
+    ).toBe(false)
   })
 
   it('returns false when the query fails', async () => {
     vi.stubEnv('DATABASE_URL', 'postgres://x')
     vi.spyOn(console, 'error').mockImplementation(() => {})
     query.mockRejectedValue(new Error('x'))
-    expect(await inserirMensagem({ nome: 'A', email: 'a', texto: 't' })).toBe(
-      false,
-    )
+    expect(
+      await inserirMensagem({
+        nome: 'A',
+        email: 'a',
+        texto: 't',
+        visitanteHash: null,
+      }),
+    ).toBe(false)
   })
 })
 

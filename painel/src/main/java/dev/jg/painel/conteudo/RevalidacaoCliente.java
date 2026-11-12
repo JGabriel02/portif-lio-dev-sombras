@@ -33,6 +33,10 @@ public class RevalidacaoCliente {
 		if (siteUrl.isEmpty() || segredo.isEmpty()) {
 			return false;
 		}
+		if (!destinoSeguro(siteUrl)) {
+			log.warn("Revalidação recusada: SITE_URL precisa ser https:// (http só para localhost)");
+			return false;
+		}
 		try {
 			String base = siteUrl.endsWith("/") ? siteUrl.substring(0, siteUrl.length() - 1) : siteUrl;
 			HttpRequest req = HttpRequest.newBuilder(URI.create(base + "/api/revalidar"))
@@ -47,6 +51,21 @@ public class RevalidacaoCliente {
 			return false;
 		} catch (Exception e) {
 			log.warn("Revalidação do site falhou: {}", e.toString());
+			return false;
+		}
+	}
+
+	/** O segredo só sai por https, exceto para o próprio computador (testes e dev). */
+	static boolean destinoSeguro(String url) {
+		try {
+			URI uri = URI.create(url);
+			String esquema = uri.getScheme() == null ? "" : uri.getScheme().toLowerCase();
+			String host = uri.getHost() == null ? "" : uri.getHost().toLowerCase();
+			if ("https".equals(esquema)) {
+				return !host.isEmpty();
+			}
+			return "http".equals(esquema) && ("localhost".equals(host) || "127.0.0.1".equals(host));
+		} catch (IllegalArgumentException e) {
 			return false;
 		}
 	}

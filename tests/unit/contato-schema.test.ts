@@ -29,4 +29,9 @@ describe('contatoSchema', () => {
       false,
     )
   })
+
+  it('rejects an email longer than 254 characters', () => {
+    const email = 'a'.repeat(250) + '@b.com'
+    expect(contatoSchema.safeParse({ ...base, email }).success).toBe(false)
+  })
 })

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,10 +29,15 @@ public class MensagensController {
 	}
 
 	@GetMapping("/mensagens/{id}")
-	public String abrir(@PathVariable long id, Model model) {
+	public String abrir(@PathVariable long id, Model model,
+			@RequestHeader(value = "Sec-Fetch-Site", required = false) String secFetchSite) {
 		Mensagem mensagem = repositorio.buscar(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		repositorio.marcarLida(id, true);
+		// Só marca como lida quando a página foi aberta pelo próprio painel (ou digitada);
+		// um <img> de outro site chega como cross-site e não muda nada.
+		if (secFetchSite == null || "same-origin".equals(secFetchSite) || "none".equals(secFetchSite)) {
+			repositorio.marcarLida(id, true);
+		}
 		model.addAttribute("mensagem", mensagem);
 		return tela(model, "mensagem");
 	}

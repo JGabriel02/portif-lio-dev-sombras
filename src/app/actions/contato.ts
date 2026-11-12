@@ -44,16 +44,17 @@ export async function enviarContato(
       return { status: 'invalid', fieldErrors, values }
     }
 
+    const hash = visitanteHash(await headers())
     const gravada = await inserirMensagem({
       nome: parsed.data.nome,
       email: parsed.data.email,
       texto: parsed.data.mensagem,
+      visitanteHash: hash,
     })
     if (!gravada) return { status: 'error' }
 
     // O evento é só métrica: falha aqui não derruba o envio.
     try {
-      const hash = visitanteHash(await headers())
       if (hash !== null) {
         await inserirEvento({
           tipo: 'contato',

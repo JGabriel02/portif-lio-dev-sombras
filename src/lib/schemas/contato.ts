@@ -7,7 +7,11 @@ export const contatoSchema = z.object({
     .trim()
     .min(1, 'errors.nameRequired')
     .max(100, 'errors.nameRequired'),
-  email: z.string().trim().email('errors.emailInvalid'),
+  email: z
+    .string()
+    .trim()
+    .max(254, 'errors.emailInvalid')
+    .email('errors.emailInvalid'),
   mensagem: z
     .string()
     .trim()

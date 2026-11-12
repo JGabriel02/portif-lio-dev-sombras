@@ -72,6 +72,7 @@ describe('enviarContato', () => {
       nome: 'Ana',
       email: 'ana@exemplo.com',
       texto: valid.mensagem,
+      visitanteHash: expect.stringMatching(/^[0-9a-f]{64}$/),
     })
     expect(inserirEvento).toHaveBeenCalledWith(
       expect.objectContaining({
