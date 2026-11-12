@@ -37,49 +37,23 @@ Em ambientes sem `pnpm` no PATH, use `corepack pnpm <comando>`.
 Na primeira vez, instale o navegador do Playwright:
 `pnpm exec playwright install chromium`.
 
-## Deploy na Vercel
+## Variáveis de ambiente
 
-Configure as variáveis de ambiente do projeto:
-
-- `NEXT_PUBLIC_SITE_URL`: origem pública com `https://` (ex.: `https://seu-dominio.dev`).
-  Usada em canonical, hreflang, sitemap, JSON-LD e Open Graph. Se omitida, o site usa
-  `VERCEL_PROJECT_PRODUCTION_URL`, depois `VERCEL_URL` e, por fim, `http://localhost:3000`.
-- `DATABASE_URL`: Postgres (Neon) com a role `site`. Com ela, o formulário de contato
-  fica ativo e grava as mensagens no banco; sem ela, a seção Contato mostra apenas
-  e-mail, LinkedIn e GitHub com um aviso de que o formulário chega em breve.
-- `COLETA_SEGREDO`: segredo (mínimo de 32 caracteres) usado no sal diário da coleta.
-- `REVALIDATE_SECRET`: segredo da rota `POST /api/revalidar`.
-
-Veja `.env.example`.
+Todas são opcionais e ficam só no servidor; a lista comentada está em `.env.example`.
+Sem banco, o site usa o conteúdo dos arquivos, esconde o formulário de contato e não
+coleta visitas.
 
 ## Painel
 
 O repositório inclui um painel administrativo local em Java (`painel/`) que edita
 projetos e skills, lê as mensagens de contato e mostra o interesse por projeto, usando
-o mesmo banco Neon do site. Configuração (Neon, Vercel, segredos) e uso:
-[`painel/README.md`](painel/README.md).
+o mesmo banco Neon do site. Veja [`painel/README.md`](painel/README.md).
 
 ## Dados do GitHub
 
 O site lê repositórios, linguagens e atividade da conta pública `JGabriel02` (login
-derivado de `perfil.links.github`) e revalida a cada hora (ISR). Sem token ou com a API
-fora do ar, o site continua funcionando com o `fallback` estático de cada projeto.
-
-### Criar o token
-
-1. Em github.com, vá em Settings → Developer settings → Personal access tokens →
-   Fine-grained tokens → Generate new token.
-2. Defina nome e expiração.
-3. Em Repository access, escolha **Public repositories**.
-4. Não adicione nenhuma permissão extra (somente leitura de dados públicos).
-5. Gere e copie o token.
-
-### Configurar
-
-- Na Vercel: Project → Settings → Environment Variables, adicione `GITHUB_TOKEN` em
-  **Production** e **Preview** e faça um novo deploy.
-- Local (opcional): coloque `GITHUB_TOKEN=...` em `.env.local`. Nunca use o prefixo
-  `NEXT_PUBLIC_` e nunca faça commit do token.
+derivado de `perfil.links.github`) e revalida a cada hora (ISR). Sem `GITHUB_TOKEN` ou
+com a API fora do ar, o site continua funcionando com o `fallback` estático de cada projeto.
 
 ### Curar projetos
 
