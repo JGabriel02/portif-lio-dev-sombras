@@ -11,6 +11,10 @@ spring:
 server:
   address: 127.0.0.1
   port: 8080
+  servlet:
+    session:
+      # Sessão só por cookie: evita ";jsessionid=..." na URL após um redirect com aviso.
+      tracking-modes: cookie
 
 painel:
   site-url: ${SITE_URL:}
