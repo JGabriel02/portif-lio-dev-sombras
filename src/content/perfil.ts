@@ -17,7 +17,7 @@ export const perfil: Perfil = {
   // Intro profissional (revisável). O destaque fica no meio da tupla.
   intro: {
     pt: [
-      'Desenvolvedor Jr focado em ',
+      'Desenvolvedor focado em ',
       'Java, C# e APIs REST',
       '. Transformo ideias em código, gosto de aprender todo dia e de ajudar quem está começando na área.',
     ],
