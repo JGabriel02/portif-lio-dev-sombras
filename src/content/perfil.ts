@@ -22,7 +22,7 @@ export const perfil: Perfil = {
       '. Transformo ideias em código, gosto de aprender todo dia e de ajudar quem está começando na área.',
     ],
     en: [
-      'Junior developer focused on ',
+      'developer focused on ',
       'Java, C# and REST APIs',
       '. I turn ideas into code, love learning every day and enjoy helping people who are just starting out in tech.',
     ],
